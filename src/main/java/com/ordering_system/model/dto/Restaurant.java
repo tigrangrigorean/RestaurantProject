@@ -13,12 +13,13 @@ public class Restaurant {
     private Date foundDate;
     private Date registrationDate;
     private String phoneNumber;
+    private String email;
     public Restaurant() {
     }
     public Restaurant(String name, String tin,
                       Address address,
                       Manager manager, Date foundDate,
-                      Date registrationDate, String phoneNumber) {
+                      Date registrationDate, String phoneNumber, String email) {
         this.name = name;
         this.tin = tin;
         this.address = address;
@@ -26,6 +27,7 @@ public class Restaurant {
         this.foundDate = foundDate;
         this.registrationDate = registrationDate;
         this.phoneNumber = phoneNumber;
+        this.email = email;
     }
 
     public List<Food> getFoodList() {
@@ -90,5 +92,13 @@ public class Restaurant {
 
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }

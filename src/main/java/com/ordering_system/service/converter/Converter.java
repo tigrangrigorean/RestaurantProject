@@ -139,7 +139,7 @@ public class Converter {
         return modelMapper.map(userEntity,User.class);
     }
 
-    public UserEntity restaurantToEntity(User user){
+    public UserEntity userToEntity(User user){
         return modelMapper.map(user, UserEntity.class);
     }
 

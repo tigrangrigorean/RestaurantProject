@@ -1,5 +1,6 @@
 package com.ordering_system.model.domain;
 
+import jakarta.annotation.Nonnull;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -10,10 +11,15 @@ public class ManagerEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+    @Nonnull
     private String firstName;
+    @Nonnull
     private String lastName;
+    @Nonnull
     private String passportNumber;
+    @Nonnull
     private String phoneNumber;
+    @Nonnull
     private String password;
     @OneToMany(mappedBy = "manager",
     cascade =CascadeType.REFRESH )

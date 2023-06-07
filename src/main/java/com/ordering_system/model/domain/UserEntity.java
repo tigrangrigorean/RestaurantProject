@@ -1,28 +1,36 @@
 package com.ordering_system.model.domain;
 
+import jakarta.annotation.Nonnull;
 import jakarta.persistence.*;
 
 import java.util.Date;
 @Entity
 @Table(name = "users")
-
 public class UserEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+    @Nonnull
     private String firstName;
+    @Nonnull
     private String lastName;
     @OneToOne(cascade = CascadeType.ALL)
     private AddressEntity address;
+    @Nonnull
     private Date birthday;
+    @Nonnull
     private String phoneNumber;
+    @Nonnull
     private String password;
+    @Nonnull
+    private String email;
+
 
     public UserEntity() {
     }
 
     public UserEntity(long id, String firstName, String lastName, AddressEntity address,
-                      Date birthday, String phoneNumber, String password) {
+                      Date birthday, String phoneNumber, String password, String email) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -30,6 +38,7 @@ public class UserEntity {
         this.birthday = birthday;
         this.phoneNumber = phoneNumber;
         this.password = password;
+        this.email= email;
     }
 
     public long getId() {
@@ -87,5 +96,13 @@ public class UserEntity {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }

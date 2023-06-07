@@ -10,14 +10,17 @@ public class User {
     private Date birthday;
     private String phoneNumber;
     private String password;
+    private String email;
 
-    public User(String firstName, String lastName, Address address, Date birthday, String phoneNumber, String password) {
+    public User(String firstName, String lastName, Address address, Date birthday,
+                String phoneNumber, String password, String email) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.address = address;
         this.birthday = birthday;
         this.phoneNumber = phoneNumber;
         this.password = password;
+        this.email = email;
     }
 
     public User(){}
@@ -68,5 +71,13 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }

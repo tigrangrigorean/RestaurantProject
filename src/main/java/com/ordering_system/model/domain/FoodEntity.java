@@ -1,5 +1,6 @@
 package com.ordering_system.model.domain;
 
+import jakarta.annotation.Nonnull;
 import jakarta.persistence.*;
 
 @Entity
@@ -8,14 +9,16 @@ public class FoodEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+    @Nonnull
     private String name;
+    @Nonnull
     private String ingredient;
     @ManyToOne(
             cascade = CascadeType.REFRESH
     )
     @JoinColumn(name = "restaurant_id")
     private RestaurantEntity restaurantEntity ;
-
+    @Nonnull
     private double price;
 
 

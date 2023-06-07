@@ -37,7 +37,7 @@ public class Validator {
 	public static boolean checkPassword(String password){
 		String regex = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,}$";
 		if(!password.matches(regex)){
-			throw new InvalidPasswordException("Entered password is invalid, please make sure you" +
+			throw new InvalidPasswordException("Entered password is invalid, please make sure you have" +
 					" provided at least one digit, one lowercase, one uppercase, one special character");
 		}
 		return true;
@@ -47,15 +47,22 @@ public class Validator {
     public static boolean checkTin(String tin){
         String regex = "^[0-9]{8}$";
         if(!tin.matches(regex)){
-            throw new InvalidTinException("Entered TIN is invalid, please make sure you" +
+            throw new InvalidTinException("Entered TIN is invalid, please make sure you have" +
                     " entered correct TIN");
         }
         return true;
     }
 
+	public static boolean checkEmail(String email){
+		String regex = "^[A-Za-z0-9._%+-]+@[A-Za-z]+\\.[A-Za-z]{2,}$";
+		if(!email.matches(regex)){
+			throw new InvalidEmailException("Entered email is invalid, please make sure you have" +
+					" entered correct email");
+		}
+		return true;
+	}
 
 
 
-	
 
 }

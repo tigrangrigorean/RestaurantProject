@@ -1,5 +1,6 @@
 package com.ordering_system.model.domain;
 
+import jakarta.annotation.Nonnull;
 import jakarta.persistence.*;
 
 @Entity
@@ -8,7 +9,9 @@ public class AdminEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+    @Nonnull
     private String phoneNumber;
+    @Nonnull
     private String password;
 
     public AdminEntity(long id, String phoneNumber, String password) {

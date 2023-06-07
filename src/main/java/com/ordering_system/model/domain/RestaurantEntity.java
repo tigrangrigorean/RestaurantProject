@@ -34,9 +34,12 @@ public class RestaurantEntity {
     private Date registrationDate;
     @Nonnull
     private String phoneNumber;
+    @Nonnull
+    private String email;
     public RestaurantEntity() {
     }
-    public RestaurantEntity(long id, String name, String tin, AddressEntity address, ManagerEntity manager, Date foundDate, Date registrationDate, String phoneNumber) {
+    public RestaurantEntity(long id, String name, String tin, AddressEntity address, ManagerEntity manager,
+                            Date foundDate, Date registrationDate, String phoneNumber, String email) {
         this.id = id;
         this.name = name;
         this.tin = tin;
@@ -45,6 +48,7 @@ public class RestaurantEntity {
         this.foundDate = foundDate;
         this.registrationDate = registrationDate;
         this.phoneNumber = phoneNumber;
+        this.email = email;
     }
 
     public List<FoodEntity> getFoodEntityList() {
@@ -117,5 +121,13 @@ public class RestaurantEntity {
 
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }

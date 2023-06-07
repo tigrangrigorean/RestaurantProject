@@ -8,6 +8,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class OrderingSystemApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(OrderingSystemApplication.class, args);
+         SpringApplication.run(OrderingSystemApplication.class, args);
     }
 }

@@ -1,6 +1,5 @@
 package com.ordering_system.model.domain;
 
-import jakarta.annotation.Nonnull;
 import jakarta.persistence.*;
 
 import java.util.Date;
@@ -10,19 +9,13 @@ public class UserEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    @Nonnull
     private String firstName;
-    @Nonnull
     private String lastName;
     @OneToOne(cascade = CascadeType.ALL)
     private AddressEntity address;
-    @Nonnull
     private Date birthday;
-    @Nonnull
     private String phoneNumber;
-    @Nonnull
     private String password;
-    @Nonnull
     private String email;
 
 

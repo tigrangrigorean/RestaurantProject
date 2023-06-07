@@ -150,4 +150,25 @@ public class Converter {
                 .collect(Collectors.toList());
         return userList;
     }
+
+    /**
+     *
+     * @param orderEntity
+     * @return
+     */
+    public Order entityToOrder(OrderEntity orderEntity){
+        return modelMapper.map(orderEntity,Order.class);
+    }
+
+    public OrderEntity orderToEntity(Order order){
+        return modelMapper.map(order, OrderEntity.class);
+    }
+
+    public List<Order> entityToOrderList(List<OrderEntity> orderEntityList){
+        List<Order> orderList = orderEntityList
+                .stream()
+                .map(order -> modelMapper.map(order, Order.class))
+                .collect(Collectors.toList());
+        return orderList;
+    }
 }

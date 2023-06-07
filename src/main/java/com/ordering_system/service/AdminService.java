@@ -10,6 +10,6 @@ public interface AdminService {
     Admin getById(long id);
     List<Admin> getAll();
     Admin save(Admin admin) ;
-    Admin update(Admin admin);
+    Admin update(long id,Admin admin);
     void delete(long id);
 }

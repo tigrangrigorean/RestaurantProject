@@ -53,7 +53,7 @@ public class Converter {
         return modelMapper.map(admin, AdminEntity.class);
     }
 
-    public List<Admin> entityToAdminList(List<AddressEntity> adminEntityList){
+    public List<Admin> entityToAdminList(List<AdminEntity> adminEntityList){
         List<Admin> adminList = adminEntityList
                 .stream()
                 .map(admin -> modelMapper.map(admin, Admin.class))

@@ -50,6 +50,12 @@ public class RestaurantServiceImpl implements RestaurantService {
     @Override
     public Restaurant save(Restaurant restaurant) {
         Validator.checkEntity(restaurant);
+        Validator.checkEntity(restaurant.getName());
+        Validator.checkTin(restaurant.getTin());
+        Validator.checkEntity(addressRepository.findAddressEntityById(restaurant.getAddressId()));
+        Validator.checkEntity(managerRepository.findManagerEntityById(restaurant.getManagerId()));
+        Validator.checkEmail(restaurant.getEmail());
+        Validator.checkPhoneNumber(restaurant.getPhoneNumber());
         restaurantRepository.save(converter.restaurantToEntity(restaurant));
         return restaurant;
     }
@@ -65,12 +71,15 @@ public class RestaurantServiceImpl implements RestaurantService {
             restaurantEntity.setName(restaurant.getName());
         }
         if (restaurant.getTin() != null) {
+        	Validator.checkTin(restaurant.getTin());
             restaurantEntity.setTin(restaurant.getTin());
         }
-        if (addressRepository.findAddressEntityById(restaurant.getAddressId())!=null) {
+        if (Validator.checkId(restaurant.getAddressId())) {
+        	Validator.checkEntity(addressRepository.findAddressEntityById(restaurant.getAddressId()));
             restaurantEntity.setAddress(addressRepository.findAddressEntityById(restaurant.getAddressId()));
         }
-        if (managerRepository.findManagerEntityById(restaurant.getManagerId()) != null) {
+        if (Validator.checkId(restaurant.getManagerId())) {
+        	Validator.checkEntity(managerRepository.findManagerEntityById(restaurant.getManagerId()));
             restaurantEntity.setManager(managerRepository.findManagerEntityById(restaurant.getManagerId()));
         }
         if (restaurant.getFoundDate() != null) {
@@ -80,8 +89,8 @@ public class RestaurantServiceImpl implements RestaurantService {
             restaurantEntity.setRegistrationDate(restaurant.getRegistrationDate());
         }
         if (restaurant.getPhoneNumber() != null) {
+        	Validator.checkPhoneNumber(restaurant.getPhoneNumber());
             restaurantEntity.setPhoneNumber(restaurant.getPhoneNumber());
-
         }
         restaurantRepository.save(restaurantEntity);
     }

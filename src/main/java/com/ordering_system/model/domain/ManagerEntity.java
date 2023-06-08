@@ -21,22 +21,18 @@ public class ManagerEntity {
     private String phoneNumber;
     @Nonnull
     private String password;
-    @OneToMany(mappedBy = "manager",
-    cascade =CascadeType.REFRESH )
-    private List<RestaurantEntity> restaurant;
+    @OneToMany(mappedBy = "manager")
+    private List<RestaurantEntity> restaurantEntity;
 
+    public ManagerEntity() {
+    }
 
-    public ManagerEntity(long id, String firstName, String lastName, String passportNumber
-            , String phoneNumber, String password) {
-        this.id = id;
+    public ManagerEntity( String firstName, String lastName, String passportNumber, String phoneNumber, String password) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.passportNumber = passportNumber;
         this.phoneNumber = phoneNumber;
         this.password = password;
-    }
-
-    public ManagerEntity() {
     }
 
     public long getId() {
@@ -71,9 +67,6 @@ public class ManagerEntity {
         this.passportNumber = passportNumber;
     }
 
-
-
-
     public String getPhoneNumber() {
         return phoneNumber;
     }
@@ -88,5 +81,13 @@ public class ManagerEntity {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public List<RestaurantEntity> getRestaurantEntity() {
+        return restaurantEntity;
+    }
+
+    public void setRestaurantEntity(List<RestaurantEntity> restaurantEntity) {
+        this.restaurantEntity = restaurantEntity;
     }
 }

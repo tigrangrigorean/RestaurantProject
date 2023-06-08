@@ -29,9 +29,8 @@ public class UserEntity {
     public UserEntity() {
     }
 
-    public UserEntity(long id, String firstName, String lastName, AddressEntity address,
+    public UserEntity(String firstName, String lastName, AddressEntity address,
                       Date birthday, String phoneNumber, String password, String email) {
-        this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.address = address;

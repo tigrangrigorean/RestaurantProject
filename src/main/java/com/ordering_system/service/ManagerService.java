@@ -7,6 +7,6 @@ public interface ManagerService {
     Manager getById(long id);
     List<Manager> getAll();
     Manager save(Manager manager);
-    Manager update(long id, Manager manager);
+    void update(long id, Manager manager);
     void delete(long id);
 }

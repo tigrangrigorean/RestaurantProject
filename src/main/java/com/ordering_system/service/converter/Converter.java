@@ -3,6 +3,7 @@ package com.ordering_system.service.converter;
 import com.ordering_system.model.domain.*;
 import com.ordering_system.model.dto.*;
 import com.ordering_system.repository.*;
+import com.ordering_system.service.validator.Validator;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -132,6 +133,7 @@ public class Converter {
     }
 
     public ManagerEntity managerToEntity(Manager manager){
+
         return new ManagerEntity(manager.getFirstName(),
                 manager.getLastName(),
                 manager.getPassportNumber(),
@@ -170,10 +172,14 @@ public class Converter {
         RestaurantEntity restaurantEntity = new RestaurantEntity();
         restaurantEntity.setAddress(addressRepository.findAddressEntityById(restaurant.getAddressId()));
         restaurantEntity.setManager(managerRepository.findManagerEntityById(restaurant.getManagerId()));
+        Validator.checkName(restaurant.getName());
         restaurantEntity.setName(restaurant.getName());
+        Validator.checkTin(restaurant.getTin());
         restaurantEntity.setTin(restaurant.getTin());
         restaurantEntity.setFoundDate(restaurant.getFoundDate());
+        Validator.checkEmail(restaurant.getEmail());
         restaurantEntity.setEmail(restaurant.getEmail());
+        Validator.checkPhoneNumber(restaurant.getPhoneNumber());
         restaurantEntity.setPhoneNumber(restaurant.getPhoneNumber());
         restaurantEntity.setRegistrationDate(restaurant.getRegistrationDate());
         restaurantEntity.setFoodEntityList(foodRepository.findFoodEntitiesByRestaurantEntityId(restaurantEntity.getId()));

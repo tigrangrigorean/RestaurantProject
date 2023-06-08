@@ -4,6 +4,7 @@ package com.ordering_system.service.impl;
 import com.ordering_system.model.domain.FoodEntity;
 import com.ordering_system.model.dto.Food;
 import com.ordering_system.repository.FoodRepository;
+import com.ordering_system.repository.RestaurantRepository;
 import com.ordering_system.service.FoodService;
 import com.ordering_system.service.converter.Converter;
 import com.ordering_system.service.validator.Validator;
@@ -19,11 +20,14 @@ public class FoodServiceImpl implements FoodService {
 	
     private final FoodRepository foodRepository;
     private final Converter converter;
+    private final RestaurantRepository restaurantRepository;
 
     @Autowired
-    public FoodServiceImpl(FoodRepository foodRepository, Converter converter) {
+    public FoodServiceImpl(FoodRepository foodRepository, Converter converter,
+    		RestaurantRepository restaurantRepository) {
         this.foodRepository = foodRepository;
         this.converter = converter;
+        this.restaurantRepository = restaurantRepository;
     }
 
     @Override
@@ -38,6 +42,11 @@ public class FoodServiceImpl implements FoodService {
     public Food save(Food food) {
     	Validator.checkEntity(food);
     	Validator.checkPrice(food.getPrice());
+    	Validator.checkEntity(food.getName());
+    	Validator.checkEntity(food.getIngredient());
+    	Validator.checkId(food.getRestaurantId());
+    	Validator.checkEntity(restaurantRepository.findRestaurantEntityById(food.getRestaurantId()));
+    	
         foodRepository.save(converter.foodToEntity(food));
         return food;
     }

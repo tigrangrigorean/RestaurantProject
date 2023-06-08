@@ -1,6 +1,7 @@
 package com.ordering_system.service.impl;
 
 import com.ordering_system.model.dto.User;
+import com.ordering_system.repository.AddressRepository;
 import com.ordering_system.repository.UserRepository;
 import com.ordering_system.service.UserService;
 import com.ordering_system.service.converter.Converter;
@@ -15,11 +16,14 @@ public class UserServiceImpl implements UserService {
     private final Converter converter;
 
     private final UserRepository userRepository;
+    private final AddressRepository addressRepository;
 
     @Autowired
-    public UserServiceImpl(Converter converter, UserRepository userRepository) {
+    public UserServiceImpl(Converter converter, UserRepository userRepository,
+    		AddressRepository addressRepository) {
         this.converter = converter;
         this.userRepository = userRepository;
+        this.addressRepository = addressRepository;
     }
 
 
@@ -38,6 +42,13 @@ public class UserServiceImpl implements UserService {
     @Override
     public User save(User user) {
         Validator.checkEntity(user);
+        Validator.checkEntity(user.getFirstName());
+        Validator.checkEntity(user.getLastName());
+        Validator.checkId(user.getAddressId());
+        Validator.checkEntity(addressRepository.findAddressEntityById(user.getAddressId()));
+        Validator.checkPhoneNumber(user.getPhoneNumber());
+        Validator.checkPassword(user.getPassword());
+        Validator.checkEmail(user.getEmail());
         userRepository.save(converter.userToEntity(user));
         return user;
     }

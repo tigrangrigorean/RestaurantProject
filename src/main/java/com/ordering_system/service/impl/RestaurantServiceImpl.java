@@ -60,11 +60,10 @@ public class RestaurantServiceImpl implements RestaurantService {
         RestaurantEntity restaurantEntity = restaurantRepository.findRestaurantEntityById(id);
         Validator.checkEntity(restaurant);
         Validator.checkEntity(restaurantEntity);
-
-        if (restaurant.getName() != null) {
+        if (restaurant.getName() != null && Validator.checkName(restaurant.getName())) {
             restaurantEntity.setName(restaurant.getName());
         }
-        if (restaurant.getTin() != null) {
+        if (restaurant.getTin() != null && Validator.checkTin(restaurant.getTin())) {
             restaurantEntity.setTin(restaurant.getTin());
         }
         if (addressRepository.findAddressEntityById(restaurant.getAddressId())!=null) {
@@ -76,10 +75,13 @@ public class RestaurantServiceImpl implements RestaurantService {
         if (restaurant.getFoundDate() != null) {
             restaurantEntity.setFoundDate(restaurant.getFoundDate());
         }
+        if (restaurant.getEmail() != null && Validator.checkEmail(restaurant.getEmail())) {
+            restaurantEntity.setEmail(restaurant.getEmail());
+        }
         if (restaurant.getRegistrationDate() != null) {
             restaurantEntity.setRegistrationDate(restaurant.getRegistrationDate());
         }
-        if (restaurant.getPhoneNumber() != null) {
+        if (restaurant.getPhoneNumber() != null && Validator.checkPhoneNumber(restaurant.getPhoneNumber())) {
             restaurantEntity.setPhoneNumber(restaurant.getPhoneNumber());
 
         }

@@ -62,6 +62,23 @@ public class Validator {
 		return true;
 	}
 
+	public static boolean checkName(String name){
+		String regex = "[A-Za-z]+";
+		if(!name.matches(regex)){
+			throw new IncorrectNameException("Enter only latin letters");
+		}
+		return true;
+	}
+
+	public static boolean checkPassport(String passport){
+		String regex = "^[A-Z]{2}\\d{7}$";
+		if(!passport.matches(regex)){
+			throw new InvalidPassportException("Enter valid passport number");
+		}
+		return true;
+
+	}
+
 
 
 

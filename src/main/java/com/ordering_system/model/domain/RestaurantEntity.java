@@ -1,7 +1,7 @@
 package com.ordering_system.model.domain;
 
-import jakarta.annotation.Nonnull;
 import jakarta.persistence.*;
+
 
 
 import java.util.Date;
@@ -19,10 +19,8 @@ public class RestaurantEntity {
             cascade = CascadeType.ALL)
     private List<FoodEntity> foodEntityList;
     @OneToOne(cascade = CascadeType.ALL)
-//    @JoinColumn(name = "address_id")
-
     private AddressEntity address;
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.PERSIST})
     @JoinColumn(name = "manager_id")
 
     private ManagerEntity manager;

@@ -1,6 +1,5 @@
 package com.ordering_system.model.domain;
 
-import jakarta.annotation.Nonnull;
 import jakarta.persistence.*;
 
 @Entity

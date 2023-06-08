@@ -1,6 +1,5 @@
 package com.ordering_system.model.domain;
 
-import jakarta.annotation.Nonnull;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -11,32 +10,23 @@ public class ManagerEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    @Nonnull
     private String firstName;
-    @Nonnull
     private String lastName;
-    @Nonnull
     private String passportNumber;
-    @Nonnull
     private String phoneNumber;
-    @Nonnull
     private String password;
-    @OneToMany(mappedBy = "manager",
-    cascade =CascadeType.REFRESH )
-    private List<RestaurantEntity> restaurant;
+    @OneToMany(mappedBy = "manager")
+    private List<RestaurantEntity> restaurantEntity;
 
+    public ManagerEntity() {
+    }
 
-    public ManagerEntity(long id, String firstName, String lastName, String passportNumber
-            , String phoneNumber, String password) {
-        this.id = id;
+    public ManagerEntity( String firstName, String lastName, String passportNumber, String phoneNumber, String password) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.passportNumber = passportNumber;
         this.phoneNumber = phoneNumber;
         this.password = password;
-    }
-
-    public ManagerEntity() {
     }
 
     public long getId() {
@@ -71,9 +61,6 @@ public class ManagerEntity {
         this.passportNumber = passportNumber;
     }
 
-
-
-
     public String getPhoneNumber() {
         return phoneNumber;
     }
@@ -88,5 +75,13 @@ public class ManagerEntity {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public List<RestaurantEntity> getRestaurantEntity() {
+        return restaurantEntity;
+    }
+
+    public void setRestaurantEntity(List<RestaurantEntity> restaurantEntity) {
+        this.restaurantEntity = restaurantEntity;
     }
 }

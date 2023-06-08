@@ -7,35 +7,25 @@ import java.util.List;
 public class Restaurant {
     private String name;
     private String tin;
-    private Address address;
-    private List<Food> foodList;
-    private Manager manager;
+    private long addressId;
+    private long managerId;
     private Date foundDate;
     private Date registrationDate;
     private String phoneNumber;
     private String email;
+
     public Restaurant() {
     }
-    public Restaurant(String name, String tin,
-                      Address address,
-                      Manager manager, Date foundDate,
-                      Date registrationDate, String phoneNumber, String email) {
+
+    public Restaurant(String name, String tin, long addressId, long managerId, Date foundDate, Date registrationDate, String phoneNumber, String email) {
         this.name = name;
         this.tin = tin;
-        this.address = address;
-        this.manager = manager;
+        this.addressId = addressId;
+        this.managerId = managerId;
         this.foundDate = foundDate;
         this.registrationDate = registrationDate;
         this.phoneNumber = phoneNumber;
         this.email = email;
-    }
-
-    public List<Food> getFoodList() {
-        return foodList;
-    }
-
-    public void setFoodList(List<Food> foodList) {
-        this.foodList = foodList;
     }
 
     public String getName() {
@@ -54,20 +44,20 @@ public class Restaurant {
         this.tin = tin;
     }
 
-    public Address getAddress() {
-        return address;
+    public long getAddressId() {
+        return addressId;
     }
 
-    public void setAddress(Address address) {
-        this.address = address;
+    public void setAddressId(long addressId) {
+        this.addressId = addressId;
     }
 
-    public Manager getManager() {
-        return manager;
+    public long getManagerId() {
+        return managerId;
     }
 
-    public void setManager(Manager manager) {
-        this.manager = manager;
+    public void setManagerId(long managerId) {
+        this.managerId = managerId;
     }
 
     public Date getFoundDate() {

@@ -4,15 +4,13 @@ public class Manager {
     private String firstName;
     private String lastName;
     private String passportNumber;
-    private long restaurantId;
     private String phoneNumber;
     private String password;
 
-    public Manager(String firstName, String lastName, String passportNumber, long restaurantId, String phoneNumber, String password) {
+    public Manager(String firstName, String lastName, String passportNumber, String phoneNumber, String password) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.passportNumber = passportNumber;
-        this.restaurantId = restaurantId;
         this.phoneNumber = phoneNumber;
         this.password = password;
     }
@@ -40,14 +38,6 @@ public class Manager {
 
     public void setPassportNumber(String passportNumber) {
         this.passportNumber = passportNumber;
-    }
-
-    public long getRestaurantId() {
-        return restaurantId;
-    }
-
-    public void setRestaurantId(long restaurantId) {
-        this.restaurantId = restaurantId;
     }
 
     public String getPhoneNumber() {

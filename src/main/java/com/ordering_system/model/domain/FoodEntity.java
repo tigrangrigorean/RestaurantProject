@@ -1,6 +1,5 @@
 package com.ordering_system.model.domain;
 
-import jakarta.annotation.Nonnull;
 import jakarta.persistence.*;
 
 @Entity
@@ -9,29 +8,34 @@ public class FoodEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    @Nonnull
     private String name;
-    @Nonnull
     private String ingredient;
     @ManyToOne(
             cascade = CascadeType.REFRESH
     )
     @JoinColumn(name = "restaurant_id")
     private RestaurantEntity restaurantEntity ;
-    @Nonnull
     private double price;
 
 
-    public FoodEntity(long id, String name, String ingredient, double price
+    public FoodEntity( String name, String ingredient, double price,RestaurantEntity restaurantEntity
                       ) {
-        this.id = id;
         this.name = name;
         this.ingredient = ingredient;
         this.price = price;
+        this.restaurantEntity = restaurantEntity;
 
     }
 
     public FoodEntity() {
+    }
+
+    public RestaurantEntity getRestaurantEntity() {
+        return restaurantEntity;
+    }
+
+    public void setRestaurantEntity(RestaurantEntity restaurantEntity) {
+        this.restaurantEntity = restaurantEntity;
     }
 
     public long getId() {

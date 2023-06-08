@@ -3,6 +3,9 @@ package com.ordering_system.service.impl;
 
 import com.ordering_system.model.domain.RestaurantEntity;
 import com.ordering_system.model.dto.Restaurant;
+import com.ordering_system.repository.AddressRepository;
+import com.ordering_system.repository.FoodRepository;
+import com.ordering_system.repository.ManagerRepository;
 import com.ordering_system.repository.RestaurantRepository;
 import com.ordering_system.service.RestaurantService;
 import com.ordering_system.service.converter.Converter;
@@ -19,11 +22,17 @@ public class RestaurantServiceImpl implements RestaurantService {
 
     private final Converter converter;
     private final RestaurantRepository restaurantRepository;
+    private final AddressRepository addressRepository;
+    private final FoodRepository foodRepository;
+    private final ManagerRepository managerRepository;
 
     @Autowired
-    public RestaurantServiceImpl(Converter converter, RestaurantRepository restaurantRepository) {
+    public RestaurantServiceImpl(Converter converter, RestaurantRepository restaurantRepository, AddressRepository addressRepository, FoodRepository foodRepository, ManagerRepository managerRepository) {
         this.converter = converter;
         this.restaurantRepository = restaurantRepository;
+        this.addressRepository = addressRepository;
+        this.foodRepository = foodRepository;
+        this.managerRepository = managerRepository;
     }
 
     @Override
@@ -58,14 +67,11 @@ public class RestaurantServiceImpl implements RestaurantService {
         if (restaurant.getTin() != null) {
             restaurantEntity.setTin(restaurant.getTin());
         }
-        if (restaurant.getAddress() != null) {
-            restaurantEntity.setAddress(converter.addressToEntity(restaurant.getAddress()));
+        if (addressRepository.findAddressEntityById(restaurant.getAddressId())!=null) {
+            restaurantEntity.setAddress(addressRepository.findAddressEntityById(restaurant.getAddressId()));
         }
-        if (restaurant.getFoodList()!= null) {
-            restaurantEntity.setFoodEntityList(converter.foodListToEntityList(restaurant.getFoodList()));
-        }
-        if (restaurant.getManager() != null) {
-            restaurantEntity.setManager(converter.managerToEntity(restaurant.getManager()));
+        if (managerRepository.findManagerEntityById(restaurant.getManagerId()) != null) {
+            restaurantEntity.setManager(managerRepository.findManagerEntityById(restaurant.getManagerId()));
         }
         if (restaurant.getFoundDate() != null) {
             restaurantEntity.setFoundDate(restaurant.getFoundDate());

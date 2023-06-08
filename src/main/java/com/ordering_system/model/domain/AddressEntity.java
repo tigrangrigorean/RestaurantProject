@@ -1,6 +1,5 @@
 package com.ordering_system.model.domain;
 
-import jakarta.annotation.Nonnull;
 import jakarta.persistence.*;
 
 @Entity
@@ -9,19 +8,14 @@ public class AddressEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    @Nonnull
     private String city;
-    @Nonnull
     private String street;
-    @Nonnull
     private String building;
-    @Nonnull
     private String apartment;
 
 
-    public AddressEntity(long id, String city, String street,
+    public AddressEntity( String city, String street,
                          String building, String apartment) {
-        this.id = id;
         this.city = city;
         this.street = street;
         this.building = building;

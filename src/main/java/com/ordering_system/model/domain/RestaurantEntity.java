@@ -1,7 +1,7 @@
 package com.ordering_system.model.domain;
 
-import jakarta.annotation.Nonnull;
 import jakarta.persistence.*;
+
 
 
 import java.util.Date;
@@ -13,50 +13,35 @@ public class RestaurantEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    @Nonnull
     private String name;
-    @Nonnull
     private String tin;
     @OneToMany(mappedBy = "restaurantEntity",
             cascade = CascadeType.ALL)
     private List<FoodEntity> foodEntityList;
     @OneToOne(cascade = CascadeType.ALL)
-//    @JoinColumn(name = "address_id")
-
     private AddressEntity address;
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.PERSIST})
     @JoinColumn(name = "manager_id")
 
     private ManagerEntity manager;
-    @Nonnull
     private Date foundDate;
-    @Nonnull
     private Date registrationDate;
-    @Nonnull
     private String phoneNumber;
-    @Nonnull
     private String email;
+
     public RestaurantEntity() {
     }
-    public RestaurantEntity(long id, String name, String tin, AddressEntity address, ManagerEntity manager,
-                            Date foundDate, Date registrationDate, String phoneNumber, String email) {
-        this.id = id;
+
+    public RestaurantEntity( String name, String tin, List<FoodEntity> foodEntityList, AddressEntity address, ManagerEntity manager, Date foundDate, Date registrationDate, String phoneNumber, String email) {
         this.name = name;
         this.tin = tin;
+        this.foodEntityList = foodEntityList;
         this.address = address;
         this.manager = manager;
         this.foundDate = foundDate;
         this.registrationDate = registrationDate;
         this.phoneNumber = phoneNumber;
         this.email = email;
-    }
-
-    public List<FoodEntity> getFoodEntityList() {
-        return foodEntityList;
-    }
-
-    public void setFoodEntityList(List<FoodEntity> foodEntityList) {
-        this.foodEntityList = foodEntityList;
     }
 
     public long getId() {
@@ -81,6 +66,14 @@ public class RestaurantEntity {
 
     public void setTin(String tin) {
         this.tin = tin;
+    }
+
+    public List<FoodEntity> getFoodEntityList() {
+        return foodEntityList;
+    }
+
+    public void setFoodEntityList(List<FoodEntity> foodEntityList) {
+        this.foodEntityList = foodEntityList;
     }
 
     public AddressEntity getAddress() {

@@ -1,5 +1,7 @@
 package com.ordering_system.service.impl;
 
+import com.ordering_system.model.domain.OrderEntity;
+import com.ordering_system.model.domain.RestaurantEntity;
 import com.ordering_system.model.dto.Order;
 import com.ordering_system.repository.OrderRepository;
 import com.ordering_system.service.OrderService;
@@ -40,9 +42,16 @@ public class OrderServiceImpl implements OrderService {
         return order;
     }
 
+    //TODO
     @Override
-    public Order update(long id, Order order) {
-        return null;
+    public void update(long id, Order order) {
+        Validator.checkId(id);
+        OrderEntity orderEntity = orderRepository.findOrderEntityById(id);
+        Validator.checkEntity(order);
+        Validator.checkEntity(orderEntity);
+
+
+        orderRepository.save(orderEntity);
     }
 
     @Override

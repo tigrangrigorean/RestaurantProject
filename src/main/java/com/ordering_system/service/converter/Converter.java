@@ -132,6 +132,7 @@ public class Converter {
     }
 
     public ManagerEntity managerToEntity(Manager manager){
+
         return new ManagerEntity(manager.getFirstName(),
                 manager.getLastName(),
                 manager.getPassportNumber(),

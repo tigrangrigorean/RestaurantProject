@@ -1,6 +1,7 @@
 package com.ordering_system.service.impl;
 
 import com.ordering_system.model.domain.ManagerEntity;
+import com.ordering_system.model.domain.RestaurantEntity;
 import com.ordering_system.model.dto.Manager;
 import com.ordering_system.repository.ManagerRepository;
 import com.ordering_system.service.ManagerService;
@@ -38,13 +39,40 @@ public class ManagerServiceImpl implements ManagerService {
     @Override
     public Manager save(Manager manager) {
         Validator.checkEntity(manager);
+        Validator.checkName(manager.getFirstName());
+        Validator.checkName(manager.getLastName());
+        Validator.checkPassport(manager.getPassportNumber());
+        Validator.checkPhoneNumber(manager.getPhoneNumber());
         managerRepository.save(converter.managerToEntity(manager));
         return manager;
     }
 
     @Override
-    public Manager update(long id, Manager manager) {
-        return null;
+    public void update(long id, Manager manager) {
+        Validator.checkId(id);
+        ManagerEntity managerEntity  = managerRepository.findManagerEntityById(id);
+        Validator.checkEntity(manager);
+        Validator.checkEntity(managerEntity);
+        if (manager.getFirstName() != null) {
+            Validator.checkName(manager.getFirstName());
+            managerEntity.setFirstName(manager.getFirstName());
+        }
+        if (manager.getLastName() != null) {
+            Validator.checkName(manager.getLastName());
+            managerEntity.setLastName(manager.getLastName());
+        }
+        if (manager.getPassportNumber() != null) {
+            Validator.checkPassport(manager.getPassportNumber());
+            managerEntity.setPassportNumber(manager.getPassportNumber());
+        }
+        if (manager.getPhoneNumber() != null) {
+            Validator.checkPhoneNumber(manager.getPhoneNumber());
+            managerEntity.setPhoneNumber(manager.getPhoneNumber());
+        }
+        if (manager.getPassword() != null) {
+            managerEntity.setPassword(manager.getPassword());
+        }
+        managerRepository.save(managerEntity);
     }
 
     @Override

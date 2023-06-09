@@ -66,8 +66,8 @@ public class RestaurantServiceImpl implements RestaurantService {
         RestaurantEntity restaurantEntity = restaurantRepository.findRestaurantEntityById(id);
         Validator.checkEntity(restaurant);
         Validator.checkEntity(restaurantEntity);
-
         if (restaurant.getName() != null) {
+            Validator.checkName(restaurant.getName());
             restaurantEntity.setName(restaurant.getName());
         }
         if (restaurant.getTin() != null) {
@@ -91,6 +91,11 @@ public class RestaurantServiceImpl implements RestaurantService {
         if (restaurant.getPhoneNumber() != null) {
         	Validator.checkPhoneNumber(restaurant.getPhoneNumber());
             restaurantEntity.setPhoneNumber(restaurant.getPhoneNumber());
+        }
+        if (restaurant.getEmail() != null) {
+            Validator.checkEmail(restaurant.getEmail());
+            restaurantEntity.setEmail(restaurant.getEmail());
+
         }
         restaurantRepository.save(restaurantEntity);
     }

@@ -47,13 +47,13 @@ public class AdminController {
 	    public ResponseEntity<String> updateAdminById(@RequestParam long id,
 	                                                 @RequestBody Admin admin) {
 	        adminServiceImpl.update(id, admin);
-	        return ResponseEntity.ok().body("Food by " + id + " updated successfully");
+	        return ResponseEntity.ok().body("Admin by " + id + " updated successfully");
 	    }
 
 	    @DeleteMapping("/delete")
 	    public ResponseEntity<String> deleteAdmin(@RequestParam("id") long id) {
 	        adminServiceImpl.delete(id);
-	        return ResponseEntity.ok().body("Food by " + id + " deleted successfully");
+	        return ResponseEntity.ok().body("Admin by " + id + " deleted successfully");
 	    }
 
 }

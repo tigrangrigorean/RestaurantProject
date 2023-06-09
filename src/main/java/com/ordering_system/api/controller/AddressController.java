@@ -37,5 +37,10 @@ public class AddressController {
         addressServiceImpl.update(id, address);
         return ResponseEntity.ok().body("Address by " + id + " updated successfully");
     }
+    @DeleteMapping("/delete")
+    public ResponseEntity<String> deleteAddress(@RequestParam("id") long id) {
+        addressServiceImpl.delete(id);
+        return ResponseEntity.ok().body("Address by " + id + " deleted successfully");
+    }
 
 }

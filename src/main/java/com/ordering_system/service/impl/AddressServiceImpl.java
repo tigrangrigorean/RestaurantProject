@@ -69,4 +69,12 @@ public class AddressServiceImpl implements AddressService {
         addressRepository.save(addressEntity);
     }
 
+    @Override
+    public void delete(long id) {
+        Validator.checkId(id);
+        if (Validator.checkEntity(addressRepository.findAddressEntityById(id))) {
+            addressRepository.deleteById(id);
+        }
+    }
+
 }

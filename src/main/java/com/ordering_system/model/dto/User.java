@@ -3,7 +3,7 @@ package com.ordering_system.model.dto;
 import java.util.Date;
 
 
-public class User {
+public class User  {
     private String firstName;
     private String lastName;
     private long addressId;

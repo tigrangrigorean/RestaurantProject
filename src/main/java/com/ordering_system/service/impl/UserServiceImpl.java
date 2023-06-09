@@ -42,8 +42,8 @@ public class UserServiceImpl implements UserService {
     @Override
     public User save(User user) {
         Validator.checkEntity(user);
-        Validator.checkEntity(user.getFirstName());
-        Validator.checkEntity(user.getLastName());
+        Validator.checkName(user.getFirstName());
+        Validator.checkName(user.getLastName());
         Validator.checkId(user.getAddressId());
         Validator.checkEntity(addressRepository.findAddressEntityById(user.getAddressId()));
         Validator.checkPhoneNumber(user.getPhoneNumber());
@@ -53,6 +53,8 @@ public class UserServiceImpl implements UserService {
         return user;
     }
 
+
+//TODO
     @Override
     public User update(User user) {
         return null;

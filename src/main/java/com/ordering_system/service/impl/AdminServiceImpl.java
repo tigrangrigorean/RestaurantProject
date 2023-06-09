@@ -39,6 +39,7 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public Admin save(Admin admin) {
     	Validator.checkEntity(admin);
+		Validator.checkPhoneNumber(admin.getPhoneNumber());
     	adminRepository.save(converter.adminToEntity(admin));
     	return admin;
      }
@@ -48,6 +49,7 @@ public class AdminServiceImpl implements AdminService {
     	AdminEntity adminEntity = adminRepository.findAdminEntityById(id);
     	Validator.checkEntity(admin);
     	if(admin.getPhoneNumber() != null) {
+			Validator.checkPhoneNumber(admin.getPhoneNumber());
     		adminEntity.setPhoneNumber(admin.getPhoneNumber());
     	}
     	if(admin.getPassword() != null) {

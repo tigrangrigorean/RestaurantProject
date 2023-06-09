@@ -10,6 +10,7 @@ import com.ordering_system.service.converter.Converter;
 import com.ordering_system.service.validator.Validator;
 
 
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -42,11 +43,10 @@ public class FoodServiceImpl implements FoodService {
     public Food save(Food food) {
     	Validator.checkEntity(food);
     	Validator.checkPrice(food.getPrice());
-    	Validator.checkEntity(food.getName());
-    	Validator.checkEntity(food.getIngredient());
+    	Validator.checkName(food.getName());
+    	Validator.checkName(food.getIngredient());
     	Validator.checkId(food.getRestaurantId());
     	Validator.checkEntity(restaurantRepository.findRestaurantEntityById(food.getRestaurantId()));
-    	
         foodRepository.save(converter.foodToEntity(food));
         return food;
     }
@@ -57,9 +57,11 @@ public class FoodServiceImpl implements FoodService {
         
         	Validator.checkEntity(food);
             if (food.getName() != null) {
+                Validator.checkName(food.getName());
                 foodEntity.setName(food.getName());
             }
             if (food.getIngredient() != null) {
+                Validator.checkName(food.getName());
                 foodEntity.setIngredient(food.getIngredient());
             }
             if (Validator.checkPrice(id)) {

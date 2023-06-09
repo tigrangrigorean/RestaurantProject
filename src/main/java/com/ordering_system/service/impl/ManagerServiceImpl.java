@@ -53,16 +53,20 @@ public class ManagerServiceImpl implements ManagerService {
         ManagerEntity managerEntity  = managerRepository.findManagerEntityById(id);
         Validator.checkEntity(manager);
         Validator.checkEntity(managerEntity);
-        if (manager.getFirstName() != null && Validator.checkName(manager.getFirstName())) {
+        if (manager.getFirstName() != null) {
+            Validator.checkName(manager.getFirstName());
             managerEntity.setFirstName(manager.getFirstName());
         }
-        if (manager.getLastName() != null && Validator.checkName(manager.getLastName())) {
+        if (manager.getLastName() != null) {
+            Validator.checkName(manager.getLastName());
             managerEntity.setLastName(manager.getLastName());
         }
-        if (manager.getPassportNumber() != null && Validator.checkPassport(manager.getPassportNumber())) {
+        if (manager.getPassportNumber() != null) {
+            Validator.checkPassport(manager.getPassportNumber());
             managerEntity.setPassportNumber(manager.getPassportNumber());
         }
-        if (manager.getPhoneNumber() != null && Validator.checkPhoneNumber(manager.getPhoneNumber())) {
+        if (manager.getPhoneNumber() != null) {
+            Validator.checkPhoneNumber(manager.getPhoneNumber());
             managerEntity.setPhoneNumber(manager.getPhoneNumber());
         }
         if (manager.getPassword() != null) {

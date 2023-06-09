@@ -65,7 +65,7 @@ public class Validator {
 	public static boolean checkName(String name){
 		String regex = "[A-Za-z]+";
 		if(!name.matches(regex)){
-			throw new IncorrectNameException("Enter only latin letters");
+			throw new IncorrectNameException("Name is incorrect. Enter only latin letters");
 		}
 		return true;
 	}

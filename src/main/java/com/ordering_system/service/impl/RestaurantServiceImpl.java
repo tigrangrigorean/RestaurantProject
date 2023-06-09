@@ -95,6 +95,7 @@ public class RestaurantServiceImpl implements RestaurantService {
         if (restaurant.getEmail() != null) {
             Validator.checkEmail(restaurant.getEmail());
             restaurantEntity.setEmail(restaurant.getEmail());
+
         }
         restaurantRepository.save(restaurantEntity);
     }

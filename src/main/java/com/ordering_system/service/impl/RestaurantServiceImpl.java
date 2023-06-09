@@ -5,8 +5,8 @@ import com.ordering_system.model.domain.RestaurantEntity;
 import com.ordering_system.model.dto.Restaurant;
 import com.ordering_system.repository.AddressRepository;
 import com.ordering_system.repository.FoodRepository;
-import com.ordering_system.repository.ManagerRepository;
 import com.ordering_system.repository.RestaurantRepository;
+import com.ordering_system.repository.UserRepository;
 import com.ordering_system.service.RestaurantService;
 import com.ordering_system.service.converter.Converter;
 import com.ordering_system.service.validator.Validator;
@@ -24,15 +24,15 @@ public class RestaurantServiceImpl implements RestaurantService {
     private final RestaurantRepository restaurantRepository;
     private final AddressRepository addressRepository;
     private final FoodRepository foodRepository;
-    private final ManagerRepository managerRepository;
+    private final UserRepository userRepository;
 
     @Autowired
-    public RestaurantServiceImpl(Converter converter, RestaurantRepository restaurantRepository, AddressRepository addressRepository, FoodRepository foodRepository, ManagerRepository managerRepository) {
+    public RestaurantServiceImpl(Converter converter, RestaurantRepository restaurantRepository, AddressRepository addressRepository, FoodRepository foodRepository, UserRepository userRepository) {
         this.converter = converter;
         this.restaurantRepository = restaurantRepository;
         this.addressRepository = addressRepository;
         this.foodRepository = foodRepository;
-        this.managerRepository = managerRepository;
+        this.userRepository = userRepository;
     }
 
     @Override
@@ -53,7 +53,7 @@ public class RestaurantServiceImpl implements RestaurantService {
         Validator.checkEntity(restaurant.getName());
         Validator.checkTin(restaurant.getTin());
         Validator.checkEntity(addressRepository.findAddressEntityById(restaurant.getAddressId()));
-        Validator.checkEntity(managerRepository.findManagerEntityById(restaurant.getManagerId()));
+        Validator.checkEntity(userRepository.findUserEntityById(restaurant.getManagerId()));
         Validator.checkEmail(restaurant.getEmail());
         Validator.checkPhoneNumber(restaurant.getPhoneNumber());
         restaurantRepository.save(converter.restaurantToEntity(restaurant));
@@ -75,12 +75,14 @@ public class RestaurantServiceImpl implements RestaurantService {
             restaurantEntity.setTin(restaurant.getTin());
         }
         if (Validator.checkId(restaurant.getAddressId())) {
-        	Validator.checkEntity(addressRepository.findAddressEntityById(restaurant.getAddressId()));
+            Validator.checkEntity(addressRepository.findAddressEntityById(restaurant.getAddressId()));
+            long addressId = restaurantEntity.getAddress().getId();
             restaurantEntity.setAddress(addressRepository.findAddressEntityById(restaurant.getAddressId()));
+            addressRepository.delete(addressRepository.findAddressEntityById(addressId));
         }
         if (Validator.checkId(restaurant.getManagerId())) {
-        	Validator.checkEntity(managerRepository.findManagerEntityById(restaurant.getManagerId()));
-            restaurantEntity.setManager(managerRepository.findManagerEntityById(restaurant.getManagerId()));
+        	Validator.checkEntity(userRepository.findUserEntityById(restaurant.getManagerId()));
+            restaurantEntity.setUser(userRepository.findUserEntityById(restaurant.getManagerId()));
         }
         if (restaurant.getFoundDate() != null) {
             restaurantEntity.setFoundDate(restaurant.getFoundDate());

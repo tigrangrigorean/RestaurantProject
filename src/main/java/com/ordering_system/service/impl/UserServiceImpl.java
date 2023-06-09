@@ -6,6 +6,7 @@ import com.ordering_system.repository.UserRepository;
 import com.ordering_system.service.UserService;
 import com.ordering_system.service.converter.Converter;
 import com.ordering_system.service.validator.Validator;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -47,8 +48,9 @@ public class UserServiceImpl implements UserService {
         Validator.checkId(user.getAddressId());
         Validator.checkEntity(addressRepository.findAddressEntityById(user.getAddressId()));
         Validator.checkPhoneNumber(user.getPhoneNumber());
-        Validator.checkPassword(user.getPassword());
+//        Validator.checkPassword(user.getPassword());
         Validator.checkEmail(user.getEmail());
+        Validator.checkPassport(user.getPassportNumber());
         userRepository.save(converter.userToEntity(user));
         return user;
     }
@@ -56,8 +58,8 @@ public class UserServiceImpl implements UserService {
 
 //TODO
     @Override
-    public User update(User user) {
-        return null;
+    public void update(long id, User user) {
+
     }
 
     @Override

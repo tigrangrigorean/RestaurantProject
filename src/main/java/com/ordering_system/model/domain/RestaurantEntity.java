@@ -21,9 +21,9 @@ public class RestaurantEntity {
     @OneToOne(cascade = CascadeType.ALL)
     private AddressEntity address;
     @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.PERSIST})
-    @JoinColumn(name = "manager_id")
+    @JoinColumn(name = "user_id")
 
-    private ManagerEntity manager;
+    private UserEntity user;
     private Date foundDate;
     private Date registrationDate;
     private String phoneNumber;
@@ -32,12 +32,12 @@ public class RestaurantEntity {
     public RestaurantEntity() {
     }
 
-    public RestaurantEntity( String name, String tin, List<FoodEntity> foodEntityList, AddressEntity address, ManagerEntity manager, Date foundDate, Date registrationDate, String phoneNumber, String email) {
+    public RestaurantEntity( String name, String tin, List<FoodEntity> foodEntityList, AddressEntity address, UserEntity user, Date foundDate, Date registrationDate, String phoneNumber, String email) {
         this.name = name;
         this.tin = tin;
         this.foodEntityList = foodEntityList;
         this.address = address;
-        this.manager = manager;
+        this.user = user;
         this.foundDate = foundDate;
         this.registrationDate = registrationDate;
         this.phoneNumber = phoneNumber;
@@ -84,12 +84,12 @@ public class RestaurantEntity {
         this.address = address;
     }
 
-    public ManagerEntity getManager() {
-        return manager;
+    public UserEntity getUser() {
+        return user;
     }
 
-    public void setManager(ManagerEntity manager) {
-        this.manager = manager;
+    public void setUser(UserEntity user) {
+        this.user = user;
     }
 
     public Date getFoundDate() {

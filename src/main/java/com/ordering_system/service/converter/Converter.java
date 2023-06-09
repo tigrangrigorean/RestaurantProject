@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -244,18 +245,45 @@ public class Converter {
      * @return
      */
     public Order entityToOrder(OrderEntity orderEntity){
-        return modelMapper.map(orderEntity,Order.class);
+        Order order = new Order();
+        List<Long> foodIds=new ArrayList<>();
+        for (FoodEntity foodEntity : orderEntity.getFoodList()) {
+            foodIds.add(foodEntity.getId());
+        }
+        order.setFoodId(foodIds);
+        order.setPrice(orderEntity.getPrice());
+        order.setRestaurantName(orderEntity.getRestaurantName());
+        order.setOrderStatus(orderEntity.getOrderStatus());
+        return order;
     }
 
     public OrderEntity orderToEntity(Order order){
-        return modelMapper.map(order, OrderEntity.class);
+        OrderEntity orderEntity = new OrderEntity();
+        List<FoodEntity> foodEntityList = new ArrayList<>();
+        for (long l : order.getFoodId()) {
+            foodEntityList.add(foodRepository.findFoodEntityById(l));
+        }
+        orderEntity.setFoodList(foodEntityList);
+        orderEntity.setPrice(order.getPrice());
+        orderEntity.setRestaurantName(order.getRestaurantName());
+        orderEntity.setOrderStatus(order.getOrderStatus());
+        return orderEntity;
     }
-
     public List<Order> entityToOrderList(List<OrderEntity> orderEntityList){
-        List<Order> orderList = orderEntityList
-                .stream()
-                .map(order -> modelMapper.map(order, Order.class))
-                .collect(Collectors.toList());
+        List<Order> orderList=new ArrayList<>();
+        for (OrderEntity orderEntity : orderEntityList) {
+            List<Long> foodIds=new ArrayList<>();
+            for (FoodEntity foodEntity : orderEntity.getFoodList()) {
+                foodIds.add(foodEntity.getId());
+            }
+            orderList.add(new Order(orderEntity.getPrice(),
+                    foodIds,
+                    orderEntity.getOrderStatus(),
+                    orderEntity.getRestaurantName()));
+        }
         return orderList;
     }
+
+
+
 }

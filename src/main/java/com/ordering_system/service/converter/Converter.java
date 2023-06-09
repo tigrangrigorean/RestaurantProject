@@ -18,7 +18,6 @@ public class Converter {
     private  final ModelMapper modelMapper;
     private  final FoodRepository foodRepository;
     private  final AddressRepository addressRepository;
-    private final ManagerRepository managerRepository;
     private final UserRepository userRepository;
     private final RestaurantRepository restaurantRepository;
 
@@ -26,13 +25,11 @@ public class Converter {
     public Converter(ModelMapper modelMapper,
                      FoodRepository foodRepository,
                      AddressRepository addressRepository,
-                     ManagerRepository managerRepository,
                      UserRepository userRepository,
                      RestaurantRepository restaurantRepository) {
         this.modelMapper = modelMapper;
         this.foodRepository = foodRepository;
         this.addressRepository = addressRepository;
-        this.managerRepository = managerRepository;
         this.userRepository = userRepository;
         this.restaurantRepository = restaurantRepository;
     }
@@ -67,26 +64,26 @@ public class Converter {
         return addressList;
     }
 
-    /**
-     *
-     * @param adminEntity
-     * @return
-     */
-    public Admin entityToAdmin(AdminEntity adminEntity){
-        return new Admin(adminEntity.getPhoneNumber(),adminEntity.getPassword());
-    }
-
-    public AdminEntity adminToEntity(Admin admin){
-        return new AdminEntity(admin.getPhoneNumber(),admin.getPassword());
-    }
-
-    public List<Admin> entityToAdminList(List<AdminEntity> adminEntityList){
-        List<Admin> adminList = new ArrayList<>();
-        for (AdminEntity adminEntity : adminEntityList) {
-            adminList.add(new Admin(adminEntity.getPhoneNumber(),adminEntity.getPassword()));
-        }
-        return adminList;
-    }
+//    /**
+//     *
+//     * @param adminEntity
+//     * @return
+//     */
+//    public Admin entityToAdmin(AdminEntity adminEntity){
+//        return new Admin(adminEntity.getPhoneNumber(),adminEntity.getPassword());
+//    }
+//
+//    public AdminEntity adminToEntity(Admin admin){
+//        return new AdminEntity(admin.getPhoneNumber(),admin.getPassword());
+//    }
+//
+//    public List<Admin> entityToAdminList(List<AdminEntity> adminEntityList){
+//        List<Admin> adminList = new ArrayList<>();
+//        for (AdminEntity adminEntity : adminEntityList) {
+//            adminList.add(new Admin(adminEntity.getPhoneNumber(),adminEntity.getPassword()));
+//        }
+//        return adminList;
+//    }
     /**
      *
      * @param foodEntity
@@ -118,40 +115,40 @@ public class Converter {
         return foodList;
     }
 
-    /**
-     *
-     * @param managerEntity
-     * @return
-     */
-    public Manager entityToManager(ManagerEntity managerEntity){
-
-        return new Manager(managerEntity.getFirstName(),
-                managerEntity.getLastName(),
-                managerEntity.getPassportNumber(),
-                managerEntity.getPhoneNumber(),
-                managerEntity.getPassword());
-    }
-
-    public ManagerEntity managerToEntity(Manager manager){
-
-        return new ManagerEntity(manager.getFirstName(),
-                manager.getLastName(),
-                manager.getPassportNumber(),
-                manager.getPhoneNumber(),
-                manager.getPassword());
-    }
-
-    public List<Manager> entityToManagerList(List<ManagerEntity> managerEntityList){
-        List<Manager> managerList=new ArrayList<>();
-        for (ManagerEntity managerEntity : managerEntityList) {
-            managerList.add(new Manager(managerEntity.getFirstName(),
-                    managerEntity.getLastName(),
-                    managerEntity.getPassportNumber(),
-                    managerEntity.getPhoneNumber(),
-                    managerEntity.getPassword()));
-        }
-        return managerList;
-    }
+//    /**
+//     *
+//     * @param managerEntity
+//     * @return
+//     */
+//    public Manager entityToManager(ManagerEntity managerEntity){
+//
+//        return new Manager(managerEntity.getFirstName(),
+//                managerEntity.getLastName(),
+//                managerEntity.getPassportNumber(),
+//                managerEntity.getPhoneNumber(),
+//                managerEntity.getPassword());
+//    }
+//
+//    public ManagerEntity managerToEntity(Manager manager){
+//
+//        return new ManagerEntity(manager.getFirstName(),
+//                manager.getLastName(),
+//                manager.getPassportNumber(),
+//                manager.getPhoneNumber(),
+//                manager.getPassword());
+//    }
+//
+//    public List<Manager> entityToManagerList(List<ManagerEntity> managerEntityList){
+//        List<Manager> managerList=new ArrayList<>();
+//        for (ManagerEntity managerEntity : managerEntityList) {
+//            managerList.add(new Manager(managerEntity.getFirstName(),
+//                    managerEntity.getLastName(),
+//                    managerEntity.getPassportNumber(),
+//                    managerEntity.getPhoneNumber(),
+//                    managerEntity.getPassword()));
+//        }
+//        return managerList;
+//    }
     /**
      *
      * @param restaurantEntity
@@ -161,7 +158,7 @@ public class Converter {
         return new Restaurant(restaurantEntity.getName(),
                 restaurantEntity.getTin(),
                 restaurantEntity.getAddress().getId(),
-                restaurantEntity.getManager().getId(),
+                restaurantEntity.getUser().getId(),
                 restaurantEntity.getFoundDate(),
                 restaurantEntity.getRegistrationDate(),
                 restaurantEntity.getPhoneNumber(),
@@ -171,7 +168,7 @@ public class Converter {
     public RestaurantEntity restaurantToEntity(Restaurant restaurant){
         RestaurantEntity restaurantEntity = new RestaurantEntity();
         restaurantEntity.setAddress(addressRepository.findAddressEntityById(restaurant.getAddressId()));
-        restaurantEntity.setManager(managerRepository.findManagerEntityById(restaurant.getManagerId()));
+        restaurantEntity.setUser(userRepository.findUserEntityById(restaurant.getManagerId()));
         restaurantEntity.setName(restaurant.getName());
         restaurantEntity.setTin(restaurant.getTin());
         restaurantEntity.setFoundDate(restaurant.getFoundDate());
@@ -189,7 +186,7 @@ public class Converter {
                     new Restaurant(restaurantEntity.getName(),
                             restaurantEntity.getTin(),
                             restaurantEntity.getAddress().getId(),
-                            restaurantEntity.getManager().getId(),
+                            restaurantEntity.getUser().getId(),
                             restaurantEntity.getFoundDate(),
                             restaurantEntity.getRegistrationDate(),
                             restaurantEntity.getPhoneNumber(),
@@ -212,7 +209,9 @@ public class Converter {
                 userEntity.getBirthday(),
                 userEntity.getPhoneNumber(),
                 userEntity.getPassword(),
-                userEntity.getEmail());
+                userEntity.getEmail(),
+                userEntity.getPassportNumber(),
+                userEntity.getRole());
     }
 
     public UserEntity userToEntity(User user){
@@ -222,7 +221,9 @@ public class Converter {
                 user.getBirthday(),
                 user.getPhoneNumber(),
                 user.getPassword(),
-                user.getEmail());
+                user.getEmail(),
+                user.getPassportNumber(),
+                user.getRole());
     }
 
     public List<User> entityToUserList(List<UserEntity> userEntityList){
@@ -234,7 +235,9 @@ public class Converter {
                     userEntity.getBirthday(),
                     userEntity.getPhoneNumber(),
                     userEntity.getPassword(),
-                    userEntity.getEmail()));
+                    userEntity.getEmail(),
+                    userEntity.getPassportNumber(),
+                    userEntity.getRole()));
         }
         return userList;
     }

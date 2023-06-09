@@ -1,6 +1,13 @@
 package com.ordering_system.model.dto;
 
+import com.ordering_system.model.domain.RestaurantEntity;
+import com.ordering_system.model.enumeration.Role;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.OneToMany;
+
 import java.util.Date;
+import java.util.List;
 
 
 public class User  {
@@ -11,9 +18,14 @@ public class User  {
     private String phoneNumber;
     private String password;
     private String email;
+    private String passportNumber;
+    private Role role;
 
-    public User(String firstName, String lastName, long addressId, Date birthday,
-                String phoneNumber, String password, String email) {
+
+   public User(){}
+
+    public User(String firstName, String lastName, long addressId, Date birthday, String phoneNumber,
+                String password, String email, String passportNumber, Role role){
         this.firstName = firstName;
         this.lastName = lastName;
         this.addressId = addressId;
@@ -21,9 +33,10 @@ public class User  {
         this.phoneNumber = phoneNumber;
         this.password = password;
         this.email = email;
-    }
+        this.passportNumber = passportNumber;
+        this.role = role;
 
-    public User(){}
+    }
 
     public String getFirstName() {
         return firstName;
@@ -80,4 +93,21 @@ public class User  {
     public void setEmail(String email) {
         this.email = email;
     }
+
+    public String getPassportNumber() {
+        return passportNumber;
+    }
+
+    public void setPassportNumber(String passportNumber) {
+        this.passportNumber = passportNumber;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
+
 }

@@ -1,6 +1,7 @@
 package com.ordering_system.service.impl;
 
 import com.ordering_system.model.dto.User;
+
 import com.ordering_system.repository.AddressRepository;
 import com.ordering_system.repository.UserRepository;
 import com.ordering_system.service.UserService;
@@ -10,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+
+
 @Service
 public class UserServiceImpl implements UserService {
 

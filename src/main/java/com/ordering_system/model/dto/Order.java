@@ -7,13 +7,23 @@ import java.util.List;
 
 public class Order {
     private double price;
-    private List<Food> foodList;
+    private List<Long> foodId;
     private OrderStatus orderStatus;
+    private String RestaurantName;
 
-    public Order(double price, List<Food> foodList, OrderStatus orderStatus) {
+    public String getRestaurantName() {
+        return RestaurantName;
+    }
+
+    public void setRestaurantName(String restaurantName) {
+        RestaurantName = restaurantName;
+    }
+
+    public Order(double price, List<Long> foodId, OrderStatus orderStatus, String restaurantName) {
         this.price = price;
-        this.foodList = foodList;
+        this.foodId = foodId;
         this.orderStatus = orderStatus;
+        RestaurantName = restaurantName;
     }
     public Order(){}
 
@@ -21,17 +31,19 @@ public class Order {
         return price;
     }
 
+    public List<Long> getFoodId() {
+        return foodId;
+    }
+
+    public void setFoodId(List<Long> foodId) {
+        this.foodId = foodId;
+    }
+
     public void setPrice(double price) {
         this.price = price;
     }
 
-    public List<Food> getFoodList() {
-        return foodList;
-    }
 
-    public void setFoodList(List<Food> foodList) {
-        this.foodList = foodList;
-    }
 
     public OrderStatus getOrderStatus() {
         return orderStatus;

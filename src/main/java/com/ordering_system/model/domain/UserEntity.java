@@ -1,14 +1,21 @@
 package com.ordering_system.model.domain;
 
 import com.ordering_system.model.enumeration.Role;
+
 import jakarta.persistence.*;
 
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
 @Entity
 @Table(name = "users")
-public class UserEntity {
+public class UserEntity implements UserDetails{
+	
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
@@ -42,7 +49,6 @@ public class UserEntity {
         this.email = email;
         this.passportNumber = passportNumber;
         this.role = role;
-
     }
 
     public long getId() {
@@ -92,7 +98,7 @@ public class UserEntity {
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
-
+    
     public String getPassword() {
         return password;
     }
@@ -132,4 +138,40 @@ public class UserEntity {
     public void setRestaurantEntity(List<RestaurantEntity> restaurantEntity) {
         this.restaurantEntity = restaurantEntity;
     }
+
+	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		return List.of(new SimpleGrantedAuthority(role.name()));
+	}
+
+	@Override
+	public String getUsername() {
+		// TODO Auto-generated method stub
+		return email;
+	}
+
+	@Override
+	public boolean isAccountNonExpired() {
+		// TODO Auto-generated method stub
+		return true;
+	}
+
+	@Override
+	public boolean isAccountNonLocked() {
+		// TODO Auto-generated method stub
+		return true;
+	}
+
+	@Override
+	public boolean isCredentialsNonExpired() {
+		// TODO Auto-generated method stub
+		return true;
+	}
+
+	@Override
+	public boolean isEnabled() {
+		// TODO Auto-generated method stub
+		return true;
+	}
+
 }

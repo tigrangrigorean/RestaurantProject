@@ -1,16 +1,12 @@
 package com.ordering_system.model.dto;
 
-import com.ordering_system.model.domain.RestaurantEntity;
+
 import com.ordering_system.model.enumeration.Role;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.OneToMany;
 
 import java.util.Date;
-import java.util.List;
 
 
-public class User  {
+public class User {
     private String firstName;
     private String lastName;
     private long addressId;
@@ -109,5 +105,6 @@ public class User  {
     public void setRole(Role role) {
         this.role = role;
     }
+
 
 }

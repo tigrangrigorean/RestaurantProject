@@ -30,9 +30,6 @@ public class AuthController {
 	@PostMapping("/auth")
 	public String createAuthToken(@RequestBody RequestDto requestDto) {
 		UserDetails userDetails = userService.loadUserByUsername(requestDto.getEmail());
-		System.out.println(userDetails.getUsername());
-		System.out.println(userDetails.getPassword());
-		System.out.println(userDetails.getAuthorities());
 		authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(userDetails.getUsername(),requestDto.getPassword()));
 		String token = jwtTokenUtils.generateToken(userDetails);
 		return token;

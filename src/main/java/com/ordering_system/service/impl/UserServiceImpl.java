@@ -76,10 +76,10 @@ public class UserServiceImpl implements UserService {
         Validator.checkId(user.getAddressId());
         Validator.checkEntity(addressRepository.findAddressEntityById(user.getAddressId()));
         Validator.checkPhoneNumber(user.getPhoneNumber());
-        Validator.checkPassword(user.getPassword());
+//        Validator.checkPassword(user.getPassword());
         user.setPassword(SecurityConfig.passwordEncoder().encode(user.getPassword()));
         Validator.checkEmail(user.getEmail());
-        Validator.checkPassport(user.getPassportNumber());
+//        Validator.checkPassport(user.getPassportNumber());
         userRepository.save(converter.userToEntity(user));
         return user;
     }

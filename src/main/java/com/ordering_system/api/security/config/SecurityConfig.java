@@ -10,7 +10,9 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import com.ordering_system.api.security.token.JwtRequestFilter;
 import com.ordering_system.service.impl.UserServiceImpl;
 
 @Configuration
@@ -18,10 +20,12 @@ import com.ordering_system.service.impl.UserServiceImpl;
 public class SecurityConfig {
 
 	private final UserServiceImpl userService;
+	private final JwtRequestFilter jwtRequestFilter;
 	
 	@Autowired
-	public SecurityConfig(UserServiceImpl userService) {
+	public SecurityConfig(UserServiceImpl userService,JwtRequestFilter jwtRequestFilter) {
 		this.userService = userService;
+		this.jwtRequestFilter = jwtRequestFilter;
 	}
 	
 	@Bean
@@ -30,9 +34,12 @@ public class SecurityConfig {
 		.cors().disable()
 		.csrf().disable()
 			.authorizeHttpRequests((requests) -> requests
-					.anyRequest().permitAll());
+					.anyRequest().permitAll())
+			.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
 		return http.build();
 	}
+	
+	
 	
 	@Bean
 	public DaoAuthenticationProvider daoAuthenticationProvider() {

@@ -1,5 +1,6 @@
 package com.ordering_system.model.domain;
 
+import com.ordering_system.api.security.config.SecurityConfig;
 import com.ordering_system.model.enumeration.Role;
 
 import jakarta.persistence.*;
@@ -21,8 +22,6 @@ public class UserEntity implements UserDetails{
     private long id;
     private String firstName;
     private String lastName;
-    @OneToOne(cascade = CascadeType.REMOVE)
-    private AddressEntity address;
     private Date birthday;
     private String phoneNumber;
     private String password;
@@ -37,12 +36,11 @@ public class UserEntity implements UserDetails{
     public UserEntity() {
     }
 
-    public UserEntity(String firstName, String lastName, AddressEntity address, Date birthday,
+    public UserEntity(String firstName, String lastName, Date birthday,
                       String phoneNumber, String password, String email,
                       String passportNumber, Role role) {
         this.firstName = firstName;
         this.lastName = lastName;
-        this.address = address;
         this.birthday = birthday;
         this.phoneNumber = phoneNumber;
         this.password = password;
@@ -74,15 +72,6 @@ public class UserEntity implements UserDetails{
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
-
-    public AddressEntity getAddress() {
-        return address;
-    }
-
-    public void setAddress(AddressEntity address) {
-        this.address = address;
-    }
-
     public Date getBirthday() {
         return birthday;
     }

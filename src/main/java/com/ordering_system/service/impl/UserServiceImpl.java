@@ -2,6 +2,7 @@ package com.ordering_system.service.impl;
 
 import com.ordering_system.api.security.config.SecurityConfig;
 import com.ordering_system.model.domain.UserEntity;
+import com.ordering_system.model.domain.UserEntity;
 import com.ordering_system.model.dto.User;
 import com.ordering_system.model.exception.EntityAlreadyExsistsException;
 import com.ordering_system.model.exception.EntityNotFoundException;
@@ -16,6 +17,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
 import java.util.List;
@@ -53,6 +55,11 @@ public class UserServiceImpl implements UserService {
 	}
 
     @Override
+    public User getByEmail(String email) {
+        return converter.entityToUser(userRepository.findUserEntityByEmail(email));
+    }
+
+    @Override
     public User getById(long id) {
         Validator.checkId(id);
         Validator.checkEntity(userRepository.findUserEntityById(id));
@@ -73,8 +80,6 @@ public class UserServiceImpl implements UserService {
         Validator.checkEntity(user);
         Validator.checkName(user.getFirstName());
         Validator.checkName(user.getLastName());
-        Validator.checkId(user.getAddressId());
-        Validator.checkEntity(addressRepository.findAddressEntityById(user.getAddressId()));
         Validator.checkPhoneNumber(user.getPhoneNumber());
 //        Validator.checkPassword(user.getPassword());
         user.setPassword(SecurityConfig.passwordEncoder().encode(user.getPassword()));
@@ -86,9 +91,32 @@ public class UserServiceImpl implements UserService {
 
 
 //TODO
+    @Transactional
     @Override
-    public void update(long id, User user) {
+    public void update(String email, User user){
+        UserEntity userEntity= userRepository.findUserEntityByEmail(email);
 
+        Validator.checkEntity(user);
+        Validator.checkEntity(userEntity);
+        if (user.getFirstName() != null) {
+            userEntity.setFirstName(user.getFirstName());
+        }
+        if (user.getLastName() != null) {
+            userEntity.setLastName(user.getLastName());
+        }
+        if(user.getPassword()!=null){
+            userEntity.setPassword(SecurityConfig.passwordEncoder().encode(user.getPassword()));
+        }
+        if (user.getBirthday()!=null) {
+            userEntity.setBirthday(user.getBirthday());
+        }
+        if (user.getPhoneNumber()!= null) {
+            userEntity.setPhoneNumber(user.getPhoneNumber());
+        }
+        if (user.getRole() != null) {
+            userEntity.setRole(user.getRole());
+        }
+        userRepository.save(userEntity);
     }
 
     @Override
@@ -98,7 +126,4 @@ public class UserServiceImpl implements UserService {
             userRepository.deleteById(id);
         }
     }
-    
-
-
 }

@@ -205,7 +205,6 @@ public class Converter {
     public User entityToUser(UserEntity userEntity){
         return new User(userEntity.getFirstName(),
                 userEntity.getLastName(),
-                userEntity.getAddress().getId(),
                 userEntity.getBirthday(),
                 userEntity.getPhoneNumber(),
                 userEntity.getPassword(),
@@ -217,7 +216,6 @@ public class Converter {
     public UserEntity userToEntity(User user){
         return new UserEntity(user.getFirstName(),
                 user.getLastName(),
-                addressRepository.findAddressEntityById(user.getAddressId()),
                 user.getBirthday(),
                 user.getPhoneNumber(),
                 user.getPassword(),
@@ -231,7 +229,6 @@ public class Converter {
         for (UserEntity userEntity : userEntityList) {
             userList.add( new User(userEntity.getFirstName(),
                     userEntity.getLastName(),
-                    userEntity.getAddress().getId(),
                     userEntity.getBirthday(),
                     userEntity.getPhoneNumber(),
                     userEntity.getPassword(),

@@ -37,9 +37,9 @@ public class UserController {
     }
 
     @PutMapping("/update")
-    public ResponseEntity<String> updateUserById(@RequestParam long id, @RequestBody User user) {
-        userServiceImpl.update(id, user);
-        return ResponseEntity.ok().body("User by " + id + " updated successfully");
+    public ResponseEntity<String> updateUserById(@RequestParam String email, @RequestBody User user) {
+        userServiceImpl.update(email, user);
+        return ResponseEntity.ok().body("User by " + email + " updated successfully");
     }
 
     @DeleteMapping("/delete")

@@ -34,6 +34,10 @@ public class SecurityConfig {
 		.cors().disable()
 		.csrf().disable()
 			.authorizeHttpRequests((requests) -> requests
+					.requestMatchers("/admin").hasAuthority("ADMIN")
+					.requestMatchers("/food/**").hasAuthority("USER")
+					.requestMatchers("/restaurant/**").authenticated()
+					.requestMatchers("/restaurant").authenticated()
 					.anyRequest().permitAll())
 			.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
 		return http.build();

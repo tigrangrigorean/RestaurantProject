@@ -4,8 +4,12 @@ import java.util.List;
 
 import com.ordering_system.model.dto.Restaurant;
 import com.ordering_system.service.impl.RestaurantServiceImpl;
+
+import jakarta.annotation.security.RolesAllowed;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController

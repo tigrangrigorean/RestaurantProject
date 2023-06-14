@@ -12,12 +12,15 @@ public class OrderEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+
+    private long userId;
     private double price;
     @ManyToMany
     private List<FoodEntity> foodList;
     @Enumerated(EnumType.STRING)
     private OrderStatus orderStatus;
     private String restaurantName;
+
 
     public OrderEntity(long id, double price, List<FoodEntity> foodList,
                        OrderStatus orderStatus, String restaurantName) {

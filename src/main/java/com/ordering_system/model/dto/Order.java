@@ -31,11 +31,11 @@ public class Order {
         return price;
     }
 
-    public List<Long> getFoodId() {
+    public List<Long> getFoodIdList() {
         return foodId;
     }
 
-    public void setFoodId(List<Long> foodId) {
+    public void setFoodIdList(List<Long> foodId) {
         this.foodId = foodId;
     }
 

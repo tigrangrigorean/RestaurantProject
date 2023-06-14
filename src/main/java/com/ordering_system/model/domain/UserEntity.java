@@ -1,6 +1,5 @@
 package com.ordering_system.model.domain;
 
-import com.ordering_system.api.security.config.SecurityConfig;
 import com.ordering_system.model.enumeration.Role;
 
 import jakarta.persistence.*;
@@ -31,6 +30,7 @@ public class UserEntity implements UserDetails{
     private Role role;
     @OneToMany(mappedBy = "user")
     private List<RestaurantEntity> restaurantEntity;
+
 
 
     public UserEntity() {
@@ -135,31 +135,26 @@ public class UserEntity implements UserDetails{
 
 	@Override
 	public String getUsername() {
-		// TODO Auto-generated method stub
 		return email;
 	}
 
 	@Override
 	public boolean isAccountNonExpired() {
-		// TODO Auto-generated method stub
 		return true;
 	}
 
 	@Override
 	public boolean isAccountNonLocked() {
-		// TODO Auto-generated method stub
 		return true;
 	}
 
 	@Override
 	public boolean isCredentialsNonExpired() {
-		// TODO Auto-generated method stub
 		return true;
 	}
 
 	@Override
 	public boolean isEnabled() {
-		// TODO Auto-generated method stub
 		return true;
 	}
 

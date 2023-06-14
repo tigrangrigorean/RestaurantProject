@@ -1,5 +1,7 @@
 package com.ordering_system.api.controller;
 
+import com.ordering_system.model.dto.Food;
+import com.ordering_system.model.dto.FoodDto;
 import com.ordering_system.model.dto.Order;
 import com.ordering_system.service.impl.OrderServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,8 +33,8 @@ public class OrderController {
 
 
     @PostMapping("/save")
-    public ResponseEntity<Order> saveOrder(@RequestBody Order order) {
-        return ResponseEntity.ok().body(orderServiceImpl.save(order));
+    public ResponseEntity<Order> saveOrder(@RequestBody List<FoodDto> foodDtoList) {
+        return ResponseEntity.ok().body(orderServiceImpl.save(foodDtoList));
     }
 
     @PutMapping("/update")

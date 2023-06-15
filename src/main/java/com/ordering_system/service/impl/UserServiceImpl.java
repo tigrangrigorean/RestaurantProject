@@ -116,6 +116,9 @@ public class UserServiceImpl implements UserService {
         if (user.getRole() != null) {
             userEntity.setRole(user.getRole());
         }
+        if (user.getBalance() >= 0) {
+        	userEntity.setBalance(user.getBalance());
+        }
         userRepository.save(userEntity);
     }
 

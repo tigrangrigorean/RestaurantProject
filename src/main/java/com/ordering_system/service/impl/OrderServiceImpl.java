@@ -1,8 +1,12 @@
 package com.ordering_system.service.impl;
 
 import com.ordering_system.model.domain.OrderEntity;
+import com.ordering_system.model.domain.RestaurantEntity;
+import com.ordering_system.model.domain.UserEntity;
 import com.ordering_system.model.dto.FoodDto;
 import com.ordering_system.model.dto.Order;
+import com.ordering_system.model.dto.Restaurant;
+import com.ordering_system.model.dto.User;
 import com.ordering_system.model.enumeration.OrderStatus;
 import com.ordering_system.repository.FoodRepository;
 import com.ordering_system.repository.OrderRepository;
@@ -30,16 +34,23 @@ public class OrderServiceImpl implements OrderService {
     private final FoodRepository foodRepository;
     private final UserRepository userRepository;
     private final RestaurantRepository restaurantRepository;
+    private final UserServiceImpl userService;
+    private final RestaurantServiceImpl restaurantService;
     private final GetMail getMail;
 
     @Autowired
-    public OrderServiceImpl(Converter converter, OrderRepository orderRepository, FoodRepository foodRepository, UserRepository userRepository, RestaurantRepository restaurantRepository, GetMail getMail) {
+    public OrderServiceImpl(Converter converter, OrderRepository orderRepository,
+    		FoodRepository foodRepository, UserRepository userRepository,
+    		RestaurantRepository restaurantRepository, GetMail getMail,
+    		UserServiceImpl userService,RestaurantServiceImpl restaurantService) {
         this.converter = converter;
         this.orderRepository = orderRepository;
         this.foodRepository = foodRepository;
         this.userRepository = userRepository;
         this.restaurantRepository = restaurantRepository;
         this.getMail = getMail;
+        this.userService = userService;
+        this.restaurantService = restaurantService;
     }
 
     @Override
@@ -110,6 +121,24 @@ public class OrderServiceImpl implements OrderService {
             return 10;
         }
         return 0;
+    }
+    
+    public boolean doPayment(Order order) {
+    	
+    	UserEntity userEntity = userRepository.findUserEntityById(order.getUserId());
+    	RestaurantEntity restaurantEntity = restaurantRepository.findRestaurantEntityByName(order.getRestaurantName());
+    	
+    	double userBalance = userRepository.findUserEntityById(order.getUserId()).getBalance();
+    	double restaurantBalance = restaurantRepository.findRestaurantEntityByName(order.getRestaurantName()).getBalance();
+    	
+    	User user = converter.entityToUser(userEntity);
+    	Restaurant restaurant = converter.entityToRestaurant(restaurantEntity);
+    	
+    	user.setBalance(userBalance - order.getPrice());
+    	restaurant.setBalance(restaurantBalance + order.getPrice());
+    	userService.update(userEntity.getEmail(), user);
+    	restaurantService.update(restaurantEntity.getId(), restaurant);
+		return true;
     }
 
 }

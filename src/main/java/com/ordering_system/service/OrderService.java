@@ -13,4 +13,5 @@ public interface OrderService {
     Order save(List<FoodDto> foodDtoList);
     void update(long id, Order order);
     void delete(long id);
+    public double getDiscount(long userId);
 }

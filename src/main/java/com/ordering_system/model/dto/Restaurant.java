@@ -13,11 +13,13 @@ public class Restaurant {
     private Date registrationDate;
     private String phoneNumber;
     private String email;
+    private double balance;
 
     public Restaurant() {
     }
 
-    public Restaurant(String name, String tin, long addressId, long managerId, Date foundDate, Date registrationDate, String phoneNumber, String email) {
+    public Restaurant(String name, String tin, long addressId, long managerId, Date foundDate, Date registrationDate,
+    		String phoneNumber, String email, double balance) {
         this.name = name;
         this.tin = tin;
         this.addressId = addressId;
@@ -26,6 +28,7 @@ public class Restaurant {
         this.registrationDate = registrationDate;
         this.phoneNumber = phoneNumber;
         this.email = email;
+        this.balance = balance;
     }
 
     public String getName() {
@@ -91,4 +94,18 @@ public class Restaurant {
     public void setEmail(String email) {
         this.email = email;
     }
+
+	/**
+	 * @return the balance
+	 */
+	public double getBalance() {
+		return balance;
+	}
+
+	/**
+	 * @param balance the balance to set
+	 */
+	public void setBalance(double balance) {
+		this.balance = balance;
+	}
 }

@@ -22,17 +22,20 @@ public class RestaurantEntity {
     private AddressEntity address;
     @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.PERSIST})
     @JoinColumn(name = "user_id")
-
     private UserEntity user;
     private Date foundDate;
     private Date registrationDate;
     private String phoneNumber;
     private String email;
+    private double balance;
 
     public RestaurantEntity() {
     }
 
-    public RestaurantEntity( String name, String tin, List<FoodEntity> foodEntityList, AddressEntity address, UserEntity user, Date foundDate, Date registrationDate, String phoneNumber, String email) {
+    public RestaurantEntity( String name, String tin, List<FoodEntity> foodEntityList, AddressEntity address,
+    		UserEntity user, Date foundDate,
+    		Date registrationDate, String phoneNumber,
+    		String email, double balance) {
         this.name = name;
         this.tin = tin;
         this.foodEntityList = foodEntityList;
@@ -42,6 +45,7 @@ public class RestaurantEntity {
         this.registrationDate = registrationDate;
         this.phoneNumber = phoneNumber;
         this.email = email;
+        this.balance = balance;
     }
 
     public long getId() {
@@ -123,4 +127,18 @@ public class RestaurantEntity {
     public void setEmail(String email) {
         this.email = email;
     }
+
+	/**
+	 * @return the balance
+	 */
+	public double getBalance() {
+		return balance;
+	}
+
+	/**
+	 * @param balance the balance to set
+	 */
+	public void setBalance(double balance) {
+		this.balance = balance;
+	}
 }

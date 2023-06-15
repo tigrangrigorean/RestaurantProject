@@ -84,6 +84,7 @@ public class OrderServiceImpl implements OrderService {
         order.setFoodIdList(foodListIds);
         order.setDate(LocalDate.now());
         orderRepository.save(converter.orderToEntity(order));
+        doPay(order);
         return order;
     }
 
@@ -123,7 +124,7 @@ public class OrderServiceImpl implements OrderService {
         return 0;
     }
     
-    public boolean doPayment(Order order) {
+    public void doPay(Order order) {
     	
     	UserEntity userEntity = userRepository.findUserEntityById(order.getUserId());
     	RestaurantEntity restaurantEntity = restaurantRepository.findRestaurantEntityByName(order.getRestaurantName());
@@ -138,7 +139,6 @@ public class OrderServiceImpl implements OrderService {
     	restaurant.setBalance(restaurantBalance + order.getPrice());
     	userService.update(userEntity.getEmail(), user);
     	restaurantService.update(restaurantEntity.getId(), restaurant);
-		return true;
     }
 
 }

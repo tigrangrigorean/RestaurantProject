@@ -13,7 +13,6 @@ import java.util.List;
 @Component
 public class Converter {
 
-    private final ModelMapper modelMapper;
     private final FoodRepository foodRepository;
     private final AddressRepository addressRepository;
     private final UserRepository userRepository;
@@ -25,7 +24,6 @@ public class Converter {
                      AddressRepository addressRepository,
                      UserRepository userRepository,
                      RestaurantRepository restaurantRepository) {
-        this.modelMapper = modelMapper;
         this.foodRepository = foodRepository;
         this.addressRepository = addressRepository;
         this.userRepository = userRepository;
@@ -108,7 +106,8 @@ public class Converter {
                 restaurantEntity.getFoundDate(),
                 restaurantEntity.getRegistrationDate(),
                 restaurantEntity.getPhoneNumber(),
-                restaurantEntity.getEmail());
+                restaurantEntity.getEmail(),
+                restaurantEntity.getBalance());
     }
 
     public RestaurantEntity restaurantToEntity(Restaurant restaurant) {
@@ -136,7 +135,8 @@ public class Converter {
                             restaurantEntity.getFoundDate(),
                             restaurantEntity.getRegistrationDate(),
                             restaurantEntity.getPhoneNumber(),
-                            restaurantEntity.getEmail())
+                            restaurantEntity.getEmail(),
+                            restaurantEntity.getBalance())
             );
         }
 
@@ -155,7 +155,8 @@ public class Converter {
                 userEntity.getPassword(),
                 userEntity.getEmail(),
                 userEntity.getPassportNumber(),
-                userEntity.getRole());
+                userEntity.getRole(),
+                userEntity.getBalance());
     }
 
     public UserEntity userToEntity(User user) {
@@ -166,7 +167,8 @@ public class Converter {
                 user.getPassword(),
                 user.getEmail(),
                 user.getPassportNumber(),
-                user.getRole());
+                user.getRole(),
+        		user.getBalance());
     }
 
     public List<User> entityToUserList(List<UserEntity> userEntityList) {
@@ -179,7 +181,8 @@ public class Converter {
                     userEntity.getPassword(),
                     userEntity.getEmail(),
                     userEntity.getPassportNumber(),
-                    userEntity.getRole()));
+                    userEntity.getRole(),
+                    userEntity.getBalance()));
         }
         return userList;
     }

@@ -198,6 +198,7 @@ public class Converter {
         order.setPrice(orderEntity.getPrice());
         order.setRestaurantName(orderEntity.getRestaurantName());
         order.setOrderStatus(orderEntity.getOrderStatus());
+        order.setDate(orderEntity.getDate());
         return order;
     }
 
@@ -207,10 +208,12 @@ public class Converter {
         for (int i = 0; i < order.getFoodIdList().size(); i++) {
             foodEntityList.add(foodRepository.findFoodEntityById(order.getFoodIdList().get(i)));
         }
+        orderEntity.setUserId(order.getUserId());
         orderEntity.setFoodList(foodEntityList);
         orderEntity.setPrice(order.getPrice());
         orderEntity.setRestaurantName(order.getRestaurantName());
         orderEntity.setOrderStatus(order.getOrderStatus());
+        orderEntity.setDate(order.getDate());
         return orderEntity;
     }
 
@@ -224,7 +227,9 @@ public class Converter {
             orderList.add(new Order(orderEntity.getPrice(),
                     foodIds,
                     orderEntity.getOrderStatus(),
-                    orderEntity.getRestaurantName()));
+                    orderEntity.getRestaurantName(),
+                    orderEntity.getUserId(),
+                    orderEntity.getDate()));
         }
         return orderList;
     }

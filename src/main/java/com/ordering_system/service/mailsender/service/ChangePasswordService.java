@@ -1,8 +1,8 @@
-package com.ordering_system.api.mailsender.service;
+package com.ordering_system.service.mailsender.service;
 
-import com.ordering_system.api.mailsender.model.ChangePassword;
-import com.ordering_system.api.mailsender.pingenerator.PinGenerator;
-import com.ordering_system.api.mailsender.repository.ChangePasswordRepository;
+import com.ordering_system.service.mailsender.model.ChangePassword;
+import com.ordering_system.service.mailsender.pingenerator.PinGenerator;
+import com.ordering_system.service.mailsender.repository.ChangePasswordRepository;
 import com.ordering_system.model.domain.UserEntity;
 import com.ordering_system.repository.UserRepository;
 import com.ordering_system.service.converter.Converter;

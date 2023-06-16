@@ -18,14 +18,10 @@ import com.ordering_system.service.converter.Converter;
 import com.ordering_system.service.validator.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.ordering_system.api.security.GetMail;
+import com.ordering_system.service.mailsender.GetMail;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @Service
@@ -105,6 +101,7 @@ public class OrderServiceImpl implements OrderService {
     public void delete(long id) {
         Validator.checkId(id);
         if (Validator.checkEntity(orderRepository.findOrderEntityById(id))) {
+            orderRepository.deleteByCondition(id);
             orderRepository.deleteById(id);
         }
     }

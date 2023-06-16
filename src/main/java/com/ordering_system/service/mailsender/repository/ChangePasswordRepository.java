@@ -1,6 +1,6 @@
-package com.ordering_system.api.mailsender.repository;
+package com.ordering_system.service.mailsender.repository;
 
-import com.ordering_system.api.mailsender.model.ChangePassword;
+import com.ordering_system.service.mailsender.model.ChangePassword;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

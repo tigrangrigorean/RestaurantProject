@@ -1,4 +1,4 @@
-package com.ordering_system.api.mailsender.pingenerator;
+package com.ordering_system.service.mailsender.pingenerator;
 
 import org.springframework.stereotype.Component;
 

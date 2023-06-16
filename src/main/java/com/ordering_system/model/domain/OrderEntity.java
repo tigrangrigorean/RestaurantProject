@@ -3,6 +3,7 @@ package com.ordering_system.model.domain;
 
 import com.ordering_system.model.enumeration.OrderStatus;
 import jakarta.persistence.*;
+import org.hibernate.engine.internal.Cascade;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -13,10 +14,9 @@ public class OrderEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-
     private long userId;
     private double price;
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.REMOVE)
     private List<FoodEntity> foodList;
     @Enumerated(EnumType.STRING)
     private OrderStatus orderStatus;

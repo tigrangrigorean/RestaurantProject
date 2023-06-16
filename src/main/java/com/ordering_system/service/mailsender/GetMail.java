@@ -1,4 +1,4 @@
-package com.ordering_system.api.security;
+package com.ordering_system.service.mailsender;
 
 import org.springframework.stereotype.Component;
 

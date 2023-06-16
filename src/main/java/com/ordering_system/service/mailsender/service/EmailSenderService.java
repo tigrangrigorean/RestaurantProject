@@ -1,4 +1,4 @@
-package com.ordering_system.api.mailsender.service;
+package com.ordering_system.service.mailsender.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;

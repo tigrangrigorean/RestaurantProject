@@ -1,6 +1,6 @@
-package com.ordering_system.api.mailsender.controller;
+package com.ordering_system.api.controller.mailsender;
 
-import com.ordering_system.api.mailsender.service.ChangePasswordService;
+import com.ordering_system.service.mailsender.service.ChangePasswordService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

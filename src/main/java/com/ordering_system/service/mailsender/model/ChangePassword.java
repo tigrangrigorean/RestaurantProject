@@ -1,4 +1,4 @@
-package com.ordering_system.api.mailsender.model;
+package com.ordering_system.service.mailsender.model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

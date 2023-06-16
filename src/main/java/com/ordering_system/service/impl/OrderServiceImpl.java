@@ -8,6 +8,7 @@ import com.ordering_system.model.dto.Order;
 import com.ordering_system.model.dto.Restaurant;
 import com.ordering_system.model.dto.User;
 import com.ordering_system.model.enumeration.OrderStatus;
+import com.ordering_system.model.exception.NoEnoughMoneyException;
 import com.ordering_system.repository.FoodRepository;
 import com.ordering_system.repository.OrderRepository;
 import com.ordering_system.repository.RestaurantRepository;
@@ -134,7 +135,9 @@ public class OrderServiceImpl implements OrderService {
     	
     	User user = converter.entityToUser(userEntity);
     	Restaurant restaurant = converter.entityToRestaurant(restaurantEntity);
-    	
+    	if(user.getBalance() < order.getPrice()) {
+    		throw new NoEnoughMoneyException("User does not have enough money");
+    	}
     	user.setBalance(userBalance - order.getPrice());
     	restaurant.setBalance(restaurantBalance + order.getPrice());
     	userService.update(userEntity.getEmail(), user);

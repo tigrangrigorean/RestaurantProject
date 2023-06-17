@@ -3,6 +3,7 @@ package com.ordering_system.service.converter;
 import com.ordering_system.model.domain.*;
 import com.ordering_system.model.dto.*;
 import com.ordering_system.repository.*;
+import com.ordering_system.service.validator.Validator;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -159,7 +160,7 @@ public class Converter {
                 userEntity.getEmail(),
                 userEntity.getPassportNumber(),
                 userEntity.getRole(),
-                userEntity.getBalance());
+                userEntity.getCardNumber());
     }
 
     public UserEntity userToEntity(User user) {
@@ -171,7 +172,7 @@ public class Converter {
                 user.getEmail(),
                 user.getPassportNumber(),
                 user.getRole(),
-        		user.getBalance());
+        		user.getCardNumber());
     }
 
     public List<User> entityToUserList(List<UserEntity> userEntityList) {
@@ -185,7 +186,7 @@ public class Converter {
                     userEntity.getEmail(),
                     userEntity.getPassportNumber(),
                     userEntity.getRole(),
-                    userEntity.getBalance()));
+                    userEntity.getCardNumber()));
         }
         return userList;
     }
@@ -201,10 +202,13 @@ public class Converter {
             foodIds.add(foodEntity.getId());
         }
         order.setFoodIdList(foodIds);
-        order.setPrice(orderEntity.getPrice());
+        order.setPrice(orderEntity.getTotalPrice());
         order.setRestaurantName(orderEntity.getRestaurantName());
         order.setOrderStatus(orderEntity.getOrderStatus());
         order.setDate(orderEntity.getDate());
+        order.setDiscount(orderEntity.getDiscount());
+        order.setDeliveryCost(orderEntity.getDeliveryCost());
+        order.setDiscountedPrice(orderEntity.getDiscountedPrice());
         return order;
     }
 
@@ -216,10 +220,14 @@ public class Converter {
         }
         orderEntity.setUserId(order.getUserId());
         orderEntity.setFoodList(foodEntityList);
-        orderEntity.setPrice(order.getPrice());
+        orderEntity.setTotalPrice(order.getPrice());
         orderEntity.setRestaurantName(order.getRestaurantName());
         orderEntity.setOrderStatus(order.getOrderStatus());
         orderEntity.setDate(order.getDate());
+        orderEntity.setAddressToDelivery(order.getAddressToDelivery().toString());
+        orderEntity.setDiscount(order.getDiscount());
+        orderEntity.setDeliveryCost(order.getDeliveryCost());
+        orderEntity.setDiscountedPrice(order.getDiscountedPrice());
         return orderEntity;
     }
 
@@ -230,7 +238,7 @@ public class Converter {
             for (FoodEntity foodEntity : orderEntity.getFoodList()) {
                 foodIds.add(foodEntity.getId());
             }
-            orderList.add(new Order(orderEntity.getPrice(),
+            orderList.add(new Order(orderEntity.getTotalPrice(),orderEntity.getDiscount(),orderEntity.getDiscountedPrice(),orderEntity.getDeliveryCost(),
                     foodIds,
                     orderEntity.getOrderStatus(),
                     orderEntity.getRestaurantName(),

@@ -1,5 +1,6 @@
 package com.ordering_system.api.controller;
 
+import com.ordering_system.model.dto.Address;
 import com.ordering_system.model.dto.FoodDto;
 import com.ordering_system.model.dto.Order;
 import com.ordering_system.service.impl.OrderServiceImpl;
@@ -32,8 +33,8 @@ public class OrderController {
 
 
     @PostMapping("/save")
-    public ResponseEntity<Order> saveOrder(@RequestBody List<FoodDto> foodDtoList) {
-        return ResponseEntity.ok().body(orderServiceImpl.save(foodDtoList));
+    public ResponseEntity<Order> saveOrder(@RequestBody List<FoodDto> foodDtoList, Address address) {
+        return ResponseEntity.ok().body(orderServiceImpl.save(foodDtoList,address));
     }
 
     @PutMapping("/update")

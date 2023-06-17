@@ -1,6 +1,8 @@
 package com.ordering_system.model.dto;
 
 
+import com.ordering_system.model.exception.IncorrectAddressException;
+
 public class Address {
 
 
@@ -49,5 +51,20 @@ public class Address {
 
     public void setApartment(String apartment) {
         this.apartment = apartment;
+    }
+
+    @Override
+    public String toString() {
+        if(street==null||building==null){
+            throw new IncorrectAddressException("Incorrect address: exp 48 Ave. Mashtots, 2/1");
+        }
+        String address;
+        address = building+" "+street+" Str.,";
+        if(apartment!=null){
+            address+=apartment+" ,";
+        }
+        address +=" Yerevan, RA";
+
+        return address;
     }
 }

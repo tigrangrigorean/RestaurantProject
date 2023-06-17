@@ -17,17 +17,20 @@ public class Converter {
     private final AddressRepository addressRepository;
     private final UserRepository userRepository;
     private final RestaurantRepository restaurantRepository;
+    private final OrderRepository orderRepository;
 
     @Autowired
     public Converter(ModelMapper modelMapper,
                      FoodRepository foodRepository,
                      AddressRepository addressRepository,
                      UserRepository userRepository,
-                     RestaurantRepository restaurantRepository) {
+                     RestaurantRepository restaurantRepository,
+                     OrderRepository orderRepository) {
         this.foodRepository = foodRepository;
         this.addressRepository = addressRepository;
         this.userRepository = userRepository;
         this.restaurantRepository = restaurantRepository;
+        this.orderRepository = orderRepository;
     }
 
     /**
@@ -236,6 +239,21 @@ public class Converter {
         }
         return orderList;
     }
+    
+    public Deliver entityToDeliver(DeliverEntity deliverEntity) {
+    	Deliver deliver = new Deliver();
+    	deliver.setUserId(deliverEntity.getUserEntity().getId());
+    	deliver.setOrderId(deliverEntity.getOrderEntity().getId());
+    	return deliver;
+    }
+    
+    public DeliverEntity deliverToEntity(Deliver deliver) {
+    	DeliverEntity deliverEntity = new DeliverEntity();
+    	deliverEntity.setUserEntity(userRepository.findUserEntityById(deliver.getUserId()));
+    	deliverEntity.setOrderEntity(orderRepository.findOrderEntityById(deliver.getOrderId()));
+    	return deliverEntity;
+    }
+    
 
 
 }

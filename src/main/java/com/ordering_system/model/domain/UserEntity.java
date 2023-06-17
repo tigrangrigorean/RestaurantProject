@@ -30,7 +30,7 @@ public class UserEntity implements UserDetails{
     private Role role;
     @OneToMany(mappedBy = "user")
     private List<RestaurantEntity> restaurantEntity;
-    private double balance;
+    private String cardNumber;
 
 
 
@@ -40,7 +40,7 @@ public class UserEntity implements UserDetails{
 
     public UserEntity(String firstName, String lastName, Date birthday,
                       String phoneNumber, String password, String email,
-                      String passportNumber, Role role, double balance) {
+                      String passportNumber, Role role, String cardNumber) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.birthday = birthday;
@@ -49,7 +49,7 @@ public class UserEntity implements UserDetails{
         this.email = email;
         this.passportNumber = passportNumber;
         this.role = role;
-        this.balance = balance;
+        this.cardNumber = cardNumber;
     }
 
     public long getId() {
@@ -161,18 +161,11 @@ public class UserEntity implements UserDetails{
 		return true;
 	}
 
-	/**
-	 * @return the balance
-	 */
-	public double getBalance() {
-		return balance;
-	}
+    public String getCardNumber() {
+        return cardNumber;
+    }
 
-	/**
-	 * @param balance the balance to set
-	 */
-	public void setBalance(double balance) {
-		this.balance = balance;
-	}
-
+    public void setCardNumber(String cardNumber) {
+        this.cardNumber = cardNumber;
+    }
 }

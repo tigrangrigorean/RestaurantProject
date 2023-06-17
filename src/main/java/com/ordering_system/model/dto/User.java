@@ -15,13 +15,13 @@ public class User {
     private String email;
     private String passportNumber;
     private Role role;
-    private double balance;
+    private String cardNumber;
 
 
    public User(){}
 
     public User(String firstName, String lastName,  Date birthday, String phoneNumber,
-                String password, String email, String passportNumber, Role role,double balance){
+                String password, String email, String passportNumber, Role role,String cardNumber){
         this.firstName = firstName;
         this.lastName = lastName;
         this.birthday = birthday;
@@ -30,7 +30,7 @@ public class User {
         this.email = email;
         this.passportNumber = passportNumber;
         this.role = role;
-        this.balance = balance;
+        this.cardNumber = cardNumber;
 
     }
 
@@ -98,19 +98,11 @@ public class User {
         this.role = role;
     }
 
-	/**
-	 * @return the balance
-	 */
-	public double getBalance() {
-		return balance;
-	}
+    public String getCardNumber() {
+        return cardNumber;
+    }
 
-	/**
-	 * @param balance the balance to set
-	 */
-	public void setBalance(double balance) {
-		this.balance = balance;
-	}
-
-
+    public void setCardNumber(String cardNumber) {
+        this.cardNumber = cardNumber;
+    }
 }

@@ -21,8 +21,6 @@ public class ScheduledTasks {
     public void deleteOldData(){
         LocalDate date=LocalDate.now().minusDays(30);
         List<OrderEntity> orderEntity=orderRepository.findAllByDateBefore(date);
-        System.out.println(orderEntity.size());
-//        System.out.println(orderEntity.get(0).getDate());
         for (OrderEntity order : orderEntity) {
             orderRepository.deleteByCondition(order.getId());
         }

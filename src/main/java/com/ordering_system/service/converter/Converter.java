@@ -3,7 +3,6 @@ package com.ordering_system.service.converter;
 import com.ordering_system.model.domain.*;
 import com.ordering_system.model.dto.*;
 import com.ordering_system.repository.*;
-import com.ordering_system.service.validator.Validator;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -198,7 +197,8 @@ public class Converter {
     public Order entityToOrder(OrderEntity orderEntity) {
         Order order = new Order();
         List<Long> foodIds = new ArrayList<>();
-        for (FoodEntity foodEntity : orderEntity.getFoodList()) {
+        List<FoodEntity> foodEntityList=orderEntity.getFoodList();
+        for (FoodEntity foodEntity : foodEntityList) {
             foodIds.add(foodEntity.getId());
         }
         order.setFoodIdList(foodIds);
@@ -248,18 +248,18 @@ public class Converter {
         return orderList;
     }
     
-    public Deliver entityToDeliver(DeliverEntity deliverEntity) {
-    	Deliver deliver = new Deliver();
-    	deliver.setUserId(deliverEntity.getUserEntity().getId());
-    	deliver.setOrderId(deliverEntity.getOrderEntity().getId());
-    	return deliver;
+    public Delivery entityToDeliver(DeliveryEntity deliveryEntity) {
+    	Delivery delivery = new Delivery();
+    	delivery.setUserId(deliveryEntity.getUserId());
+    	delivery.setOrderId(deliveryEntity.getOrderId());
+    	return delivery;
     }
     
-    public DeliverEntity deliverToEntity(Deliver deliver) {
-    	DeliverEntity deliverEntity = new DeliverEntity();
-    	deliverEntity.setUserEntity(userRepository.findUserEntityById(deliver.getUserId()));
-    	deliverEntity.setOrderEntity(orderRepository.findOrderEntityById(deliver.getOrderId()));
-    	return deliverEntity;
+    public DeliveryEntity deliverToEntity(Delivery delivery) {
+    	DeliveryEntity deliveryEntity = new DeliveryEntity();
+    	deliveryEntity.setUserId(delivery.getUserId());
+    	deliveryEntity.setOrderId(delivery.getOrderId());
+    	return deliveryEntity;
     }
     
 

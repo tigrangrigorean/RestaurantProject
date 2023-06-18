@@ -1,11 +1,11 @@
 package com.ordering_system.model.dto;
 
-public class Deliver {
+public class Delivery {
 	
 	private long userId;
 	private long orderId;
 	
-	public Deliver() {
+	public Delivery() {
 		
 	}
 
@@ -13,7 +13,7 @@ public class Deliver {
 	 * @param userId
 	 * @param orderId
 	 */
-	public Deliver(long userId, long orderId) {
+	public Delivery(long userId, long orderId) {
 		super();
 		this.userId = userId;
 		this.orderId = orderId;

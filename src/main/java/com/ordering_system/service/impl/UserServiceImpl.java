@@ -2,7 +2,6 @@ package com.ordering_system.service.impl;
 
 import com.ordering_system.api.security.config.SecurityConfig;
 import com.ordering_system.model.domain.UserEntity;
-import com.ordering_system.model.domain.UserEntity;
 import com.ordering_system.model.dto.User;
 import com.ordering_system.model.exception.EntityAlreadyExsistsException;
 import com.ordering_system.model.exception.EntityNotFoundException;
@@ -10,6 +9,8 @@ import com.ordering_system.repository.AddressRepository;
 import com.ordering_system.repository.UserRepository;
 import com.ordering_system.service.UserService;
 import com.ordering_system.service.converter.Converter;
+import com.ordering_system.service.mailsender.activation.MailActivation;
+import com.ordering_system.service.mailsender.service.EmailSenderService;
 import com.ordering_system.service.validator.Validator;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,15 +30,19 @@ public class UserServiceImpl implements UserService {
     private final Converter converter;
 
     private final UserRepository userRepository;
+    private final EmailSenderService emailSenderService;
     private final AddressRepository addressRepository;
+    private final MailActivation activation;
 
 
     @Autowired
     public UserServiceImpl(Converter converter, UserRepository userRepository,
-    		AddressRepository addressRepository) {
+                           EmailSenderService emailSenderService, AddressRepository addressRepository, MailActivation activation) {
         this.converter = converter;
         this.userRepository = userRepository;
+        this.emailSenderService = emailSenderService;
         this.addressRepository = addressRepository;
+        this.activation = activation;
     }
 
 
@@ -75,7 +80,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public User save(User user) {
     	if(userRepository.findUserEntityByEmail(user.getEmail()) != null) {
-    		throw new EntityAlreadyExsistsException("Entity by Entered Email already exsists");
+    		throw new EntityAlreadyExsistsException("Entity by Entered Email already exists");
     	}
     	
         Validator.checkEntity(user);
@@ -87,6 +92,7 @@ public class UserServiceImpl implements UserService {
         Validator.checkEmail(user.getEmail());
 //        Validator.checkPassport(user.getPassportNumber());
         userRepository.save(converter.userToEntity(user));
+        activation.sendPin(user.getEmail());
         return user;
     }
 

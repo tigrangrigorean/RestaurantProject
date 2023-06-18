@@ -4,8 +4,10 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import org.springframework.stereotype.Component;
 
 @Entity
+@Component
 
 public class ChangePassword {
     @Id
@@ -15,8 +17,7 @@ public class ChangePassword {
     private String pin;
     private String expirationTime;
 
-    public ChangePassword(long id, String userEmail, String pin, String expirationTime) {
-        this.id = id;
+    public ChangePassword( String userEmail, String pin, String expirationTime) {
         this.userEmail = userEmail;
         this.pin = pin;
         this.expirationTime = expirationTime;

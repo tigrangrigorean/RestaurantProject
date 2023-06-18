@@ -38,7 +38,8 @@ public class ChangePasswordService {
         if(changePasswordRepository.findByUserEmail(mail)!=null){
             changePasswordRepository
                     .deleteById(changePasswordRepository
-                            .findByUserEmail(mail).getId());
+                            .findByUserEmail(mail)
+                            .getId());
         }
         ChangePassword changePassword = new ChangePassword();
         changePassword.setPin(pin);

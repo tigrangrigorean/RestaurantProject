@@ -34,7 +34,7 @@ public class OrderController {
 
     @PostMapping("/save")
     public ResponseEntity<Order> saveOrder(@RequestBody List<FoodDto> foodDtoList, Address address) {
-        return ResponseEntity.ok().body(orderServiceImpl.save(foodDtoList,address));
+        return ResponseEntity.status(201).body(orderServiceImpl.save(foodDtoList,address));
     }
 
     @PutMapping("/update")

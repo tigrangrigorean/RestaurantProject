@@ -40,7 +40,7 @@ public class AdminController {
 
 	    @PostMapping("/save")
 	    public ResponseEntity<User> saveAdmin(@RequestBody User admin) {
-	        return ResponseEntity.ok().body(adminServiceImpl.save(admin));
+	        return ResponseEntity.status(201).body(adminServiceImpl.save(admin));
 	    }
 
 	    @PutMapping("/update")

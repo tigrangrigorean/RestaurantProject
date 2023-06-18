@@ -33,7 +33,7 @@ public class UserController {
 
     @PostMapping("/save")
     public ResponseEntity<User> saveUser(@RequestBody User user) {
-        return ResponseEntity.ok().body(userServiceImpl.save(user));
+        return ResponseEntity.status(201).body(userServiceImpl.save(user));
     }
 
     @PutMapping("/update")

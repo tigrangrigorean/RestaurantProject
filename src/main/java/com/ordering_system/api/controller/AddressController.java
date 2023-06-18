@@ -30,7 +30,7 @@ public class AddressController {
 
     @PostMapping("/save")
     public ResponseEntity<Address> saveAddress(@RequestBody Address address) {
-        return ResponseEntity.ok().body(addressServiceImpl.save(address));
+        return ResponseEntity.status(201).body(addressServiceImpl.save(address));
     }
     @PutMapping("/update")
     public ResponseEntity<String> updateAddressById(@RequestParam long id, @RequestBody Address address) {

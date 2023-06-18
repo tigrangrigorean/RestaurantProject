@@ -37,7 +37,7 @@ public class RestaurantController {
 
     @PostMapping("/save")
     public ResponseEntity<Restaurant> saveRestaurant(@RequestBody Restaurant restaurant) {
-        return ResponseEntity.ok().body(restaurantServiceImpl.save(restaurant));
+        return ResponseEntity.status(201).body(restaurantServiceImpl.save(restaurant));
     }
 
     @PutMapping("/update")

@@ -38,8 +38,9 @@ public class RestaurantServiceImpl implements RestaurantService {
     @Override
     public Restaurant getById(long id) {
         Validator.checkId(id);
-        Validator.checkEntity(restaurantRepository.findRestaurantEntityById(id));
-        return converter.entityToRestaurant(restaurantRepository.findRestaurantEntityById(id));
+        RestaurantEntity restaurantEntity = restaurantRepository.findRestaurantEntityById(id);
+        Validator.checkEntity(restaurantEntity);
+        return converter.entityToRestaurant(restaurantEntity);
     }
 
     @Override

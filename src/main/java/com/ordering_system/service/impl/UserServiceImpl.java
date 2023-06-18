@@ -62,8 +62,9 @@ public class UserServiceImpl implements UserService {
     @Override
     public User getById(long id) {
         Validator.checkId(id);
-        Validator.checkEntity(userRepository.findUserEntityById(id));
-        return converter.entityToUser(userRepository.findUserEntityById(id));
+        UserEntity userEntity = userRepository.findUserEntityById(id);
+        Validator.checkEntity(userEntity);
+        return converter.entityToUser(userEntity);
     }
 
     @Override

@@ -53,8 +53,9 @@ public class OrderServiceImpl implements OrderService {
     @Transactional
     public Order getById(long id) {
         Validator.checkId(id);
-        Validator.checkEntity(orderRepository.findOrderEntityById(id));
-        return converter.entityToOrder(orderRepository.findOrderEntityById(id));
+        OrderEntity orderEntity = orderRepository.findOrderEntityById(id);
+        Validator.checkEntity(orderEntity);
+        return converter.entityToOrder(orderEntity);
     }
 
     @Override

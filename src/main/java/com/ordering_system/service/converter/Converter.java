@@ -198,7 +198,8 @@ public class Converter {
     public Order entityToOrder(OrderEntity orderEntity) {
         Order order = new Order();
         List<Long> foodIds = new ArrayList<>();
-        for (FoodEntity foodEntity : orderEntity.getFoodList()) {
+        List<FoodEntity> foodEntityList=orderEntity.getFoodList();
+        for (FoodEntity foodEntity : foodEntityList) {
             foodIds.add(foodEntity.getId());
         }
         order.setFoodIdList(foodIds);
@@ -250,15 +251,15 @@ public class Converter {
     
     public Deliver entityToDeliver(DeliverEntity deliverEntity) {
     	Deliver deliver = new Deliver();
-    	deliver.setUserId(deliverEntity.getUserEntity().getId());
-    	deliver.setOrderId(deliverEntity.getOrderEntity().getId());
+    	deliver.setUserId(deliverEntity.getUserId());
+    	deliver.setOrderId(deliverEntity.getOrderId());
     	return deliver;
     }
     
     public DeliverEntity deliverToEntity(Deliver deliver) {
     	DeliverEntity deliverEntity = new DeliverEntity();
-    	deliverEntity.setUserEntity(userRepository.findUserEntityById(deliver.getUserId()));
-    	deliverEntity.setOrderEntity(orderRepository.findOrderEntityById(deliver.getOrderId()));
+    	deliverEntity.setUserId(deliver.getUserId());
+    	deliverEntity.setOrderId(deliver.getOrderId());
     	return deliverEntity;
     }
     

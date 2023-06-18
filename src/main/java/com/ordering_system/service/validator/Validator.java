@@ -77,7 +77,6 @@ public class Validator {
             throw new InvalidPassportException("Enter valid passport number");
         }
         return true;
-
     }
 
     public static Address checkAddress(Address address) {

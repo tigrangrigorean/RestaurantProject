@@ -3,6 +3,7 @@ package com.ordering_system.model.domain;
 
 import com.ordering_system.model.enumeration.OrderStatus;
 import jakarta.persistence.*;
+import jakarta.transaction.Transactional;
 import org.hibernate.engine.internal.Cascade;
 
 import java.time.LocalDate;
@@ -19,7 +20,8 @@ public class OrderEntity {
     private double discount;
     private double discountedPrice;
     private double deliveryCost;
-    @ManyToMany(cascade = CascadeType.REMOVE)
+    @ManyToMany(cascade = CascadeType.REMOVE,
+    fetch = FetchType.EAGER)
     private List<FoodEntity> foodList;
     @Enumerated(EnumType.STRING)
     private OrderStatus orderStatus;

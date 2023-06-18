@@ -4,19 +4,18 @@ import com.ordering_system.model.domain.OrderEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.ordering_system.model.domain.DeliverEntity;
-import com.ordering_system.model.dto.Deliver;
-import com.ordering_system.model.dto.Order;
+import com.ordering_system.model.domain.DeliveryEntity;
+import com.ordering_system.model.dto.Delivery;
 import com.ordering_system.model.enumeration.OrderStatus;
 import com.ordering_system.repository.DeliverRepository;
 import com.ordering_system.repository.OrderRepository;
 import com.ordering_system.repository.UserRepository;
-import com.ordering_system.service.DeliverService;
+import com.ordering_system.service.DeliveryService;
 import com.ordering_system.service.converter.Converter;
 import com.ordering_system.service.validator.Validator;
 
 @Service
-public class DeliverServiceImpl implements DeliverService {
+public class DeliveryServiceImpl implements DeliveryService {
 	
 	private final Converter converter;
 	private final DeliverRepository deliverRepository;
@@ -25,7 +24,7 @@ public class DeliverServiceImpl implements DeliverService {
 	private final OrderServiceImpl orderService;
 	
 	@Autowired
-	public DeliverServiceImpl(
+	public DeliveryServiceImpl(
 			Converter converter,
 			DeliverRepository deliverRepository,
 			UserRepository userRepository,
@@ -39,37 +38,44 @@ public class DeliverServiceImpl implements DeliverService {
 	}
 
 	@Override
-	public Deliver getById(long id) {
+	public Delivery getById(long id) {
 		Validator.checkId(id);
 		Validator.checkEntity(deliverRepository.findDeliverEntityById(id));
 		return converter.entityToDeliver(deliverRepository.findDeliverEntityById(id));
 	}
 
 	@Override
-	public Deliver save(Deliver deliver) {
-		Validator.checkEntity(deliver);
-		Validator.checkId(deliver.getUserId());
-		Validator.checkId(deliver.getOrderId());
-		deliverRepository.save(converter.deliverToEntity(deliver));
-		OrderEntity orderEntity = orderRepository.findOrderEntityById(deliver.getOrderId());
+	public Delivery save(Delivery delivery) {
+		Validator.checkEntity(delivery);
+		Validator.checkId(delivery.getUserId());
+		Validator.checkId(delivery.getOrderId());
+		deliverRepository.save(converter.deliverToEntity(delivery));
+		OrderEntity orderEntity = orderRepository.findOrderEntityById(delivery.getOrderId());
 		orderEntity.setOrderStatus(OrderStatus.IN_DELIVERY);
 		orderRepository.save(orderEntity);
-		return deliver;
+		return delivery;
 	}
 
 	@Override
-	public void update(long id, Deliver deliver) {
-		DeliverEntity deliverEntity = deliverRepository.findDeliverEntityById(id);
-		Validator.checkEntity(deliver);
-		Validator.checkEntity(deliverEntity);
+	public void update(long id, Delivery delivery) {
+		DeliveryEntity deliveryEntity = deliverRepository.findDeliverEntityById(id);
+		Validator.checkEntity(delivery);
+		Validator.checkEntity(deliveryEntity);
 		Validator.checkId(id);
-		Validator.checkEntity(deliver);
-		if(Validator.checkId(deliver.getUserId())) {
-			deliverEntity.setUserId(deliver.getUserId());
+		Validator.checkEntity(delivery);
+		if(Validator.checkId(delivery.getUserId())) {
+			deliveryEntity.setUserId(delivery.getUserId());
 		}
-		if(Validator.checkId(deliver.getOrderId())) {
-			deliverEntity.setOrderId(deliver.getOrderId());
+		if(Validator.checkId(delivery.getOrderId())) {
+			deliveryEntity.setOrderId(delivery.getOrderId());
 		}
+	}
+
+	@Override
+	public void updateStatusToDelivered(Delivery delivery){
+		OrderEntity orderEntity = orderRepository.findOrderEntityById(delivery.getOrderId());
+		orderEntity.setOrderStatus(OrderStatus.DELIVERED);
+		orderService.update(delivery.getOrderId(), converter.entityToOrder(orderEntity));
 	}
 
 	@Override

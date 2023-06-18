@@ -11,36 +11,42 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ordering_system.model.dto.Deliver;
-import com.ordering_system.service.impl.DeliverServiceImpl;
+import com.ordering_system.model.dto.Delivery;
+import com.ordering_system.service.impl.DeliveryServiceImpl;
 import com.ordering_system.service.impl.OrderServiceImpl;
 
 @RestController
-@RequestMapping("/deliver")
-public class DeliverController {
+@RequestMapping("/delivery")
+public class DeliveryController {
 	
-	private final DeliverServiceImpl deliverService;
+	private final DeliveryServiceImpl deliverService;
 	private final OrderServiceImpl orderService;
 	
-	public DeliverController(DeliverServiceImpl deliverService,OrderServiceImpl orderService) {
+	public DeliveryController(DeliveryServiceImpl deliverService, OrderServiceImpl orderService) {
 		this.deliverService = deliverService;
 		this.orderService = orderService;
 	}
 	
 	@GetMapping("/get/{id}")
-	public ResponseEntity<Deliver> getById(@PathVariable long id) {
+	public ResponseEntity<Delivery> getById(@PathVariable long id) {
 		return ResponseEntity.ok().body(deliverService.getById(id));
 	}
 	
 	@PostMapping("/save")
-	public ResponseEntity<Deliver> save(@RequestBody Deliver deliver) {
-		return ResponseEntity.ok().body(deliverService.save(deliver));
+	public ResponseEntity<Delivery> save(@RequestBody Delivery delivery) {
+		return ResponseEntity.ok().body(deliverService.save(delivery));
 	}
 	
 	@PutMapping("/update")
-	public ResponseEntity<String> update(@RequestParam long id, @RequestBody Deliver deliver) {
-		deliverService.update(id, deliver);
+	public ResponseEntity<String> update(@RequestParam long id, @RequestBody Delivery delivery) {
+		deliverService.update(id, delivery);
         return ResponseEntity.ok().body("Deliver by " + id + " updated successfully");
+	}
+
+	@PutMapping("/updateToDelivered")
+	public ResponseEntity<String> updateStatusToDelivered(@RequestBody Delivery delivery){
+		deliverService.updateStatusToDelivered(delivery);
+		return ResponseEntity.ok().body("Delivery status updated successfully");
 	}
 	
 	@DeleteMapping("/delete")

@@ -3,7 +3,6 @@ package com.ordering_system.service.converter;
 import com.ordering_system.model.domain.*;
 import com.ordering_system.model.dto.*;
 import com.ordering_system.repository.*;
-import com.ordering_system.service.validator.Validator;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -249,18 +248,18 @@ public class Converter {
         return orderList;
     }
     
-    public Deliver entityToDeliver(DeliverEntity deliverEntity) {
-    	Deliver deliver = new Deliver();
-    	deliver.setUserId(deliverEntity.getUserId());
-    	deliver.setOrderId(deliverEntity.getOrderId());
-    	return deliver;
+    public Delivery entityToDeliver(DeliveryEntity deliveryEntity) {
+    	Delivery delivery = new Delivery();
+    	delivery.setUserId(deliveryEntity.getUserId());
+    	delivery.setOrderId(deliveryEntity.getOrderId());
+    	return delivery;
     }
     
-    public DeliverEntity deliverToEntity(Deliver deliver) {
-    	DeliverEntity deliverEntity = new DeliverEntity();
-    	deliverEntity.setUserId(deliver.getUserId());
-    	deliverEntity.setOrderId(deliver.getOrderId());
-    	return deliverEntity;
+    public DeliveryEntity deliverToEntity(Delivery delivery) {
+    	DeliveryEntity deliveryEntity = new DeliveryEntity();
+    	deliveryEntity.setUserId(delivery.getUserId());
+    	deliveryEntity.setOrderId(delivery.getOrderId());
+    	return deliveryEntity;
     }
     
 

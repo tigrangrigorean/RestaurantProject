@@ -1,5 +1,6 @@
 package com.ordering_system.service.impl;
 
+import com.ordering_system.model.domain.FoodEntity;
 import com.ordering_system.model.domain.OrderEntity;
 import com.ordering_system.model.domain.RestaurantEntity;
 import com.ordering_system.model.domain.UserEntity;
@@ -13,6 +14,7 @@ import com.ordering_system.repository.UserRepository;
 import com.ordering_system.service.OrderService;
 import com.ordering_system.service.converter.Converter;
 import com.ordering_system.service.validator.Validator;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.ordering_system.service.mailsender.GetMail;
@@ -48,6 +50,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    @Transactional
     public Order getById(long id) {
         Validator.checkId(id);
         Validator.checkEntity(orderRepository.findOrderEntityById(id));
@@ -98,6 +101,37 @@ public class OrderServiceImpl implements OrderService {
         OrderEntity orderEntity = orderRepository.findOrderEntityById(id);
         Validator.checkEntity(order);
         Validator.checkEntity(orderEntity);
+        if (order.getPrice() > 0) {
+            orderEntity.setTotalPrice(order.getPrice());
+        }
+        if (order.getOrderStatus() != null) {
+            orderEntity.setOrderStatus(order.getOrderStatus());
+        }
+        if (order.getDate() != null) {
+            orderEntity.setDate(order.getDate());
+        }
+        if (order.getAddressToDelivery() != null) {
+            orderEntity.setAddressToDelivery(order.getAddressToDelivery().toString());
+        }
+        if (order.getDiscount() > 0){
+            orderEntity.setDiscount(order.getDiscount());
+        }if(order.getDiscountedPrice()>0) {
+            orderEntity.setDiscountedPrice(order.getDiscountedPrice());
+        }if(order.getFoodIdList()!=null) {
+            List<Long> ids = order.getFoodIdList();
+            List<FoodEntity> foodEntityList = new ArrayList<>();
+            for (Long foodId : ids) {
+                foodEntityList.add(foodRepository.findFoodEntityById(foodId));
+            }
+            orderEntity.setFoodList(foodEntityList);
+        }if(order.getUserId()>0) {
+            orderEntity.setUserId(order.getUserId());
+        }if(order.getDeliveryCost()>0) {
+            orderEntity.setDeliveryCost(order.getDeliveryCost());
+        }
+        if(order.getRestaurantName()!=null) {
+            orderEntity.setRestaurantName(order.getRestaurantName());
+        }
         orderRepository.save(orderEntity);
     }
 

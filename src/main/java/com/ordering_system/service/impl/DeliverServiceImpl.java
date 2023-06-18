@@ -1,5 +1,6 @@
 package com.ordering_system.service.impl;
 
+import com.ordering_system.model.domain.OrderEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -50,9 +51,9 @@ public class DeliverServiceImpl implements DeliverService {
 		Validator.checkId(deliver.getUserId());
 		Validator.checkId(deliver.getOrderId());
 		deliverRepository.save(converter.deliverToEntity(deliver));
-		Order order = converter.entityToOrder(orderRepository.findOrderEntityById(deliver.getOrderId()));
-		order.setOrderStatus(OrderStatus.IN_DELIVERY);
-		orderService.update(deliver.getOrderId(), order);
+		OrderEntity orderEntity = orderRepository.findOrderEntityById(deliver.getOrderId());
+		orderEntity.setOrderStatus(OrderStatus.IN_DELIVERY);
+		orderRepository.save(orderEntity);
 		return deliver;
 	}
 
@@ -64,10 +65,10 @@ public class DeliverServiceImpl implements DeliverService {
 		Validator.checkId(id);
 		Validator.checkEntity(deliver);
 		if(Validator.checkId(deliver.getUserId())) {
-			deliverEntity.setUserEntity(userRepository.findUserEntityById(deliver.getUserId()));
+			deliverEntity.setUserId(deliver.getUserId());
 		}
 		if(Validator.checkId(deliver.getOrderId())) {
-			deliverEntity.setOrderEntity(orderRepository.findOrderEntityById(deliver.getOrderId()));
+			deliverEntity.setOrderId(deliver.getOrderId());
 		}
 	}
 

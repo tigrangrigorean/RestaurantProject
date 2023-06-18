@@ -10,73 +10,33 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "deliver")
 public class DeliverEntity {
-	
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long id;
-	@OneToOne
-	private UserEntity userEntity;
-	@OneToOne
-	private OrderEntity orderEntity;
-	
-	public DeliverEntity() {
-		
-	}
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
+    private long orderId;
+    private long userId;
 
-	/**
-	 * @param id
-	 * @param userEntity
-	 * @param orderEntity
-	 */
-	public DeliverEntity(long id, UserEntity userEntity, OrderEntity orderEntity) {
-		super();
-		this.id = id;
-		this.userEntity = userEntity;
-		this.orderEntity = orderEntity;
-	}
+    public DeliverEntity() {
+    }
 
-	/**
-	 * @return the id
-	 */
-	public long getId() {
-		return id;
-	}
+    public DeliverEntity(long orderId, long userId) {
+        this.orderId = orderId;
+        this.userId = userId;
+    }
 
-	/**
-	 * @param id the id to set
-	 */
-	public void setId(long id) {
-		this.id = id;
-	}
+    public long getOrderId() {
+        return orderId;
+    }
 
-	/**
-	 * @return the userEntity
-	 */
-	public UserEntity getUserEntity() {
-		return userEntity;
-	}
+    public void setOrderId(long orderId) {
+        this.orderId = orderId;
+    }
 
-	/**
-	 * @param userEntity the userEntity to set
-	 */
-	public void setUserEntity(UserEntity userEntity) {
-		this.userEntity = userEntity;
-	}
+    public long getUserId() {
+        return userId;
+    }
 
-	/**
-	 * @return the orderEntity
-	 */
-	public OrderEntity getOrderEntity() {
-		return orderEntity;
-	}
-
-	/**
-	 * @param orderEntity the orderEntity to set
-	 */
-	public void setOrderEntity(OrderEntity orderEntity) {
-		this.orderEntity = orderEntity;
-	}
-	
-	
-
+    public void setUserId(long userId) {
+        this.userId = userId;
+    }
 }

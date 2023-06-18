@@ -3,7 +3,6 @@ package com.ordering_system.service.converter;
 import com.ordering_system.model.domain.*;
 import com.ordering_system.model.dto.*;
 import com.ordering_system.repository.*;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -20,8 +19,7 @@ public class Converter {
     private final OrderRepository orderRepository;
 
     @Autowired
-    public Converter(ModelMapper modelMapper,
-                     FoodRepository foodRepository,
+    public Converter(FoodRepository foodRepository,
                      AddressRepository addressRepository,
                      UserRepository userRepository,
                      RestaurantRepository restaurantRepository,
@@ -61,7 +59,6 @@ public class Converter {
         }
         return addressList;
     }
-
 
 
     /**
@@ -151,7 +148,7 @@ public class Converter {
      * @return
      */
     public User entityToUser(UserEntity userEntity) {
-        return new User(userEntity.getFirstName(),
+        User user = new User(userEntity.getFirstName(),
                 userEntity.getLastName(),
                 userEntity.getBirthday(),
                 userEntity.getPhoneNumber(),
@@ -160,10 +157,12 @@ public class Converter {
                 userEntity.getPassportNumber(),
                 userEntity.getRole(),
                 userEntity.getCardNumber());
+        user.setActivated(userEntity.isActivated());
+        return user;
     }
 
     public UserEntity userToEntity(User user) {
-        return new UserEntity(user.getFirstName(),
+        UserEntity userEntity = new UserEntity(user.getFirstName(),
                 user.getLastName(),
                 user.getBirthday(),
                 user.getPhoneNumber(),
@@ -171,21 +170,26 @@ public class Converter {
                 user.getEmail(),
                 user.getPassportNumber(),
                 user.getRole(),
-        		user.getCardNumber());
+                user.getCardNumber());
+        userEntity.setActivated(user.isActivated());
+        return userEntity;
     }
 
     public List<User> entityToUserList(List<UserEntity> userEntityList) {
         List<User> userList = new ArrayList<>();
+        User user = new User();
         for (UserEntity userEntity : userEntityList) {
-            userList.add(new User(userEntity.getFirstName(),
-                    userEntity.getLastName(),
-                    userEntity.getBirthday(),
-                    userEntity.getPhoneNumber(),
-                    userEntity.getPassword(),
-                    userEntity.getEmail(),
-                    userEntity.getPassportNumber(),
-                    userEntity.getRole(),
-                    userEntity.getCardNumber()));
+            user.setFirstName(userEntity.getFirstName());
+            user.setLastName(userEntity.getLastName());
+            user.setBirthday(userEntity.getBirthday());
+            user.setPhoneNumber(userEntity.getPhoneNumber());
+            user.setPassword(userEntity.getPassword());
+            user.setEmail(userEntity.getEmail());
+            user.setPassportNumber(userEntity.getPassportNumber());
+            user.setRole(userEntity.getRole());
+            user.setCardNumber(userEntity.getCardNumber());
+            user.setActivated(userEntity.isActivated());
+            userList.add(user);
         }
         return userList;
     }
@@ -197,7 +201,7 @@ public class Converter {
     public Order entityToOrder(OrderEntity orderEntity) {
         Order order = new Order();
         List<Long> foodIds = new ArrayList<>();
-        List<FoodEntity> foodEntityList=orderEntity.getFoodList();
+        List<FoodEntity> foodEntityList = orderEntity.getFoodList();
         for (FoodEntity foodEntity : foodEntityList) {
             foodIds.add(foodEntity.getId());
         }
@@ -238,7 +242,7 @@ public class Converter {
             for (FoodEntity foodEntity : orderEntity.getFoodList()) {
                 foodIds.add(foodEntity.getId());
             }
-            orderList.add(new Order(orderEntity.getTotalPrice(),orderEntity.getDiscount(),orderEntity.getDiscountedPrice(),orderEntity.getDeliveryCost(),
+            orderList.add(new Order(orderEntity.getTotalPrice(), orderEntity.getDiscount(), orderEntity.getDiscountedPrice(), orderEntity.getDeliveryCost(),
                     foodIds,
                     orderEntity.getOrderStatus(),
                     orderEntity.getRestaurantName(),
@@ -247,21 +251,20 @@ public class Converter {
         }
         return orderList;
     }
-    
+
     public Delivery entityToDeliver(DeliveryEntity deliveryEntity) {
-    	Delivery delivery = new Delivery();
-    	delivery.setUserId(deliveryEntity.getUserId());
-    	delivery.setOrderId(deliveryEntity.getOrderId());
-    	return delivery;
+        Delivery delivery = new Delivery();
+        delivery.setUserId(deliveryEntity.getUserId());
+        delivery.setOrderId(deliveryEntity.getOrderId());
+        return delivery;
     }
-    
+
     public DeliveryEntity deliverToEntity(Delivery delivery) {
-    	DeliveryEntity deliveryEntity = new DeliveryEntity();
-    	deliveryEntity.setUserId(delivery.getUserId());
-    	deliveryEntity.setOrderId(delivery.getOrderId());
-    	return deliveryEntity;
+        DeliveryEntity deliveryEntity = new DeliveryEntity();
+        deliveryEntity.setUserId(delivery.getUserId());
+        deliveryEntity.setOrderId(delivery.getOrderId());
+        return deliveryEntity;
     }
-    
 
 
 }

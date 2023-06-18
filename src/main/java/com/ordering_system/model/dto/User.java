@@ -17,8 +17,17 @@ public class User {
     private Role role;
     private String cardNumber;
 
+    private boolean activated;
 
-   public User(){}
+    public boolean isActivated() {
+        return activated;
+    }
+
+    public void setActivated(boolean activated) {
+        this.activated = activated;
+    }
+
+    public User(){}
 
     public User(String firstName, String lastName,  Date birthday, String phoneNumber,
                 String password, String email, String passportNumber, Role role,String cardNumber){

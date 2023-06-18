@@ -26,6 +26,7 @@ public class UserEntity implements UserDetails{
     private String password;
     private String email;
     private String passportNumber;
+    private boolean activated;
     @Enumerated(EnumType.STRING)
     private Role role;
     @OneToMany(mappedBy = "user")
@@ -36,6 +37,14 @@ public class UserEntity implements UserDetails{
 
     public UserEntity() {
     	
+    }
+
+    public boolean isActivated() {
+        return activated;
+    }
+
+    public void setActivated(boolean activated) {
+        this.activated = activated;
     }
 
     public UserEntity(String firstName, String lastName, Date birthday,

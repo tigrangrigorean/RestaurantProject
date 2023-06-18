@@ -10,3 +10,4 @@ HELP.md
 mvnw
 mvnw.cmd
 application.yml
+*.log

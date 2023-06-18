@@ -29,8 +29,9 @@ public class AddressServiceImpl implements AddressService {
     @Override
     public Address getById(long id) {
         Validator.checkId(id);
-        Validator.checkEntity(addressRepository.findAddressEntityById(id));
-        return converter.entityToAddress(addressRepository.findAddressEntityById(id));
+        AddressEntity addressEntity = addressRepository.findAddressEntityById(id);
+        Validator.checkEntity(addressEntity);
+        return converter.entityToAddress(addressEntity);
     }
 
     @Override

@@ -32,7 +32,7 @@ public class FoodController {
 
     @PostMapping("/save")
     public ResponseEntity<Food> saveFood(@RequestBody Food food) {
-        return ResponseEntity.ok().body(foodServiceImpl.save(food));
+        return ResponseEntity.status(201).body(foodServiceImpl.save(food));
     }
 
     @PutMapping("/update")

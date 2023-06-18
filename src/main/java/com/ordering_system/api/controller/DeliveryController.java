@@ -34,7 +34,7 @@ public class DeliveryController {
 	
 	@PostMapping("/save")
 	public ResponseEntity<Delivery> save(@RequestBody Delivery delivery) {
-		return ResponseEntity.ok().body(deliverService.save(delivery));
+		return ResponseEntity.status(201).body(deliverService.save(delivery));
 	}
 	
 	@PutMapping("/update")

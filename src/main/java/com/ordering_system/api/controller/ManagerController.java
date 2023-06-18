@@ -32,7 +32,7 @@ public class ManagerController {
 
     @PostMapping("/save")
     public ResponseEntity<User> saveManager(@RequestBody User manager) {
-        return ResponseEntity.ok().body(managerServiceImpl.save(manager));
+        return ResponseEntity.status(201).body(managerServiceImpl.save(manager));
     }
 
     @PutMapping("/update")

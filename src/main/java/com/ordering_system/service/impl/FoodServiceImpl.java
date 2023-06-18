@@ -34,8 +34,9 @@ public class FoodServiceImpl implements FoodService {
     @Override
     public Food getById(long id) {
     	Validator.checkId(id);
-    	Validator.checkEntity(foodRepository.findFoodEntityById(id));
-        return converter.entityToFood(foodRepository.findFoodEntityById(id));
+    	FoodEntity foodEntity = foodRepository.findFoodEntityById(id);
+    	Validator.checkEntity(foodEntity);
+        return converter.entityToFood(foodEntity);
     }
 
 

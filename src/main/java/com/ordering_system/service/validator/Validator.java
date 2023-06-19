@@ -190,4 +190,11 @@ public class Validator {
         }
         return false;
     }
+    
+    public static boolean checkActivation(boolean activated) {
+    	if(activated == false) {
+    		throw new ActivationException("Account by entered e-mail isn't activated");
+    	}
+    	return true;
+    }
 }

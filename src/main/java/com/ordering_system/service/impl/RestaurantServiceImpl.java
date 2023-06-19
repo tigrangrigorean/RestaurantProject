@@ -51,7 +51,7 @@ public class RestaurantServiceImpl implements RestaurantService {
     @Override
     public Restaurant save(Restaurant restaurant) {
         Validator.checkEntity(restaurant);
-        Validator.checkEntity(restaurant.getName());
+        Validator.checkName(restaurant.getName());
         Validator.checkTin(restaurant.getTin());
         Validator.checkEntity(addressRepository.findAddressEntityById(restaurant.getAddressId()));
         Validator.checkEntity(userRepository.findUserEntityById(restaurant.getManagerId()));

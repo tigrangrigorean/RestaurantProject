@@ -1,6 +1,7 @@
 package com.ordering_system.service.validator;
 
-import com.ordering_system.model.dto.Address;
+import com.ordering_system.model.domain.*;
+import com.ordering_system.model.dto.*;
 import com.ordering_system.model.exception.*;
 
 public class Validator {
@@ -12,12 +13,82 @@ public class Validator {
         return true;
     }
 
-    public static boolean checkEntity(Object o) {
-        if (o == null) {
-            throw new EntityNotFoundException("Entity not found");
+    public static boolean checkEntity(Address address){
+        if(address == null){
+            throw new EntityNotFoundException("Address not found");
         }
         return true;
     }
+
+    public static boolean checkEntity(AddressEntity addressEntity){
+        if(addressEntity == null){
+            throw new EntityNotFoundException("Address entity not found");
+        }
+        return true;
+    }
+    public static boolean checkEntity(Delivery delivery){
+        if(delivery == null){
+            throw new EntityNotFoundException("Delivery not found");
+        }
+        return true;
+    }
+    public static boolean checkEntity(DeliveryEntity deliveryEntity){
+        if(deliveryEntity == null){
+            throw new EntityNotFoundException("Delivery entity not found");
+        }
+        return true;
+    }
+    public static boolean checkEntity(Food food){
+        if(food == null){
+            throw new EntityNotFoundException("Food not found");
+        }
+        return true;
+    }
+    public static boolean checkEntity(FoodEntity foodEntity){
+        if(foodEntity == null){
+            throw new EntityNotFoundException("Food entity not found");
+        }
+        return true;
+    }
+    public static boolean checkEntity(Order order){
+        if(order == null){
+            throw new EntityNotFoundException("Order not found");
+        }
+        return true;
+    }
+
+    public static boolean checkEntity(OrderEntity orderEntity){
+        if(orderEntity == null){
+            throw new EntityNotFoundException("Order entity not found");
+        }
+        return true;
+    }
+    public static boolean checkEntity(Restaurant restaurant){
+        if(restaurant == null){
+            throw new EntityNotFoundException("Restaurant not found");
+        }
+        return true;
+    }
+    public static boolean checkEntity(RestaurantEntity restaurantEntity){
+        if(restaurantEntity == null){
+            throw new EntityNotFoundException("Restaurant entity not found");
+        }
+        return true;
+    }
+    public static boolean checkEntity(User user){
+        if(user == null){
+            throw new EntityNotFoundException("User not found");
+        }
+        return true;
+    }
+    public static boolean  checkEntity(UserEntity userEntity){
+        if(userEntity == null){
+            throw new EntityNotFoundException("User entity not found");
+        }
+        return true;
+    }
+
+
 
     public static boolean checkPrice(double price) {
         if (price < 0) {

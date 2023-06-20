@@ -2,13 +2,28 @@ package com.ordering_system.service.validator;
 
 import com.ordering_system.model.domain.*;
 import com.ordering_system.model.dto.*;
+import com.ordering_system.repository.RestaurantRepository;
+import com.ordering_system.service.mailsender.GetMail;
+import com.ordering_system.model.enumeration.Role;
 import com.ordering_system.model.exception.*;
+import com.ordering_system.repository.UserRepository;
+import org.springframework.security.access.AccessDeniedException;
 
 public class Validator {
+    private UserRepository userRepository;
+    private final RestaurantRepository restaurantRepository;
+
+    private  final GetMail getMail;
+
+    public Validator(UserRepository userRepository, RestaurantRepository restaurantRepository, GetMail getMail) {
+        this.userRepository = userRepository;
+        this.restaurantRepository = restaurantRepository;
+        this.getMail = getMail;
+    }
 
     public static boolean checkId(long id) {
         if (id <= 0) {
-            throw new IllegalArgumentException("Id is wrong");
+//            throw new IllegalArgumentException("Id is wrong");
         }
         return true;
     }
@@ -95,6 +110,12 @@ public class Validator {
             throw new InvalidPriceException("Entered price is invalid");
         }
         return true;
+    }
+    public  void checkAccess(RestaurantEntity restaurantEntity){
+        UserEntity userEntity=userRepository.findUserEntityByEmail(getMail.getMail());
+        if(userEntity.getId()!=restaurantEntity.getUser().getId()&&userEntity.getRole()!= Role.ADMIN){
+            throw new AccessDeniedException("Access denied");
+        }
     }
 
     public static boolean checkPhoneNumber(String phoneNumber) {

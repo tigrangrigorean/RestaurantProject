@@ -74,7 +74,7 @@ public class OrderServiceImpl implements OrderService {
         for (long foodId : foodListIds) {
             priceSum += foodRepository.findFoodEntityById(foodId).getPrice();
         }
-        long id = userRepository.findUserEntityByEmail(getMail.mail).getId();
+        long id = userRepository.findUserEntityByEmail(getMail.getMail()).getId();
         double discount = priceSum / 100 * getDiscount(id);
         UserEntity userEntity = userRepository.findUserEntityById(id);
         order.setUserId(id);

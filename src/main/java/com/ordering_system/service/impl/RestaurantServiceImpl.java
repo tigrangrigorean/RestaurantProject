@@ -10,6 +10,7 @@ import com.ordering_system.repository.UserRepository;
 import com.ordering_system.service.RestaurantService;
 import com.ordering_system.service.converter.Converter;
 import com.ordering_system.service.validator.Validator;
+import com.ordering_system.service.mailsender.GetMail;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,16 +26,17 @@ public class RestaurantServiceImpl implements RestaurantService {
     private final AddressRepository addressRepository;
     private final FoodRepository foodRepository;
     private final UserRepository userRepository;
+    private final GetMail getMail;
 
     @Autowired
-    public RestaurantServiceImpl(Converter converter, RestaurantRepository restaurantRepository, AddressRepository addressRepository, FoodRepository foodRepository, UserRepository userRepository) {
+    public RestaurantServiceImpl(Converter converter, RestaurantRepository restaurantRepository, AddressRepository addressRepository, FoodRepository foodRepository, UserRepository userRepository, GetMail getMail) {
         this.converter = converter;
         this.restaurantRepository = restaurantRepository;
         this.addressRepository = addressRepository;
         this.foodRepository = foodRepository;
         this.userRepository = userRepository;
+        this.getMail = getMail;
     }
-
     @Override
     public Restaurant getById(long id) {
         Validator.checkId(id);
@@ -63,8 +65,10 @@ public class RestaurantServiceImpl implements RestaurantService {
 
     @Override
     public void update(long id, Restaurant restaurant) {
+        Validator validator= new Validator(userRepository, restaurantRepository, getMail);
         Validator.checkId(id);
         RestaurantEntity restaurantEntity = restaurantRepository.findRestaurantEntityById(id);
+        validator.checkAccess(restaurantEntity);
         Validator.checkEntity(restaurant);
         Validator.checkEntity(restaurantEntity);
         if (restaurant.getName() != null) {
@@ -75,13 +79,13 @@ public class RestaurantServiceImpl implements RestaurantService {
         	Validator.checkTin(restaurant.getTin());
             restaurantEntity.setTin(restaurant.getTin());
         }
-        if (Validator.checkId(restaurant.getAddressId())) {
+        if (restaurant.getAddressId()>0) {
             Validator.checkEntity(addressRepository.findAddressEntityById(restaurant.getAddressId()));
             long addressId = restaurantEntity.getAddress().getId();
             restaurantEntity.setAddress(addressRepository.findAddressEntityById(restaurant.getAddressId()));
             addressRepository.delete(addressRepository.findAddressEntityById(addressId));
         }
-        if (Validator.checkId(restaurant.getManagerId())) {
+        if (restaurant.getManagerId()>0) {
         	Validator.checkEntity(userRepository.findUserEntityById(restaurant.getManagerId()));
             restaurantEntity.setUser(userRepository.findUserEntityById(restaurant.getManagerId()));
         }
@@ -109,6 +113,9 @@ public class RestaurantServiceImpl implements RestaurantService {
     public void delete(long id) {
         Validator.checkId(id);
         if (Validator.checkEntity(restaurantRepository.findRestaurantEntityById(id))) {
+            RestaurantEntity restaurantEntity=restaurantRepository.findRestaurantEntityById(id);
+            Validator validator= new Validator(userRepository, restaurantRepository, getMail);
+            validator.checkAccess(restaurantEntity);
             restaurantRepository.deleteById(id);
         }
     }

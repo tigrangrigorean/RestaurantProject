@@ -21,8 +21,7 @@ import org.springframework.web.bind.annotation.*;
         }
         @PostMapping("/send_pin")
         @ResponseBody
-        public void pinForActivation(@RequestParam(name = "email") String email,
-                                   @RequestParam(name="pin") String pin) {
+        public void pinForActivation(@RequestParam(name = "email") String email){
              passwordService.sendPin(email);
         }
     }

@@ -36,7 +36,8 @@ public class AuthController {
 		Validator.checkActivation(userService.getByEmail(requestDto.getEmail()).isActivated());
 		authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(userDetails.getUsername(),requestDto.getPassword()));
 		String token = jwtTokenUtils.generateToken(userDetails);
-		getMail.userMail(jwtTokenUtils.getEmail(token));
+		getMail.setMail(jwtTokenUtils.getEmail(token));
+		System.out.println(getMail.getMail());
 		return token;
 	}
 	

@@ -3,6 +3,7 @@ package com.ordering_system.api.security.config;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -34,10 +35,18 @@ public class SecurityConfig {
 		.cors().disable()
 		.csrf().disable()
 			.authorizeHttpRequests((requests) -> requests
-//					.requestMatchers("/admin").hasAuthority("ADMIN")
-//					.requestMatchers("/food/**").hasAuthority("USER")
-//					.requestMatchers("/restaurant/**").authenticated()
-//					.requestMatchers("/restaurant").authenticated()
+					.requestMatchers("/admin").hasAuthority("ADMIN")
+					.requestMatchers("/admin/**").hasAuthority("ADMIN")
+					.requestMatchers("/manager/**").hasAnyAuthority("MANAGER","ADMIN")
+					.requestMatchers("/food/**").hasAnyAuthority("MANAGER","ADMIN")
+					.requestMatchers("/restaurant/**").hasAnyAuthority("MANAGER","ADMIN")
+					.requestMatchers("/delivery/**").hasAnyAuthority("MANAGER","ADMIN")
+					.requestMatchers("/address/**").hasAnyAuthority("MANAGER","ADMIN")
+					.requestMatchers("/order/**").authenticated()
+					.requestMatchers("/user/**").authenticated()
+					.requestMatchers("/user/save").permitAll()
+					.requestMatchers(HttpMethod.GET).permitAll()
+					.requestMatchers("/user/save").permitAll()
 					.anyRequest().permitAll())
 			.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
 		return http.build();

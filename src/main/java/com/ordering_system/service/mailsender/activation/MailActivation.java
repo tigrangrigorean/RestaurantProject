@@ -30,20 +30,31 @@ public class MailActivation {
 
     public void sendPin(String mail) {
         String pin = pinGenerator.generatePin();
+
         emailSenderService.sendEmail(mail, pin,
                 "Use this code to activate your account");
-        ChangePassword changePassword= new ChangePassword(mail,pin, LocalTime.now().plusMinutes(5).toString());
-        changePasswordRepository.save(changePassword);
+        ChangePassword changePassword=changePasswordRepository.findByUserEmail(mail);
+        if(changePassword!=null){
+            changePassword.setPin(pin);
+        }
+        changePasswordRepository.save(new ChangePassword(mail,pin, LocalTime.now().plusMinutes(5).toString()));
 
         }
 
-    public void activate(String email, String pin) {
+    public String activate(String email, String pin) {
         ChangePassword changePassword=changePasswordRepository.findByUserEmail(email);
         if(pin.equals(changePassword.getPin())){
+            LocalTime expireTime=LocalTime.parse(changePassword.getExpirationTime());
+            if (expireTime.isBefore(LocalTime.now())) {
+                throw new RuntimeException("Not valid activation code");
+            }
             UserEntity userEntity= userRepository.findUserEntityByEmail(email);
+            if(userEntity.isActivated()){
+                return "Your email is already activated";
+            }
             userEntity.setActivated(true);
             userRepository.save(userEntity);
         }
-
+        return "Email successfully activated";
     }
 }

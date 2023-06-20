@@ -10,12 +10,10 @@ import org.springframework.web.bind.annotation.*;
         public MailActivationController(MailActivation mailActivation) {
             this.mailActivation = mailActivation;
         }
-
-
         @PostMapping("/activate")
         @ResponseBody
-        public void activateMail(@RequestParam(name = "email") String email,
+        public String activateMail(@RequestParam(name = "email") String email,
                                    @RequestParam(name="pin") String pin) {
-            mailActivation.activate(email,pin);
+            return mailActivation.activate(email,pin);
         }
     }

@@ -3,6 +3,7 @@ package com.ordering_system.api.controller;
 
 import com.ordering_system.model.dto.Food;
 import com.ordering_system.service.impl.FoodServiceImpl;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,7 +12,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/food")
-
+@SecurityRequirement(name = "Bearer Authentication")
 public class FoodController {
     private final FoodServiceImpl foodServiceImpl;
 

@@ -1,5 +1,6 @@
 package com.ordering_system.api.controller;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,6 +18,7 @@ import com.ordering_system.service.impl.OrderServiceImpl;
 
 @RestController
 @RequestMapping("/delivery")
+@SecurityRequirement(name = "Bearer Authentication")
 public class DeliveryController {
 	
 	private final DeliveryServiceImpl deliverService;

@@ -37,7 +37,6 @@ public class AuthController {
 		authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(userDetails.getUsername(),requestDto.getPassword()));
 		String token = jwtTokenUtils.generateToken(userDetails);
 		getMail.setMail(jwtTokenUtils.getEmail(token));
-		System.out.println(getMail.getMail());
 		return token;
 	}
 	

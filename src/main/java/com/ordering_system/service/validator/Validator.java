@@ -23,7 +23,7 @@ public class Validator {
 
     public static boolean checkId(long id) {
         if (id <= 0) {
-//            throw new IllegalArgumentException("Id is wrong");
+            throw new IllegalArgumentException("Id is wrong");
         }
         return true;
     }
@@ -194,22 +194,34 @@ public class Validator {
         return address;
     }
 
+    public static void main(String[] args) {
+        String cardPattern = "\\d+";
+        String num="55555";
+        System.out.println(num.matches(cardPattern));
+    }
+
     public static boolean checkCard(String cardNumber) {
         String cardPattern = "\\d+";
         if (cardNumber.matches(cardPattern)) {
-            System.out.println(cardNumber);
-            System.out.println(cardNumber.charAt(0) == '4');
-            System.out.println(cardNumber.length() == 16);
             if (cardNumber.length() == 16 && cardNumber.charAt(0) == '4') {
                 return true;
             }
-            String firstDigits=cardNumber.substring(0,2);
-            if(cardNumber.charAt(0)=='2'||cardNumber.charAt(0)==5&&cardNumber.length()==16){
+            String firstDigits = cardNumber.substring(0, 2);
+            if (cardNumber.charAt(0) == '2' && cardNumber.length() == 16){
                 return true;
             }
-            return firstDigits.equals("37") || firstDigits.equals("34") && cardNumber.length() == 15;
+            if( cardNumber.charAt(0) == '5' && cardNumber.length() == 16){
+                return true;
+            }
+            if (firstDigits.equals("37") &&cardNumber.length() == 15) {
+                return true;
+            }
+            if ( firstDigits.equals("34") && cardNumber.length() == 15){
+                return true;
+            }
+
         }
-        return false;
+        throw new NotValidCardException("Not valid card number");
     }
     
     public static boolean checkActivation(boolean activated) {

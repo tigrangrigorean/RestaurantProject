@@ -6,7 +6,8 @@ import com.ordering_system.model.domain.RestaurantEntity;
 import com.ordering_system.model.domain.UserEntity;
 import com.ordering_system.model.dto.*;
 import com.ordering_system.model.enumeration.OrderStatus;
-import com.ordering_system.model.exception.NoEnoughMoneyException;
+import com.ordering_system.model.exception.EntityNotFoundException;
+import com.ordering_system.model.exception.NotValidCardException;
 import com.ordering_system.repository.FoodRepository;
 import com.ordering_system.repository.OrderRepository;
 import com.ordering_system.repository.RestaurantRepository;
@@ -71,8 +72,12 @@ public class OrderServiceImpl implements OrderService {
         }
         double priceSum = 0;
         Order order = new Order();
-        for (long foodId : foodListIds) {
-            priceSum += foodRepository.findFoodEntityById(foodId).getPrice();
+        try {
+            for (long foodId : foodListIds) {
+                priceSum += foodRepository.findFoodEntityById(foodId).getPrice();
+            }
+        }catch (NullPointerException e){
+            throw new EntityNotFoundException("Food not found");
         }
         long id = userRepository.findUserEntityByEmail(getMail.getMail()).getId();
         double discount = priceSum / 100 * getDiscount(id);
@@ -88,14 +93,12 @@ public class OrderServiceImpl implements OrderService {
         order.setDate(LocalDate.now());
         order.setAddressToDelivery(Validator.checkAddress(address));
         if (!Validator.checkCard(userEntity.getCardNumber())) {
-            throw new NoEnoughMoneyException("Incorrect card number");
+            throw new NotValidCardException("Incorrect card number");
         }
         orderRepository.save(converter.orderToEntity(order));
         doPay(order);
         return order;
     }
-
-    //TODO
     @Override
     public void update(long id, Order order) {
         Validator.checkId(id);

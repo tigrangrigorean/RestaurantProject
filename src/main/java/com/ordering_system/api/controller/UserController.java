@@ -1,13 +1,10 @@
 package com.ordering_system.api.controller;
-
-
 import com.ordering_system.model.dto.User;
 import com.ordering_system.service.impl.UserServiceImpl;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @RestController

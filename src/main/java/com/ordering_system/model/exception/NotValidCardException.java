@@ -2,7 +2,7 @@ package com.ordering_system.model.exception;
 
 import java.io.Serial;
 
-public class NoEnoughMoneyException extends RuntimeException{
+public class NotValidCardException extends RuntimeException{
 
 	@Serial
 	private static final long serialVersionUID = -1371942974355156409L;
@@ -10,7 +10,7 @@ public class NoEnoughMoneyException extends RuntimeException{
     private String message;
 
 
-    public NoEnoughMoneyException() {
+    public NotValidCardException() {
 
     }
 
@@ -18,7 +18,7 @@ public class NoEnoughMoneyException extends RuntimeException{
     /**
      * @param message
      */
-    public NoEnoughMoneyException(String message) {
+    public NotValidCardException(String message) {
         super();
         this.message = message;
     }

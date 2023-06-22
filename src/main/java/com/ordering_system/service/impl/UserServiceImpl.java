@@ -91,6 +91,7 @@ public class UserServiceImpl implements UserService {
         user.setPassword(SecurityConfig.passwordEncoder().encode(user.getPassword()));
         Validator.checkEmail(user.getEmail());
 //        Validator.checkPassport(user.getPassportNumber());
+        Validator.checkCard(user.getCardNumber());
         userRepository.save(converter.userToEntity(user));
         activation.sendPin(user.getEmail());
         return user;
@@ -102,7 +103,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public void update(String email, User user){
         UserEntity userEntity= userRepository.findUserEntityByEmail(email);
-
         Validator.checkEntity(user);
         Validator.checkEntity(userEntity);
         if (user.getFirstName() != null) {

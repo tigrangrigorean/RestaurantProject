@@ -10,14 +10,12 @@ import com.ordering_system.repository.UserRepository;
 import org.springframework.security.access.AccessDeniedException;
 
 public class Validator {
-    private UserRepository userRepository;
-    private final RestaurantRepository restaurantRepository;
+    private final UserRepository userRepository;
 
     private  final GetMail getMail;
 
     public Validator(UserRepository userRepository, RestaurantRepository restaurantRepository, GetMail getMail) {
         this.userRepository = userRepository;
-        this.restaurantRepository = restaurantRepository;
         this.getMail = getMail;
     }
 
@@ -128,7 +126,7 @@ public class Validator {
     }
 
     public static boolean checkPassword(String password) {
-        String regex = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,}$";
+        String regex = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&-/*+=])(?=\\S+$).{8,}$";
         if (!password.matches(regex)) {
             throw new InvalidPasswordException("Entered password is invalid, please make sure you have" +
                     " provided at least one digit, one lowercase, one uppercase, one special character");

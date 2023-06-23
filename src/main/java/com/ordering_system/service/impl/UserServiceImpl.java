@@ -10,11 +10,13 @@ import com.ordering_system.repository.AddressRepository;
 import com.ordering_system.repository.UserRepository;
 import com.ordering_system.service.UserService;
 import com.ordering_system.service.converter.Converter;
+import com.ordering_system.service.mailsender.GetMail;
 import com.ordering_system.service.mailsender.activation.MailActivation;
 import com.ordering_system.service.mailsender.service.EmailSenderService;
 import com.ordering_system.service.validator.Validator;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -34,16 +36,18 @@ public class UserServiceImpl implements UserService {
     private final EmailSenderService emailSenderService;
     private final AddressRepository addressRepository;
     private final MailActivation activation;
+    private final GetMail getMail;
 
 
     @Autowired
     public UserServiceImpl(Converter converter, UserRepository userRepository,
-                           EmailSenderService emailSenderService, AddressRepository addressRepository, MailActivation activation) {
+                           EmailSenderService emailSenderService, AddressRepository addressRepository, MailActivation activation, GetMail getMail) {
         this.converter = converter;
         this.userRepository = userRepository;
         this.emailSenderService = emailSenderService;
         this.addressRepository = addressRepository;
         this.activation = activation;
+        this.getMail = getMail;
     }
 
 
@@ -137,6 +141,12 @@ public class UserServiceImpl implements UserService {
     @Override
     public void delete(long id,Role role) {
         Validator.checkId(id);
+        UserEntity userEntity = userRepository.findUserEntityByEmail(getMail.getMail());
+
+        if(userEntity.getId() != id && role != Role.ADMIN) {
+            throw new AccessDeniedException("Access denied");
+        }
+
         if (Validator.checkEntity(userRepository.findUserEntityById(id))) {
             if(userRepository.findUserEntityById(id).getRole().equals(role)) {
                 userRepository.deleteById(id);

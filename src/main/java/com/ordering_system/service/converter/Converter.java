@@ -67,19 +67,23 @@ public class Converter {
      */
     public Food entityToFood(FoodEntity foodEntity) {
         return new Food(foodEntity.getName(), foodEntity.getIngredient(), foodEntity.getPrice(),
-                foodEntity.getRestaurantEntity().getId());
+                foodEntity.getRestaurantEntity().getId(),foodEntity.getId());
     }
 
     public FoodEntity foodToEntity(Food food) {
         return new FoodEntity(food.getName(),
-                food.getIngredient(), food.getPrice(), restaurantRepository.findRestaurantEntityById(food.getRestaurantId()));
+                food.getIngredient(), food.getPrice(),
+                restaurantRepository.findRestaurantEntityById(food.getRestaurantId()),
+                food.getId());
     }
 
     public List<FoodEntity> foodListToEntityList(List<Food> foodList) {
         List<FoodEntity> foodEntityList = new ArrayList<>();
         for (Food food : foodList) {
             foodEntityList.add(new FoodEntity(food.getName(),
-                    food.getIngredient(), food.getPrice(), restaurantRepository.findRestaurantEntityById(food.getRestaurantId())));
+                    food.getIngredient(), food.getPrice(),
+                    restaurantRepository.findRestaurantEntityById(food.getRestaurantId()),
+                    food.getId()));
         }
         return foodEntityList;
     }
@@ -88,7 +92,7 @@ public class Converter {
         List<Food> foodList = new ArrayList<>();
         for (FoodEntity foodEntity : foodEntityList) {
             foodList.add(new Food(foodEntity.getName(), foodEntity.getIngredient(), foodEntity.getPrice(),
-                    foodEntity.getRestaurantEntity().getId()));
+                    foodEntity.getRestaurantEntity().getId(),foodEntity.getId()));
         }
         return foodList;
     }

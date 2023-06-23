@@ -1,15 +1,26 @@
 package com.ordering_system.model.dto;
 
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
 public class Food {
-
-
+    @Schema(hidden = true)
+    private long id;
     private String name;
     private String ingredient;
     private double price;
     private long restaurantId;
 
-    public Food(String name, String ingredient, double price,long restaurantId) {
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public Food(String name, String ingredient, double price, long restaurantId,long id) {
+        this.id=id;
 
         this.name = name;
         this.ingredient = ingredient;

@@ -2,7 +2,11 @@ package com.ordering_system.api.controller;
 
 import java.util.List;
 
+import com.ordering_system.model.dto.Restaurant;
 import com.ordering_system.model.enumeration.Role;
+import com.ordering_system.repository.RestaurantRepository;
+import com.ordering_system.service.converter.Converter;
+import com.ordering_system.service.impl.RestaurantServiceImpl;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -25,10 +29,17 @@ import com.ordering_system.service.impl.UserServiceImpl;
 public class AdminController {
 
     private final UserServiceImpl adminServiceImpl;
+    private  final RestaurantServiceImpl restaurantService;
+    private final RestaurantRepository restaurantRepository;
+    private final Converter converter;
+
 
     @Autowired
-    public AdminController(UserServiceImpl adminServiceImpl) {
+    public AdminController(UserServiceImpl adminServiceImpl, RestaurantServiceImpl restaurantService, RestaurantRepository restaurantRepository, Converter converter) {
         this.adminServiceImpl = adminServiceImpl;
+        this.restaurantService = restaurantService;
+        this.restaurantRepository = restaurantRepository;
+        this.converter = converter;
     }
 
     @GetMapping("/get/{id}")
@@ -39,6 +50,11 @@ public class AdminController {
     @GetMapping("/getAll")
     public ResponseEntity<List<User>> getAllAdmin() {
         return ResponseEntity.ok().body(adminServiceImpl.getAll(Role.ADMIN));
+    }
+
+    @GetMapping("/getNotActivatedRestaurants")
+    public List<Restaurant> getAllNotActivatedRestaurants() {
+        return converter.entityListToRestaurantList(restaurantRepository.findRestaurantEntitiesByActivatedIsFalse());
     }
 
     @PostMapping("/save")
@@ -58,6 +74,12 @@ public class AdminController {
     public ResponseEntity<String> deleteAdmin(@RequestParam("id") long id) {
         adminServiceImpl.delete(id,Role.ADMIN);
         return ResponseEntity.ok().body("Admin by " + id + " deleted successfully");
+    }
+    @PutMapping("/verify/restaurant")
+    public ResponseEntity<String> verifyRestaurant(@RequestParam("id") long id){
+
+        restaurantService.verifyRestaurant(id);
+        return ResponseEntity.ok().body("Restaurant by id "+id+" activated successfully");
     }
 
 }

@@ -29,6 +29,16 @@ public class RestaurantEntity {
     private String email;
     private double balance;
 
+    public boolean isActivated() {
+        return activated;
+    }
+
+    public void setActivated(boolean activated) {
+        this.activated = activated;
+    }
+
+    private boolean activated;
+
     public RestaurantEntity() {
     }
 

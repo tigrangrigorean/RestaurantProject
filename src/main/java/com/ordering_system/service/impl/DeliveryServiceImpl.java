@@ -1,6 +1,8 @@
 package com.ordering_system.service.impl;
 
 import com.ordering_system.model.domain.OrderEntity;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +24,7 @@ public class DeliveryServiceImpl implements DeliveryService {
 	private final UserRepository userRepository;
 	private final OrderRepository orderRepository;
 	private final OrderServiceImpl orderService;
+	private static final Logger LOGGER = LoggerFactory.getLogger(DeliveryService.class);
 	
 	@Autowired
 	public DeliveryServiceImpl(
@@ -39,13 +42,17 @@ public class DeliveryServiceImpl implements DeliveryService {
 
 	@Override
 	public Delivery getById(long id) {
+		LOGGER.info("In method getById in DeliveryServiceImpl class");
 		Validator.checkId(id);
 		Validator.checkEntity(deliverRepository.findDeliverEntityById(id));
-		return converter.entityToDeliver(deliverRepository.findDeliverEntityById(id));
+		Delivery delivery = converter.entityToDeliver(deliverRepository.findDeliverEntityById(id));
+		LOGGER.info("GetById method passed in DeliveryServiceImpl class");
+		return delivery;
 	}
 
 	@Override
 	public Delivery save(Delivery delivery) {
+		LOGGER.info("In method save in DeliveryServiceImpl class");
 		Validator.checkEntity(delivery);
 		Validator.checkId(delivery.getUserId());
 		Validator.checkId(delivery.getOrderId());
@@ -53,11 +60,13 @@ public class DeliveryServiceImpl implements DeliveryService {
 		OrderEntity orderEntity = orderRepository.findOrderEntityById(delivery.getOrderId());
 		orderEntity.setOrderStatus(OrderStatus.IN_DELIVERY);
 		orderRepository.save(orderEntity);
+		LOGGER.info("Save method passed in DeliveryServiceImpl class");
 		return delivery;
 	}
 
 	@Override
 	public void update(long id, Delivery delivery) {
+		LOGGER.info("In method update in DeliveryServiceImpl class");
 		DeliveryEntity deliveryEntity = deliverRepository.findDeliverEntityById(id);
 		Validator.checkEntity(delivery);
 		Validator.checkEntity(deliveryEntity);
@@ -69,21 +78,26 @@ public class DeliveryServiceImpl implements DeliveryService {
 		if(Validator.checkId(delivery.getOrderId())) {
 			deliveryEntity.setOrderId(delivery.getOrderId());
 		}
+		LOGGER.info("Update method passed in DeliveryServiceImpl class");
 	}
 
 	@Override
 	public void updateStatusToDelivered(Delivery delivery){
+		LOGGER.info("In method UpdateStatusToDelivered in DeliveryServiceImpl class");
 		OrderEntity orderEntity = orderRepository.findOrderEntityById(delivery.getOrderId());
 		orderEntity.setOrderStatus(OrderStatus.DELIVERED);
 		orderService.update(delivery.getOrderId(), converter.entityToOrder(orderEntity));
+		LOGGER.info("UpdateStatusToDelivered method passed in DeliveryServiceImpl class");
 	}
 
 	@Override
 	public void delete(long id) {
+		LOGGER.info("In method delete in DeliveryServiceImpl class");
 		Validator.checkId(id);
 		if(Validator.checkEntity(deliverRepository.findDeliverEntityById(id))) {
 		deliverRepository.deleteById(id);
 		}
+		LOGGER.info("Delete method passed in DeliveryServiceImpl class");
 	}
 	
 

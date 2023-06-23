@@ -1,6 +1,7 @@
 package com.ordering_system.api.controller;
 
 import com.ordering_system.model.dto.User;
+import com.ordering_system.model.enumeration.Role;
 import com.ordering_system.service.impl.UserServiceImpl;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,17 +24,18 @@ public class ManagerController {
 
     @GetMapping("/get/{id}")
     public ResponseEntity<User> getManagerById(@PathVariable("id") long id) {
-        return ResponseEntity.ok().body(managerServiceImpl.getById(id));
+        return ResponseEntity.ok().body(managerServiceImpl.getById(id,Role.MANAGER));
     }
 
     @GetMapping("")
     public ResponseEntity<List<User>> getAllManagers() {
-        return ResponseEntity.ok().body(managerServiceImpl.getAll());
+        return ResponseEntity.ok().body(managerServiceImpl.getAll(Role.MANAGER));
     }
 
 
     @PostMapping("/save")
     public ResponseEntity<User> saveManager(@RequestBody User manager) {
+        manager.setRole(Role.MANAGER);
         return ResponseEntity.status(201).body(managerServiceImpl.save(manager));
     }
 
@@ -45,7 +47,7 @@ public class ManagerController {
 
     @DeleteMapping("/delete")
     public ResponseEntity<String> deleteManager(@RequestParam("id") long id) {
-        managerServiceImpl.delete(id);
+        managerServiceImpl.delete(id,Role.MANAGER);
         return ResponseEntity.ok().body("Manager by " + id + " deleted successfully");
     }
 }

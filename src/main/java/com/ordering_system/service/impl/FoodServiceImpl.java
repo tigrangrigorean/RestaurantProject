@@ -18,14 +18,14 @@ import java.util.List;
 
 @Service
 public class FoodServiceImpl implements FoodService {
-	
+
     private final FoodRepository foodRepository;
     private final Converter converter;
     private final RestaurantRepository restaurantRepository;
 
     @Autowired
     public FoodServiceImpl(FoodRepository foodRepository, Converter converter,
-    		RestaurantRepository restaurantRepository) {
+                           RestaurantRepository restaurantRepository) {
         this.foodRepository = foodRepository;
         this.converter = converter;
         this.restaurantRepository = restaurantRepository;
@@ -33,21 +33,21 @@ public class FoodServiceImpl implements FoodService {
 
     @Override
     public Food getById(long id) {
-    	Validator.checkId(id);
-    	FoodEntity foodEntity = foodRepository.findFoodEntityById(id);
-    	Validator.checkEntity(foodEntity);
+        Validator.checkId(id);
+        FoodEntity foodEntity = foodRepository.findFoodEntityById(id);
+        Validator.checkEntity(foodEntity);
         return converter.entityToFood(foodEntity);
     }
 
 
     @Override
     public Food save(Food food) {
-    	Validator.checkEntity(food);
-    	Validator.checkPrice(food.getPrice());
-    	Validator.checkName(food.getName());
-    	Validator.checkName(food.getIngredient());
-    	Validator.checkId(food.getRestaurantId());
-    	Validator.checkEntity(restaurantRepository.findRestaurantEntityById(food.getRestaurantId()));
+        Validator.checkEntity(food);
+        Validator.checkPrice(food.getPrice());
+        Validator.checkName(food.getName());
+        Validator.checkName(food.getIngredient());
+        Validator.checkId(food.getRestaurantId());
+        Validator.checkEntity(restaurantRepository.findRestaurantEntityById(food.getRestaurantId()));
         foodRepository.save(converter.foodToEntity(food));
         return food;
     }
@@ -55,26 +55,29 @@ public class FoodServiceImpl implements FoodService {
     @Override
     public void update(long id, Food food) {
         FoodEntity foodEntity = foodRepository.findFoodEntityById(id);
-        
-        	Validator.checkEntity(food);
-            if (food.getName() != null) {
-                Validator.checkName(food.getName());
-                foodEntity.setName(food.getName());
-            }
-            if (food.getIngredient() != null) {
-                Validator.checkName(food.getName());
-                foodEntity.setIngredient(food.getIngredient());
-            }
-            if (Validator.checkPrice(id)) {
-                foodEntity.setPrice(food.getPrice());
+
+        Validator.checkEntity(food);
+        if (food.getName() != null) {
+            Validator.checkName(food.getName());
+            foodEntity.setName(food.getName());
+        }
+        if (food.getIngredient() != null) {
+            Validator.checkName(food.getIngredient());
+            foodEntity.setIngredient(food.getIngredient());
+        }
+        if (food.getPrice() > 0) {
+            foodEntity.setPrice(food.getPrice());
+        }
+        if (food.getPrice() < 0) {
+            throw new RuntimeException("Price should be greater than 0");
         }
         foodRepository.save(foodEntity);
     }
 
     @Override
     public void delete(long id) {
-    	Validator.checkId(id);
-    	Validator.checkEntity(foodRepository.findFoodEntityById(id));
+        Validator.checkId(id);
+        Validator.checkEntity(foodRepository.findFoodEntityById(id));
         foodRepository.deleteById(id);
     }
 

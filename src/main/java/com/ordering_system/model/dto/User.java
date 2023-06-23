@@ -2,6 +2,7 @@ package com.ordering_system.model.dto;
 
 
 import com.ordering_system.model.enumeration.Role;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.Date;
 
@@ -14,9 +15,9 @@ public class User {
     private String password;
     private String email;
     private String passportNumber;
+    @Schema(hidden = true)
     private Role role;
     private String cardNumber;
-
     private boolean activated;
 
     public boolean isActivated() {

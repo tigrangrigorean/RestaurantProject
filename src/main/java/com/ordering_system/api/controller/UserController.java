@@ -1,5 +1,6 @@
 package com.ordering_system.api.controller;
 import com.ordering_system.model.dto.User;
+import com.ordering_system.model.enumeration.Role;
 import com.ordering_system.service.impl.UserServiceImpl;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,17 +22,18 @@ public class UserController {
 
     @GetMapping("/get/{id}")
     public ResponseEntity<User> getUserById(@PathVariable("id") long id) {
-        return ResponseEntity.ok().body(userServiceImpl.getById(id));
+        return ResponseEntity.ok().body(userServiceImpl.getById(id,Role.USER));
     }
 
     @GetMapping("")
     public ResponseEntity<List<User>> getAllUsers() {
-        return ResponseEntity.ok().body(userServiceImpl.getAll());
+        return ResponseEntity.ok().body(userServiceImpl.getAll(Role.USER));
     }
 
 
     @PostMapping("/save")
     public ResponseEntity<User> saveUser(@RequestBody User user) {
+        user.setRole(Role.USER);
         return ResponseEntity.status(201).body(userServiceImpl.save(user));
     }
 
@@ -43,7 +45,7 @@ public class UserController {
 
     @DeleteMapping("/delete")
     public ResponseEntity<String> deleteUser(@RequestParam("id") long id) {
-        userServiceImpl.delete(id);
-        return ResponseEntity.ok().body("User by " + id + " deleted successfully");
+        userServiceImpl.delete(id,Role.USER);
+        return ResponseEntity.ok().body("User by  id " + id + " deleted successfully");
     }
 }

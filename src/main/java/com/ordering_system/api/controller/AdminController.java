@@ -2,6 +2,7 @@ package com.ordering_system.api.controller;
 
 import java.util.List;
 
+import com.ordering_system.model.enumeration.Role;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -32,16 +33,17 @@ public class AdminController {
 
     @GetMapping("/get/{id}")
     public ResponseEntity<User> getAdminById(@PathVariable("id") long id) {
-        return ResponseEntity.ok().body(adminServiceImpl.getById(id));
+        return ResponseEntity.ok().body(adminServiceImpl.getById(id,Role.ADMIN));
     }
 
     @GetMapping("/getAll")
     public ResponseEntity<List<User>> getAllAdmin() {
-        return ResponseEntity.ok().body(adminServiceImpl.getAll());
+        return ResponseEntity.ok().body(adminServiceImpl.getAll(Role.ADMIN));
     }
 
     @PostMapping("/save")
     public ResponseEntity<User> saveAdmin(@RequestBody User admin) {
+        admin.setRole(Role.ADMIN);
         return ResponseEntity.status(201).body(adminServiceImpl.save(admin));
     }
 
@@ -54,7 +56,7 @@ public class AdminController {
 
     @DeleteMapping("/delete")
     public ResponseEntity<String> deleteAdmin(@RequestParam("id") long id) {
-        adminServiceImpl.delete(id);
+        adminServiceImpl.delete(id,Role.ADMIN);
         return ResponseEntity.ok().body("Admin by " + id + " deleted successfully");
     }
 

@@ -106,7 +106,7 @@ public class Validator {
 
 
     public static boolean checkPrice(double price) {
-        if (price < 0) {
+        if (price < 0.1) {
             throw new InvalidPriceException("Entered price is invalid");
         }
         return true;
@@ -162,9 +162,9 @@ public class Validator {
         }
         return true;
     }
-
     public static boolean checkPassport(String passport) {
         String regex = "^[A-Z]{2}\\d{7}$";
+        System.out.println(passport.matches(regex));
         if (!passport.matches(regex)) {
             throw new InvalidPassportException("Enter valid passport number");
         }
@@ -193,13 +193,6 @@ public class Validator {
         }
         return address;
     }
-
-    public static void main(String[] args) {
-        String cardPattern = "\\d+";
-        String num="55555";
-        System.out.println(num.matches(cardPattern));
-    }
-
     public static boolean checkCard(String cardNumber) {
         String cardPattern = "\\d+";
         if (cardNumber.matches(cardPattern)) {

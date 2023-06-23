@@ -176,9 +176,12 @@ public class Converter {
     }
 
     public List<User> entityToUserList(List<UserEntity> userEntityList) {
-        List<User> userList = new ArrayList<>();
-        User user = new User();
         for (UserEntity userEntity : userEntityList) {
+            System.out.println(userEntity.getEmail());
+        }
+        List<User> userList = new ArrayList<>();
+        for (UserEntity userEntity : userEntityList) {
+            User user = new User();
             user.setFirstName(userEntity.getFirstName());
             user.setLastName(userEntity.getLastName());
             user.setBirthday(userEntity.getBirthday());

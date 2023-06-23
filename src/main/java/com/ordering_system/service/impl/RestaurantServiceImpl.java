@@ -2,7 +2,10 @@ package com.ordering_system.service.impl;
 
 
 import com.ordering_system.model.domain.RestaurantEntity;
+import com.ordering_system.model.domain.UserEntity;
 import com.ordering_system.model.dto.Restaurant;
+import com.ordering_system.model.enumeration.Role;
+import com.ordering_system.model.exception.EntityNotFoundException;
 import com.ordering_system.repository.AddressRepository;
 import com.ordering_system.repository.FoodRepository;
 import com.ordering_system.repository.RestaurantRepository;
@@ -56,7 +59,11 @@ public class RestaurantServiceImpl implements RestaurantService {
         Validator.checkName(restaurant.getName());
         Validator.checkTin(restaurant.getTin());
         Validator.checkEntity(addressRepository.findAddressEntityById(restaurant.getAddressId()));
+        UserEntity userEntity=userRepository.findUserEntityById(restaurant.getManagerId());
         Validator.checkEntity(userRepository.findUserEntityById(restaurant.getManagerId()));
+        if(!userEntity.getRole().equals(Role.MANAGER)){
+            throw new EntityNotFoundException("Manager by id "+restaurant.getManagerId()+" not found");
+        }
         Validator.checkEmail(restaurant.getEmail());
         Validator.checkPhoneNumber(restaurant.getPhoneNumber());
         restaurantRepository.save(converter.restaurantToEntity(restaurant));

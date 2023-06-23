@@ -5,6 +5,7 @@ import com.ordering_system.model.domain.RestaurantEntity;
 import com.ordering_system.model.domain.UserEntity;
 import com.ordering_system.model.dto.Restaurant;
 import com.ordering_system.model.enumeration.Role;
+import com.ordering_system.model.exception.EntityAlreadyExsistsException;
 import com.ordering_system.model.exception.EntityNotFoundException;
 import com.ordering_system.repository.AddressRepository;
 import com.ordering_system.repository.FoodRepository;
@@ -50,11 +51,16 @@ public class RestaurantServiceImpl implements RestaurantService {
 
     @Override
     public List<Restaurant> getAll() {
-        return converter.entityListToRestaurantList(restaurantRepository.findAll());
+        return converter.entityListToRestaurantList(restaurantRepository.findRestaurantEntitiesByActivatedIsTrue());
     }
+
 
     @Override
     public Restaurant save(Restaurant restaurant) {
+        RestaurantEntity restaurantEntity=restaurantRepository.findRestaurantEntitiesByAddress_Id(restaurant.getAddressId());
+        if(restaurantEntity!=null){
+            throw new EntityAlreadyExsistsException("Address already exist");
+        }
         Validator.checkEntity(restaurant);
         Validator.checkName(restaurant.getName());
         Validator.checkTin(restaurant.getTin());
@@ -117,6 +123,13 @@ public class RestaurantServiceImpl implements RestaurantService {
     }
 
     @Override
+    public void verifyRestaurant(long id) {
+        RestaurantEntity restaurant= restaurantRepository.findRestaurantEntityById(id) ;
+        restaurant.setActivated(true);
+        restaurantRepository.save(restaurant);
+    }
+
+    @Override
     public void delete(long id) {
         Validator.checkId(id);
         if (Validator.checkEntity(restaurantRepository.findRestaurantEntityById(id))) {
@@ -126,4 +139,5 @@ public class RestaurantServiceImpl implements RestaurantService {
             restaurantRepository.deleteById(id);
         }
     }
+
 }

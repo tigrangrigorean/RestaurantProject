@@ -9,5 +9,6 @@ public interface RestaurantService {
     List<Restaurant> getAll();
     Restaurant save(Restaurant restaurant);
     void update(long id,Restaurant restaurant);
+    public void verifyRestaurant(long id);
     void delete(long id);
 }

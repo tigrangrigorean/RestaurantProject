@@ -18,12 +18,13 @@ public class FoodEntity {
     private double price;
 
 
-    public FoodEntity( String name, String ingredient, double price,RestaurantEntity restaurantEntity
+    public FoodEntity( String name, String ingredient, double price,RestaurantEntity restaurantEntity,long id
                       ) {
         this.name = name;
         this.ingredient = ingredient;
         this.price = price;
         this.restaurantEntity = restaurantEntity;
+        this.id=id;
 
     }
 

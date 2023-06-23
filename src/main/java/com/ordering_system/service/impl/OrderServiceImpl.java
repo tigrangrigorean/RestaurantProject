@@ -16,6 +16,8 @@ import com.ordering_system.service.OrderService;
 import com.ordering_system.service.converter.Converter;
 import com.ordering_system.service.validator.Validator;
 import jakarta.transaction.Transactional;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.ordering_system.service.mailsender.GetMail;
@@ -34,6 +36,7 @@ public class OrderServiceImpl implements OrderService {
     private final UserServiceImpl userService;
     private final RestaurantServiceImpl restaurantService;
     private final GetMail getMail;
+    private static final Logger LOGGER = LoggerFactory.getLogger(OrderService.class);
 
     @Autowired
     public OrderServiceImpl(Converter converter, OrderRepository orderRepository,
@@ -53,19 +56,26 @@ public class OrderServiceImpl implements OrderService {
     @Override
     @Transactional
     public Order getById(long id) {
+        LOGGER.info("In method getById in OrderServiceImpl class");
         Validator.checkId(id);
         OrderEntity orderEntity = orderRepository.findOrderEntityById(id);
         Validator.checkEntity(orderEntity);
-        return converter.entityToOrder(orderEntity);
+        Order order = converter.entityToOrder(orderEntity);
+        LOGGER.info("GetById method passed in OrderServiceImpl class");
+        return order;
     }
 
     @Override
     public List<Order> getAll() {
-        return converter.entityToOrderList(orderRepository.findAll());
+        LOGGER.info("In method getAll in OrderServiceImpl class");
+        List<Order> orderList = converter.entityToOrderList(orderRepository.findAll());
+        LOGGER.info("GetAll method passed in OrderServiceImpl class");
+        return orderList;
     }
 
     @Override
     public Order save(List<FoodDto> foodDtoList, Address address) {
+        LOGGER.info("In method save in OrderServiceImpl class");
         List<Long> foodListIds = new ArrayList<>();
         for (FoodDto foodDto : foodDtoList) {
             foodListIds.add(foodDto.getId());
@@ -97,10 +107,12 @@ public class OrderServiceImpl implements OrderService {
         }
         orderRepository.save(converter.orderToEntity(order));
         doPay(order);
+        LOGGER.info("Save method passed in OrderServiceImpl class");
         return order;
     }
     @Override
     public void update(long id, Order order) {
+        LOGGER.info("In method update in OrderServiceImpl class");
         Validator.checkId(id);
         OrderEntity orderEntity = orderRepository.findOrderEntityById(id);
         Validator.checkEntity(order);
@@ -137,19 +149,23 @@ public class OrderServiceImpl implements OrderService {
             orderEntity.setRestaurantName(order.getRestaurantName());
         }
         orderRepository.save(orderEntity);
+        LOGGER.info("Update method passed in OrderServiceImpl class");
     }
 
     @Override
     public void delete(long id) {
+        LOGGER.info("In method delete in OrderServiceImpl class");
         Validator.checkId(id);
         if (Validator.checkEntity(orderRepository.findOrderEntityById(id))) {
             orderRepository.deleteByCondition(id);
             orderRepository.deleteById(id);
         }
+        LOGGER.info("Delete method passed in OrderServiceImpl class");
     }
 
     @Override
     public double getDiscount(long userId) {
+        LOGGER.info("In method getDiscount in OrderServiceImpl class");
         List<OrderEntity> orders = orderRepository.findOrderEntitiesByUserId(userId);
         double sum = 0;
         for (OrderEntity order : orders) {
@@ -160,10 +176,12 @@ public class OrderServiceImpl implements OrderService {
         if (sum > 1000) {
             return 10;
         }
+        LOGGER.info("GetDiscount method passed in OrderServiceImpl class");
         return 0;
     }
 
     public void doPay(Order order) {
+        LOGGER.info("In method doPay in OrderServiceImpl class");
         UserEntity userEntity = userRepository.findUserEntityById(order.getUserId());
         RestaurantEntity restaurantEntity = restaurantRepository.findRestaurantEntityByName(order.getRestaurantName());
         double restaurantBalance = restaurantRepository.findRestaurantEntityByName(order.getRestaurantName()).getBalance();
@@ -172,5 +190,6 @@ public class OrderServiceImpl implements OrderService {
         restaurant.setBalance(restaurantBalance + order.getPrice());
         userService.update(userEntity.getEmail(), user);
         restaurantService.update(restaurantEntity.getId(), restaurant);
+        LOGGER.info("doPay method passed in OrderServiceImpl class");
     }
 }

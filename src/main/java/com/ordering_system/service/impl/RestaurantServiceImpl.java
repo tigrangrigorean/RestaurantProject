@@ -5,7 +5,7 @@ import com.ordering_system.model.domain.RestaurantEntity;
 import com.ordering_system.model.domain.UserEntity;
 import com.ordering_system.model.dto.Restaurant;
 import com.ordering_system.model.enumeration.Role;
-import com.ordering_system.model.exception.EntityAlreadyExsistsException;
+import com.ordering_system.model.exception.EntityAlreadyExistsException;
 import com.ordering_system.model.exception.EntityNotFoundException;
 import com.ordering_system.repository.AddressRepository;
 import com.ordering_system.repository.FoodRepository;
@@ -67,19 +67,24 @@ public class RestaurantServiceImpl implements RestaurantService {
     @Override
     public Restaurant save(Restaurant restaurant) {
         LOGGER.info("In method save in RestaurantServiceImpl class");
+        if(restaurantRepository.findRestaurantEntityByName(restaurant.getName()) != null ) {
+        	throw new EntityAlreadyExistsException("Restaurant by entered name already exists");
+        }
         RestaurantEntity restaurantEntity=restaurantRepository.findRestaurantEntitiesByAddress_Id(restaurant.getAddressId());
         if(restaurantEntity!=null){
-            throw new EntityAlreadyExsistsException("Address already exist");
+            throw new EntityAlreadyExistsException("Address already exist");
         }
         Validator.checkEntity(restaurant);
         Validator.checkName(restaurant.getName());
         Validator.checkTin(restaurant.getTin());
         Validator.checkEntity(addressRepository.findAddressEntityById(restaurant.getAddressId()));
-        UserEntity userEntity=userRepository.findUserEntityById(restaurant.getManagerId());
-        Validator.checkEntity(userRepository.findUserEntityById(restaurant.getManagerId()));
+        UserEntity userEntity = userRepository.findUserEntityById(restaurant.getManagerId());
+        Validator.checkEntity(userEntity);
+        
         if(!userEntity.getRole().equals(Role.MANAGER)){
-            throw new EntityNotFoundException("Manager by id "+restaurant.getManagerId()+" not found");
+            throw new EntityNotFoundException("Manager by id "+restaurant.getManagerId()+ " not found");
         }
+        
         Validator.checkEmail(restaurant.getEmail());
         Validator.checkPhoneNumber(restaurant.getPhoneNumber());
         restaurantRepository.save(converter.restaurantToEntity(restaurant));

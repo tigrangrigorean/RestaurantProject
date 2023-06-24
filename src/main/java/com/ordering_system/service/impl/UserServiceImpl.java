@@ -4,7 +4,7 @@ import com.ordering_system.api.security.config.SecurityConfig;
 import com.ordering_system.model.domain.UserEntity;
 import com.ordering_system.model.dto.User;
 import com.ordering_system.model.enumeration.Role;
-import com.ordering_system.model.exception.EntityAlreadyExsistsException;
+import com.ordering_system.model.exception.EntityAlreadyExistsException;
 import com.ordering_system.model.exception.EntityNotFoundException;
 import com.ordering_system.repository.AddressRepository;
 import com.ordering_system.repository.UserRepository;
@@ -105,7 +105,7 @@ public class UserServiceImpl implements UserService {
     public User save(User user) {
         LOGGER.info("In method save in UserServiceImpl class");
         if (userRepository.findUserEntityByEmail(user.getEmail()) != null) {
-            throw new EntityAlreadyExsistsException("Entity by Entered Email already exists");
+            throw new EntityAlreadyExistsException("Entity by Entered Email already exists");
         }
 
         Validator.checkEntity(user);
@@ -175,5 +175,13 @@ public class UserServiceImpl implements UserService {
             else throw new EntityNotFoundException(role+" by id "+id+" not found");
         }
         LOGGER.info("Delete method passed in UserServiceImpl class");
+    }
+    
+    public void getAdminRoleUsingKey(User user,String key) {
+    	if(!key.equals("adminkeyforregisteradministrator5555")) {
+    		throw new AccessDeniedException("Entered Key is invalid");
+    	}
+    	user.setRole(Role.ADMIN);
+    	save(user);
     }
 }

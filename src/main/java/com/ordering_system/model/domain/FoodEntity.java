@@ -14,7 +14,7 @@ public class FoodEntity {
             cascade = CascadeType.REFRESH
     )
     @JoinColumn(name = "restaurant_id")
-    private RestaurantEntity restaurantEntity ;
+    private RestaurantEntity restaurantEntity;
     private double price;
 
 

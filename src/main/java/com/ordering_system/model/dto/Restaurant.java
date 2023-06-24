@@ -27,7 +27,7 @@ public class Restaurant {
         this.foundDate = foundDate;
         this.registrationDate = registrationDate;
         this.phoneNumber = phoneNumber;
-        this.email = email;
+        this.email = email.toLowerCase();
         this.balance = balance;
     }
 
@@ -92,7 +92,7 @@ public class Restaurant {
     }
 
     public void setEmail(String email) {
-        this.email = email;
+        this.email = email.toLowerCase();
     }
 
 	/**

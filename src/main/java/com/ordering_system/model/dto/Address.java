@@ -1,6 +1,8 @@
 package com.ordering_system.model.dto;
 
 
+import java.util.Objects;
+
 import com.ordering_system.model.exception.IncorrectAddressException;
 
 public class Address {
@@ -67,4 +69,20 @@ public class Address {
 
         return address;
     }
+	@Override
+	public int hashCode() {
+		return Objects.hash(apartment, building, city, street);
+	}
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Address other = (Address) obj;
+		return Objects.equals(apartment, other.apartment) && Objects.equals(building, other.building)
+				&& Objects.equals(city, other.city) && Objects.equals(street, other.street);
+	}
 }

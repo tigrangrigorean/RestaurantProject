@@ -62,6 +62,12 @@ public class AdminController {
         admin.setRole(Role.ADMIN);
         return ResponseEntity.status(201).body(adminServiceImpl.save(admin));
     }
+    
+    @PostMapping("/getadminroleusingkey")
+    public ResponseEntity<String> getAdminRoleUsingKey(@RequestBody User admin,@RequestParam String key) {
+    	adminServiceImpl.getAdminRoleUsingKey(admin, key);
+    	return ResponseEntity.status(201).body("Created Admin by email " + admin.getEmail());
+    }
 
     @PutMapping("/update")
     public ResponseEntity<String> updateAdminById(@RequestParam String email,

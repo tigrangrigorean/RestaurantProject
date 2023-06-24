@@ -54,7 +54,7 @@ public class RestaurantEntity {
         this.foundDate = foundDate;
         this.registrationDate = registrationDate;
         this.phoneNumber = phoneNumber;
-        this.email = email;
+        this.email = email.toLowerCase();
         this.balance = balance;
     }
 
@@ -135,7 +135,7 @@ public class RestaurantEntity {
     }
 
     public void setEmail(String email) {
-        this.email = email;
+        this.email = email.toLowerCase();
     }
 
 	/**

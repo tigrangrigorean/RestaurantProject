@@ -43,6 +43,7 @@ public class SecurityConfig {
 						.requestMatchers("/food/**").hasAnyAuthority("MANAGER","ADMIN")
 						.requestMatchers("/restaurant").permitAll()
 						.requestMatchers("/restaurant/**").hasAnyAuthority("MANAGER","ADMIN")
+						.requestMatchers("/delivery/singup").hasAnyAuthority("MANAGER","ADMIN")
 						.requestMatchers("/delivery/update").hasAnyAuthority("MANAGER","ADMIN")
 						.requestMatchers("/delivery/**").hasAnyAuthority("DELIVERY","MANAGER","ADMIN")
 						.requestMatchers("/address/**").authenticated()

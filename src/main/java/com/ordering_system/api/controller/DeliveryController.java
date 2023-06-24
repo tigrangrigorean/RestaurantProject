@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ordering_system.model.dto.Delivery;
+import com.ordering_system.model.dto.User;
 import com.ordering_system.service.impl.DeliveryServiceImpl;
 import com.ordering_system.service.impl.OrderServiceImpl;
 
@@ -32,6 +33,12 @@ public class DeliveryController {
 	@GetMapping("/get/{id}")
 	public ResponseEntity<Delivery> getById(@PathVariable long id) {
 		return ResponseEntity.ok().body(deliverService.getById(id));
+	}
+	
+	@PostMapping("/signup")
+	public ResponseEntity<String> singUpDelivery(@RequestBody User user) {
+		deliverService.singUpDelivery(user);
+		return ResponseEntity.status(201).body("Added deliverer with email " + user.getEmail());
 	}
 	
 	@PostMapping("/save")

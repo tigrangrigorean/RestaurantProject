@@ -36,9 +36,9 @@ public class DeliveryController {
 	}
 	
 	@PostMapping("/signup")
-	public ResponseEntity<String> singUpDelivery(@RequestBody User user) {
-		deliverService.singUpDelivery(user);
-		return ResponseEntity.status(201).body("Added deliverer with email " + user.getEmail());
+	public ResponseEntity<String> singUpDeliveryMan(@RequestBody User deliveryMan) {
+		deliverService.singUpDelivery(deliveryMan);
+		return ResponseEntity.status(201).body("Added deliverer with email " + deliveryMan.getEmail());
 	}
 	
 	@PostMapping("/save")

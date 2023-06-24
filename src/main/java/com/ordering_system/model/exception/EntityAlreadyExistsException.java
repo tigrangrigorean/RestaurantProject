@@ -2,7 +2,7 @@ package com.ordering_system.model.exception;
 
 import java.io.Serial;
 
-public class EntityAlreadyExsistsException extends RuntimeException {
+public class EntityAlreadyExistsException extends RuntimeException {
 
 	@Serial
 	private static final long serialVersionUID = -3488764999991330054L;
@@ -10,7 +10,7 @@ public class EntityAlreadyExsistsException extends RuntimeException {
 	private String message;
 
 
-    public EntityAlreadyExsistsException() {
+    public EntityAlreadyExistsException() {
 
     }
 
@@ -18,7 +18,7 @@ public class EntityAlreadyExsistsException extends RuntimeException {
     /**
      * @param message
      */
-    public EntityAlreadyExsistsException(String message) {
+    public EntityAlreadyExistsException(String message) {
         this.message = message;
     }
 

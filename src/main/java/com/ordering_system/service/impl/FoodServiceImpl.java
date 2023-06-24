@@ -2,7 +2,9 @@ package com.ordering_system.service.impl;
 
 
 import com.ordering_system.model.domain.FoodEntity;
+import com.ordering_system.model.domain.RestaurantEntity;
 import com.ordering_system.model.dto.Food;
+import com.ordering_system.model.exception.EntityAlreadyExistsException;
 import com.ordering_system.repository.FoodRepository;
 import com.ordering_system.repository.RestaurantRepository;
 import com.ordering_system.service.FoodService;
@@ -55,7 +57,11 @@ public class FoodServiceImpl implements FoodService {
         Validator.checkName(food.getName());
         Validator.checkName(food.getIngredient());
         Validator.checkId(food.getRestaurantId());
-        Validator.checkEntity(restaurantRepository.findRestaurantEntityById(food.getRestaurantId()));
+        RestaurantEntity restaurantEntity = restaurantRepository.findRestaurantEntityById(food.getRestaurantId());
+        Validator.checkEntity(restaurantEntity);
+        if(foodRepository.findByRestaurantEntityAndName(restaurantEntity, food.getName()) != null) {
+        	throw new EntityAlreadyExistsException("Food by entered name already exists");
+        }
         foodRepository.save(converter.foodToEntity(food));
         LOGGER.info("Save method passed in FoodServiceImpl class");
         return food;

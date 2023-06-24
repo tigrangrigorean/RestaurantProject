@@ -55,7 +55,7 @@ public class UserEntity implements UserDetails{
         this.birthday = birthday;
         this.phoneNumber = phoneNumber;
         this.password = password;
-        this.email = email;
+        this.email = email.toLowerCase();
         this.passportNumber = passportNumber;
         this.role = role;
         this.cardNumber = cardNumber;
@@ -113,7 +113,7 @@ public class UserEntity implements UserDetails{
     }
 
     public void setEmail(String email) {
-        this.email = email;
+        this.email = email.toLowerCase();
     }
 
     public String getPassportNumber() {

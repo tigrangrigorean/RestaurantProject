@@ -56,7 +56,7 @@ public class DeliveryServiceImpl implements DeliveryService {
 	}
 	
 	public void singUpDelivery(User user) {
-		user.setRole(Role.DELIVERY);
+		user.setRole(Role.DELIVERY_MAN);
 		userService.save(user);
 	}
 

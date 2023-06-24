@@ -75,6 +75,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Order save(List<FoodDto> foodDtoList, Address address) {
+
         LOGGER.info("In method save in OrderServiceImpl class");
         List<Long> foodListIds = new ArrayList<>();
         for (FoodDto foodDto : foodDtoList) {
@@ -94,7 +95,8 @@ public class OrderServiceImpl implements OrderService {
         UserEntity userEntity = userRepository.findUserEntityById(id);
         order.setUserId(id);
         order.setOrderStatus(OrderStatus.ACCEPTED);
-        order.setRestaurantName(foodRepository.findFoodEntityById(foodListIds.get(0)).getName());
+        FoodEntity foodEntity = foodRepository.findFoodEntityById(foodListIds.get(0));
+        order.setRestaurantName(restaurantRepository.findRestaurantEntityById(foodEntity.getRestaurantEntity().getId()).getName());
         order.setPrice(priceSum);
         order.setDiscountedPrice(priceSum - discount);
         order.setDiscount(discount);
@@ -105,8 +107,8 @@ public class OrderServiceImpl implements OrderService {
         if (!Validator.checkCard(userEntity.getCardNumber())) {
             throw new NotValidCardException("Incorrect card number");
         }
-        orderRepository.save(converter.orderToEntity(order));
         doPay(order);
+        orderRepository.save(converter.orderToEntity(order));
         LOGGER.info("Save method passed in OrderServiceImpl class");
         return order;
     }

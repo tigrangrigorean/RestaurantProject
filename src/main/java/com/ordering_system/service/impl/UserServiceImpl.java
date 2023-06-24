@@ -172,7 +172,7 @@ public class UserServiceImpl implements UserService {
             if(userRepository.findUserEntityById(id).getRole().equals(role)) {
                 userRepository.deleteById(id);
             }
-            else throw new EntityNotFoundException(role+" by id "+id+" not found");
+            else throw new EntityNotFoundException(role+" by id " +id+ " not found");
         }
         LOGGER.info("Delete method passed in UserServiceImpl class");
     }

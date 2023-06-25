@@ -164,7 +164,7 @@ public class Validator {
         String regex = "^[A-Z]{2}\\d{7}$";
         System.out.println(passport.matches(regex));
         if (!passport.matches(regex)) {
-            throw new InvalidPassportException("Enter valid passport number");
+            throw new InvalidPassportException("Enter invalid passport number");
         }
         return true;
     }

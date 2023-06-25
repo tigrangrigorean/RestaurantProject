@@ -60,14 +60,15 @@ public class OrderServiceImpl implements OrderService {
         LOGGER.info("In method getById in OrderServiceImpl class");
         Validator.checkId(id);
         OrderEntity orderEntity = orderRepository.findOrderEntityById(id);
-        if(userRepository.findUserEntityByEmail(getMail.getMail()).getId() != orderEntity.getUserId()) {
-        	throw new AccessDeniedException("User can't view other orders");
+        if (userRepository.findUserEntityByEmail(getMail.getMail()).getId() != orderEntity.getUserId()) {
+            throw new AccessDeniedException("User can't view other orders");
         }
         Validator.checkEntity(orderEntity);
         Order order = converter.entityToOrder(orderEntity);
         LOGGER.info("GetById method passed in OrderServiceImpl class");
         return order;
     }
+
     @Override
     @Transactional
     public List<Order> getOrdersByUser(long id) {
@@ -88,7 +89,6 @@ public class OrderServiceImpl implements OrderService {
     }
 
 
-
     @Override
     public Order save(List<FoodDto> foodDtoList, Address address) {
 
@@ -103,7 +103,7 @@ public class OrderServiceImpl implements OrderService {
             for (long foodId : foodListIds) {
                 priceSum += foodRepository.findFoodEntityById(foodId).getPrice();
             }
-        }catch (NullPointerException e){
+        } catch (NullPointerException e) {
             throw new EntityNotFoundException("Food not found");
         }
         UserEntity userEntity = userRepository.findUserEntityByEmail(getMail.getMail());
@@ -127,6 +127,8 @@ public class OrderServiceImpl implements OrderService {
         LOGGER.info("Save method passed in OrderServiceImpl class");
         return order;
     }
+
+
     @Override
     public void update(long id, Order order) {
         LOGGER.info("In method update in OrderServiceImpl class");
@@ -146,33 +148,33 @@ public class OrderServiceImpl implements OrderService {
         if (order.getAddressToDelivery() != null) {
             orderEntity.setAddressToDelivery(order.getAddressToDelivery().toString());
         }
-        if (order.getDiscount() > 0){
+        if (order.getDiscount() > 0) {
             orderEntity.setDiscount(order.getDiscount());
-        }if(order.getDiscountedPrice()>0) {
+        }
+        if (order.getDiscountedPrice() > 0) {
             orderEntity.setDiscountedPrice(order.getDiscountedPrice());
-        }if(order.getFoodIdList()!=null) {
+        }
+        if (order.getFoodIdList() != null) {
             List<Long> ids = order.getFoodIdList();
             List<FoodEntity> foodEntityList = new ArrayList<>();
             for (Long foodId : ids) {
                 foodEntityList.add(foodRepository.findFoodEntityById(foodId));
             }
             orderEntity.setFoodList(foodEntityList);
-        }if(order.getUserId()>0) {
+        }
+        if (order.getUserId() > 0) {
             orderEntity.setUserId(order.getUserId());
-        }if(order.getDeliveryCost()>0) {
+        }
+        if (order.getDeliveryCost() > 0) {
             orderEntity.setDeliveryCost(order.getDeliveryCost());
         }
-        if(order.getRestaurantName()!=null) {
+        if (order.getRestaurantName() != null) {
             orderEntity.setRestaurantName(order.getRestaurantName());
         }
         orderRepository.save(orderEntity);
         LOGGER.info("Update method passed in OrderServiceImpl class");
     }
-    
-    public List<Order> getAllOrdersByUserId() {
-    	long id = userRepository.findUserEntityByEmail(getMail.getMail()).getId();
-    	return converter.entityToOrderList(orderRepository.findAllByUserId(id));
-    }
+
 
     @Override
     public void delete(long id) {

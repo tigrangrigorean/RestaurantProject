@@ -29,10 +29,9 @@ public class OrderController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<List<Order>> getOrdersByUserId(@PathVariable("id") long id){
+    public ResponseEntity<List<Order>> getOrdersByUserId(@PathVariable("id") long id) {
         return ResponseEntity.ok().body(orderServiceImpl.getOrdersByUser(id));
     }
-
 
     @GetMapping("")
     public ResponseEntity<List<Order>> getAllOrders() {
@@ -42,7 +41,7 @@ public class OrderController {
 
     @PostMapping("/save")
     public ResponseEntity<Order> saveOrder(@RequestBody List<FoodDto> foodDtoList, Address address) {
-        return ResponseEntity.status(201).body(orderServiceImpl.save(foodDtoList,address));
+        return ResponseEntity.status(201).body(orderServiceImpl.save(foodDtoList, address));
     }
 
     @PutMapping("/update")
@@ -50,10 +49,7 @@ public class OrderController {
         orderServiceImpl.update(id, order);
         return ResponseEntity.ok().body("Order by " + id + " updated successfully");
     }
-    
-    public ResponseEntity<List<Order>> getAllOrdersByUserAuthenticatedUserId() {
-    	return ResponseEntity.ok().body(orderServiceImpl.getAllOrdersByUserId());
-    }
+
 
     @DeleteMapping("/delete")
     public ResponseEntity<String> deleteOrder(@RequestParam("id") long id) {

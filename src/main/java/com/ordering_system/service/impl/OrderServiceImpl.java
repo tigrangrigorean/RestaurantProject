@@ -156,6 +156,11 @@ public class OrderServiceImpl implements OrderService {
         orderRepository.save(orderEntity);
         LOGGER.info("Update method passed in OrderServiceImpl class");
     }
+    
+    public List<Order> getAllOrdersByUserId() {
+    	long id = userRepository.findUserEntityByEmail(getMail.getMail()).getId();
+    	return converter.entityToOrderList(orderRepository.findAllByUserId(id));
+    }
 
     @Override
     public void delete(long id) {

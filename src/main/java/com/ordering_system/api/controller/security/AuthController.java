@@ -7,6 +7,7 @@ import com.ordering_system.service.validator.Validator;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -30,7 +31,7 @@ public class AuthController {
 		this.authenticationManager = authenticationManager;
 	}
 	
-	@PostMapping("/auth")
+	@PostMapping("/signin")
 	public String createAuthToken(@RequestBody RequestDto requestDto) {
 		UserDetails userDetails = userService.loadUserByUsername(requestDto.getEmail());
 		Validator.checkActivation(userService.getByEmail(requestDto.getEmail()).isActivated());
@@ -38,6 +39,11 @@ public class AuthController {
 		String token = jwtTokenUtils.generateToken(userDetails);
 		getMail.setMail(jwtTokenUtils.getEmail(token));
 		return token;
+	}
+	
+	@GetMapping("/profile/logout")
+	public String logout() {
+		return "redirect:/logout";
 	}
 	
 }

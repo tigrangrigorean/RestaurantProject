@@ -18,4 +18,6 @@ public interface OrderRepository extends JpaRepository<OrderEntity, Long> {
     @Modifying
     @Query(value = "DELETE FROM orders_food_list WHERE order_entity_id = :conditionParam", nativeQuery = true)
     void deleteByCondition(@Param("conditionParam") long condition);
+    
+    List<OrderEntity> findAllByUserId(long userId);
 }

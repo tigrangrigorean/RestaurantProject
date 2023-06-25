@@ -84,9 +84,15 @@ public class UserServiceImpl implements UserService {
         LOGGER.info("In method getById in UserServiceImpl class");
         Validator.checkId(id);
         UserEntity userEntity = userRepository.findUserEntityById(id);
+        
         if(!userEntity.getRole().equals(role)){
             throw new EntityNotFoundException(role+" with id "+id+" not found");
         }
+        
+        if(userEntity.getId() != userRepository.findUserEntityByEmail(getMail.getMail()).getId() && role != Role.ADMIN) {
+            throw new AccessDeniedException("Access denied");
+        }
+        
         Validator.checkEntity(userEntity);
         User user = converter.entityToUser(userEntity);
         LOGGER.info("GetById method passed in UserServiceImpl class");
@@ -112,11 +118,20 @@ public class UserServiceImpl implements UserService {
         Validator.checkName(user.getFirstName());
         Validator.checkName(user.getLastName());
         Validator.checkPhoneNumber(user.getPhoneNumber());
+        if(userRepository.findUserEntityByPhoneNumber(user.getPhoneNumber()) != null) {
+        	throw new EntityAlreadyExistsException("User by entered phone number already exists");
+        }
         Validator.checkPassword(user.getPassword());
         user.setPassword(SecurityConfig.passwordEncoder().encode(user.getPassword()));
         Validator.checkEmail(user.getEmail());
         Validator.checkPassport(user.getPassportNumber());
+        if(userRepository.findUserEntityByPassportNumber(user.getPassportNumber()) != null) {
+        	throw new EntityAlreadyExistsException("User by entered passport number already exists");
+        }
         Validator.checkCard(user.getCardNumber());
+        if(userRepository.findUserEntityByCardNumber(user.getCardNumber()) != null) {
+        	throw new EntityAlreadyExistsException("The card is already linked to another account");
+        }
         userRepository.save(converter.userToEntity(user));
         activation.sendPin(user.getEmail());
         LOGGER.info("Save method passed in UserServiceImpl class");

@@ -1,6 +1,7 @@
 package com.ordering_system.model.dto;
 
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.ordering_system.model.enumeration.Role;
 import io.swagger.v3.oas.annotations.media.Schema;
 
@@ -10,6 +11,8 @@ import java.util.Date;
 public class User {
     private String firstName;
     private String lastName;
+    @Schema(type = "string", format = "date", example = "2023-06-12")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date birthday;
     private String phoneNumber;
     private String password;
@@ -18,6 +21,7 @@ public class User {
     @Schema(hidden = true)
     private Role role;
     private String cardNumber;
+    @Schema(hidden = true)
     private boolean activated;
 
     public boolean isActivated() {

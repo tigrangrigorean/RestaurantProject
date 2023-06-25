@@ -6,6 +6,7 @@ import com.ordering_system.model.domain.RestaurantEntity;
 import com.ordering_system.model.domain.UserEntity;
 import com.ordering_system.model.dto.*;
 import com.ordering_system.model.enumeration.OrderStatus;
+import com.ordering_system.model.exception.AccessDeniedException;
 import com.ordering_system.model.exception.EntityNotFoundException;
 import com.ordering_system.model.exception.NotValidCardException;
 import com.ordering_system.repository.FoodRepository;
@@ -59,6 +60,9 @@ public class OrderServiceImpl implements OrderService {
         LOGGER.info("In method getById in OrderServiceImpl class");
         Validator.checkId(id);
         OrderEntity orderEntity = orderRepository.findOrderEntityById(id);
+        if(userRepository.findUserEntityByEmail(getMail.getMail()).getId() != orderEntity.getUserId()) {
+        	throw new AccessDeniedException("User can't view other orders");
+        }
         Validator.checkEntity(orderEntity);
         Order order = converter.entityToOrder(orderEntity);
         LOGGER.info("GetById method passed in OrderServiceImpl class");
@@ -90,10 +94,9 @@ public class OrderServiceImpl implements OrderService {
         }catch (NullPointerException e){
             throw new EntityNotFoundException("Food not found");
         }
-        long id = userRepository.findUserEntityByEmail(getMail.getMail()).getId();
-        double discount = priceSum / 100 * getDiscount(id);
-        UserEntity userEntity = userRepository.findUserEntityById(id);
-        order.setUserId(id);
+        UserEntity userEntity = userRepository.findUserEntityByEmail(getMail.getMail());
+        double discount = priceSum / 100 * getDiscount(userEntity.getId());
+        order.setUserId(userEntity.getId());
         order.setOrderStatus(OrderStatus.ACCEPTED);
         FoodEntity foodEntity = foodRepository.findFoodEntityById(foodListIds.get(0));
         order.setRestaurantName(restaurantRepository.findRestaurantEntityById(foodEntity.getRestaurantEntity().getId()).getName());
@@ -107,8 +110,8 @@ public class OrderServiceImpl implements OrderService {
         if (!Validator.checkCard(userEntity.getCardNumber())) {
             throw new NotValidCardException("Incorrect card number");
         }
-        doPay(order);
         orderRepository.save(converter.orderToEntity(order));
+        doPay(order);
         LOGGER.info("Save method passed in OrderServiceImpl class");
         return order;
     }
@@ -188,10 +191,9 @@ public class OrderServiceImpl implements OrderService {
         RestaurantEntity restaurantEntity = restaurantRepository.findRestaurantEntityByName(order.getRestaurantName());
         double restaurantBalance = restaurantRepository.findRestaurantEntityByName(order.getRestaurantName()).getBalance();
         User user = converter.entityToUser(userEntity);
-        Restaurant restaurant = converter.entityToRestaurant(restaurantEntity);
-        restaurant.setBalance(restaurantBalance + order.getPrice());
+        restaurantEntity.setBalance(restaurantBalance + order.getPrice());
         userService.update(userEntity.getEmail(), user);
-        restaurantService.update(restaurantEntity.getId(), restaurant);
+        restaurantRepository.save(restaurantEntity);
         LOGGER.info("doPay method passed in OrderServiceImpl class");
     }
 }

@@ -2,7 +2,7 @@ package com.ordering_system.model.exception;
 
 import java.io.Serial;
 
-public class AccessDeniedException {
+public class AccessDeniedException extends RuntimeException {
 
 
     @Serial

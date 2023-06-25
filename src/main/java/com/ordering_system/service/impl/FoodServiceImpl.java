@@ -4,6 +4,7 @@ package com.ordering_system.service.impl;
 import com.ordering_system.model.domain.FoodEntity;
 import com.ordering_system.model.domain.RestaurantEntity;
 import com.ordering_system.model.dto.Food;
+import com.ordering_system.model.exception.ActivationException;
 import com.ordering_system.model.exception.EntityAlreadyExistsException;
 import com.ordering_system.repository.FoodRepository;
 import com.ordering_system.repository.RestaurantRepository;
@@ -59,6 +60,10 @@ public class FoodServiceImpl implements FoodService {
         Validator.checkId(food.getRestaurantId());
         RestaurantEntity restaurantEntity = restaurantRepository.findRestaurantEntityById(food.getRestaurantId());
         Validator.checkEntity(restaurantEntity);
+        
+        if(restaurantEntity.isActivated() == false) {
+        	throw new ActivationException("Restaurant Entity isn't activated");
+        }
         if(foodRepository.findByRestaurantEntityAndName(restaurantEntity, food.getName()) != null) {
         	throw new EntityAlreadyExistsException("Food by entered name already exists");
         }

@@ -44,6 +44,10 @@ public class OrderController {
         orderServiceImpl.update(id, order);
         return ResponseEntity.ok().body("Order by " + id + " updated successfully");
     }
+    
+    public ResponseEntity<List<Order>> getAllOrdersByUserAuthenticatedUserId() {
+    	return ResponseEntity.ok().body(orderServiceImpl.getAllOrdersByUserId());
+    }
 
     @DeleteMapping("/delete")
     public ResponseEntity<String> deleteOrder(@RequestParam("id") long id) {

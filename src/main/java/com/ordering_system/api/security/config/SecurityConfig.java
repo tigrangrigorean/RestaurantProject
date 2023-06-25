@@ -54,7 +54,10 @@ public class SecurityConfig {
 						.requestMatchers("/user/**").authenticated()
 						.requestMatchers("password/profile/changepassword").authenticated()
 						.anyRequest().permitAll())
-				.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
+				.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class)
+				.logout()
+	                .logoutUrl("/logout")
+	                .logoutSuccessUrl("/restaurant");
 		return http.build();
 	}
 	

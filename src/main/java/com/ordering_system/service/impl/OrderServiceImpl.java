@@ -68,6 +68,16 @@ public class OrderServiceImpl implements OrderService {
         LOGGER.info("GetById method passed in OrderServiceImpl class");
         return order;
     }
+    @Override
+    @Transactional
+    public List<Order> getOrdersByUser(long id) {
+        LOGGER.info("In method getOrdersByUser in OrderServiceImpl class");
+        Validator.checkId(id);
+        List<OrderEntity> orderEntitylist = orderRepository.findOrderEntitiesByUserId(id);
+        List<Order> orderList = converter.entityToOrderList(orderEntitylist);
+        LOGGER.info("GetOrdersByUser method passed in OrderServiceImpl class");
+        return orderList;
+    }
 
     @Override
     public List<Order> getAll() {
@@ -76,6 +86,8 @@ public class OrderServiceImpl implements OrderService {
         LOGGER.info("GetAll method passed in OrderServiceImpl class");
         return orderList;
     }
+
+
 
     @Override
     public Order save(List<FoodDto> foodDtoList, Address address) {

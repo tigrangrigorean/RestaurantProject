@@ -28,6 +28,12 @@ public class OrderController {
         return ResponseEntity.ok().body(orderServiceImpl.getById(id));
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<List<Order>> getOrdersByUserId(@PathVariable("id") long id){
+        return ResponseEntity.ok().body(orderServiceImpl.getOrdersByUser(id));
+    }
+
+
     @GetMapping("")
     public ResponseEntity<List<Order>> getAllOrders() {
         return ResponseEntity.ok().body(orderServiceImpl.getAll());

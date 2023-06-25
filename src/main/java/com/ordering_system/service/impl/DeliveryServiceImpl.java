@@ -18,6 +18,9 @@ import com.ordering_system.service.DeliveryService;
 import com.ordering_system.service.converter.Converter;
 import com.ordering_system.service.validator.Validator;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 @Service
 public class DeliveryServiceImpl implements DeliveryService {
 	
@@ -66,6 +69,7 @@ public class DeliveryServiceImpl implements DeliveryService {
 		Validator.checkEntity(delivery);
 		Validator.checkId(delivery.getUserId());
 		Validator.checkId(delivery.getOrderId());
+		delivery.setStartDate(LocalDateTime.now());
 		deliverRepository.save(converter.deliverToEntity(delivery));
 		OrderEntity orderEntity = orderRepository.findOrderEntityById(delivery.getOrderId());
 		orderEntity.setOrderStatus(OrderStatus.IN_DELIVERY);

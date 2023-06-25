@@ -263,6 +263,7 @@ public class Converter {
         Delivery delivery = new Delivery();
         delivery.setUserId(deliveryEntity.getUserId());
         delivery.setOrderId(deliveryEntity.getOrderId());
+        delivery.setStartDate(deliveryEntity.getStartDate());
         return delivery;
     }
 
@@ -270,6 +271,7 @@ public class Converter {
         DeliveryEntity deliveryEntity = new DeliveryEntity();
         deliveryEntity.setUserId(delivery.getUserId());
         deliveryEntity.setOrderId(delivery.getOrderId());
+        deliveryEntity.setStartDate(delivery.getStartDate());
         return deliveryEntity;
     }
 

@@ -10,9 +10,10 @@ import java.util.List;
 
 public interface OrderService {
     Order getById(long id);
+    public List<Order> getOrdersByUser(long id);
     List<Order> getAll();
     Order save(List<FoodDto> foodDtoList, Address address);
     void update(long id, Order order);
     void delete(long id);
-    public double getDiscount(long userId);
+     double getDiscount(long userId);
 }

@@ -15,5 +15,7 @@ public interface RestaurantRepository extends JpaRepository<RestaurantEntity,Lon
     List<RestaurantEntity> findRestaurantEntitiesByActivatedIsTrue();
     List<RestaurantEntity> findRestaurantEntitiesByActivatedIsFalse();
     RestaurantEntity findRestaurantEntitiesByAddress_Id(long addressId);
-
+    RestaurantEntity findRestaurantEntityByTin(String tin);
+    RestaurantEntity findRestaurantEntityByPhoneNumber(String phoneNumber);
+    RestaurantEntity findRestaurantEntityByEmail(String email);
 }

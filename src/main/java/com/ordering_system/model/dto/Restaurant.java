@@ -4,6 +4,8 @@ package com.ordering_system.model.dto;
 import java.util.Date;
 import java.util.List;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
 public class Restaurant {
     private String name;
     private String tin;
@@ -13,6 +15,7 @@ public class Restaurant {
     private Date registrationDate;
     private String phoneNumber;
     private String email;
+    @Schema(hidden = true)
     private double balance;
 
     public Restaurant() {

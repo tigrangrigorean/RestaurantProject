@@ -77,6 +77,9 @@ public class RestaurantServiceImpl implements RestaurantService {
         Validator.checkEntity(restaurant);
         Validator.checkName(restaurant.getName());
         Validator.checkTin(restaurant.getTin());
+        if(restaurantRepository.findRestaurantEntityByTin(restaurant.getTin()) != null) {
+        	throw new EntityAlreadyExistsException("Restaurant by entered TIN already exist");
+        }
         Validator.checkEntity(addressRepository.findAddressEntityById(restaurant.getAddressId()));
         UserEntity userEntity = userRepository.findUserEntityById(restaurant.getManagerId());
         Validator.checkEntity(userEntity);
@@ -86,7 +89,14 @@ public class RestaurantServiceImpl implements RestaurantService {
         }
         
         Validator.checkEmail(restaurant.getEmail());
+        if(restaurantRepository.findRestaurantEntityByEmail(restaurant.getEmail()) != null) {
+        	throw new EntityAlreadyExistsException("Restaurant by entered Email already exists");
+        }
         Validator.checkPhoneNumber(restaurant.getPhoneNumber());
+        
+        if(restaurantRepository.findRestaurantEntityByPhoneNumber(restaurant.getPhoneNumber()) != null) {
+        	throw new EntityAlreadyExistsException("Entered Phone number already busy");
+        }
         restaurantRepository.save(converter.restaurantToEntity(restaurant));
         LOGGER.info("Save method passed in RestaurantServiceImpl class");
         return restaurant;

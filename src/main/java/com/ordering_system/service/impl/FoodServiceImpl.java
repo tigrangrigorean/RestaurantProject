@@ -56,7 +56,7 @@ public class FoodServiceImpl implements FoodService {
         Validator.checkEntity(food);
         Validator.checkPrice(food.getPrice());
         Validator.checkName(food.getName());
-        Validator.checkName(food.getIngredient());
+        Validator.checkIngredientText(food.getIngredient());
         Validator.checkId(food.getRestaurantId());
         RestaurantEntity restaurantEntity = restaurantRepository.findRestaurantEntityById(food.getRestaurantId());
         Validator.checkEntity(restaurantEntity);
@@ -83,7 +83,7 @@ public class FoodServiceImpl implements FoodService {
             foodEntity.setName(food.getName());
         }
         if (food.getIngredient() != null) {
-            Validator.checkName(food.getIngredient());
+            Validator.checkIngredientText(food.getIngredient());
             foodEntity.setIngredient(food.getIngredient());
         }
         if (food.getPrice() > 0) {

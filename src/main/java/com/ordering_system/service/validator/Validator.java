@@ -154,9 +154,16 @@ public class Validator {
     }
 
     public static boolean checkName(String name) {
-        String regex = "[A-Za-z]+";
+        String regex = "^[A-Za-z ]+$";
         if (!name.matches(regex)) {
             throw new IncorrectNameException("Name is incorrect. Enter only latin letters");
+        }
+        return true;
+    }
+    public static boolean checkIngredientText(String text){
+        String regex = "^[A-Za-z ,]+$";
+        if(!text.matches(regex)){
+            throw new InCorrectTextFormatException("Entered text is not valid");
         }
         return true;
     }

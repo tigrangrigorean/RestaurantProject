@@ -155,9 +155,6 @@ public class UserServiceImpl implements UserService {
         if (user.getLastName() != null && Validator.checkName(user.getLastName())) {
             userEntity.setLastName(user.getLastName());
         }
-        if (user.getPassword() != null && Validator.checkPassword(user.getPassword())) {
-            userEntity.setPassword(SecurityConfig.passwordEncoder().encode(user.getPassword()));
-        }
         if (user.getBirthday() != null) {
             userEntity.setBirthday(user.getBirthday());
         }

@@ -52,6 +52,7 @@ public class SecurityConfig {
 						.requestMatchers("/address/**").hasAnyAuthority("MANAGER","ADMIN")
 						.requestMatchers("/user/save").permitAll()
 						.requestMatchers("/user/**").authenticated()
+						.requestMatchers("password/profile/changepassword").authenticated()
 						.anyRequest().permitAll())
 				.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
 		return http.build();

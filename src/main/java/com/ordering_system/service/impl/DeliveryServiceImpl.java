@@ -1,6 +1,7 @@
 package com.ordering_system.service.impl;
 
 import com.ordering_system.model.domain.OrderEntity;
+import com.ordering_system.model.exception.EntityAlreadyExistsException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -73,7 +74,7 @@ public class DeliveryServiceImpl implements DeliveryService {
         deliverRepository.save(converter.deliverToEntity(delivery));
         OrderEntity orderEntity = orderRepository.findOrderEntityById(delivery.getOrderId());
         if (orderEntity.getOrderStatus() != OrderStatus.ACCEPTED) {
-            throw new RuntimeException("Order is already in delivery");
+            throw new EntityAlreadyExistsException("Order is already in delivery");
         }
         orderEntity.setOrderStatus(OrderStatus.IN_DELIVERY);
         orderRepository.save(orderEntity);

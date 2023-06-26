@@ -73,6 +73,9 @@ public class OrderServiceImpl implements OrderService {
         LOGGER.info("In method getOrdersByUser in OrderServiceImpl class");
         Validator.checkId(id);
         List<OrderEntity> orderEntitylist = orderRepository.findOrderEntitiesByUserId(id);
+        if (userRepository.findUserEntityByEmail(getMail.getMail()).getId() != orderEntitylist.get(0).getUserId()) {
+            throw new AccessDeniedException("User can't view other orders");
+        }
         List<Order> orderList = converter.entityToOrderList(orderEntitylist);
         LOGGER.info("GetOrdersByUser method passed in OrderServiceImpl class");
         return orderList;
@@ -131,6 +134,8 @@ public class OrderServiceImpl implements OrderService {
         LOGGER.info("Save method passed in OrderServiceImpl class");
         return orderList;
     }
+
+    //TODO DELETE
     @Override
     public void update(long id, Order order) {
         LOGGER.info("In method update in OrderServiceImpl class");

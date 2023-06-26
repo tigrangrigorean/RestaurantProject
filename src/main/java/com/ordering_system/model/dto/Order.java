@@ -3,6 +3,7 @@ package com.ordering_system.model.dto;
 import com.ordering_system.model.enumeration.OrderStatus;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 
@@ -15,10 +16,15 @@ public class Order {
     private OrderStatus orderStatus;
     private String restaurantName;
     private long userId;
-    private LocalDate date;
+    private LocalDateTime date;
+
+    public Order(String restaurantName) {
+        this.restaurantName = restaurantName;
+    }
+
     private Address addressToDelivery;
 
-    public Order(double price, double discount, double discountedPrice, double deliveryCost, List<Long> foodId, OrderStatus orderStatus, String restaurantName, long userId, LocalDate date) {
+    public Order(double price, double discount, double discountedPrice, double deliveryCost, List<Long> foodId, OrderStatus orderStatus, String restaurantName, long userId, LocalDateTime date) {
         this.price = price;
         this.discount = discount;
         this.discountedPrice = discountedPrice;
@@ -33,11 +39,11 @@ public class Order {
     public Order() {
     }
 
-    public LocalDate getDate() {
+    public LocalDateTime getDate() {
         return date;
     }
 
-    public void setDate(LocalDate date) {
+    public void setDate(LocalDateTime date) {
         this.date = date;
     }
 

@@ -24,6 +24,7 @@ import org.springframework.stereotype.Service;
 import com.ordering_system.service.mailsender.GetMail;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -90,45 +91,53 @@ public class OrderServiceImpl implements OrderService {
 
 
     @Override
-    public Order save(List<FoodDto> foodDtoList, Address address) {
-
+    public List<Order> save(List<FoodDto> foodDtoList, Address address) {
         LOGGER.info("In method save in OrderServiceImpl class");
+        List<FoodEntity> foodEntities = new ArrayList<>();
         List<Long> foodListIds = new ArrayList<>();
         for (FoodDto foodDto : foodDtoList) {
-            foodListIds.add(foodDto.getId());
+            foodEntities.add(foodRepository.findFoodEntityById(foodDto.getId()));
         }
-        double priceSum = 0;
-        Order order = new Order();
-        try {
-            for (long foodId : foodListIds) {
-                priceSum += foodRepository.findFoodEntityById(foodId).getPrice();
+        List<String> restaurants=new ArrayList<>();
+        for (FoodEntity food : foodEntities) {
+            String restaurantName=food.getRestaurantEntity().getName();
+            if(!restaurants.contains(restaurantName)){
+                restaurants.add(restaurantName);
             }
-        } catch (NullPointerException e) {
-            throw new EntityNotFoundException("Food not found");
+        }
+        List<Order> orderList= new ArrayList<>();
+        for (String restaurant : restaurants) {
+            orderList.add(new Order(restaurant));
+        }
+        for (FoodEntity foodEntity : foodEntities) {
+            for (Order order : orderList) {
+                if(order.getRestaurantName().equals(foodEntity.getRestaurantEntity().getName())){
+                    order.setPrice(order.getPrice()+foodEntity.getPrice());
+                }
+            }
         }
         UserEntity userEntity = userRepository.findUserEntityByEmail(getMail.getMail());
-        double discount = priceSum / 100 * getDiscount(userEntity.getId());
-        order.setUserId(userEntity.getId());
-        order.setOrderStatus(OrderStatus.ACCEPTED);
-        FoodEntity foodEntity = foodRepository.findFoodEntityById(foodListIds.get(0));
-        order.setRestaurantName(restaurantRepository.findRestaurantEntityById(foodEntity.getRestaurantEntity().getId()).getName());
-        order.setPrice(priceSum);
-        order.setDiscountedPrice(priceSum - discount);
-        order.setDiscount(discount);
-        order.setDeliveryCost(priceSum > 10000 ? 0.0 : 1000);
-        order.setFoodIdList(foodListIds);
-        order.setDate(LocalDate.now());
-        order.setAddressToDelivery(Validator.checkAddress(address));
-        if (!Validator.checkCard(userEntity.getCardNumber())) {
-            throw new NotValidCardException("Incorrect card number");
+
+        for (Order order : orderList) {
+            double discount = order.getPrice() / 100 * getDiscount(userEntity.getId());
+            order.setUserId(userEntity.getId());
+            order.setOrderStatus(OrderStatus.ACCEPTED);
+            List<Long> foodIds=new ArrayList<>();
+            order.setDiscountedPrice(order.getPrice() - discount);
+            order.setDiscount(discount);
+            order.setDeliveryCost(order.getPrice() > 10000 ? 0.0 : 1000);
+            order.setFoodIdList(foodListIds);
+            order.setDate(LocalDateTime.now());
+            order.setAddressToDelivery(Validator.checkAddress(address));
+            if (!Validator.checkCard(userEntity.getCardNumber())) {
+                throw new NotValidCardException("Incorrect card number");
+            }
+            orderRepository.save(converter.orderToEntity(order));
+            doPay(order);
         }
-        orderRepository.save(converter.orderToEntity(order));
-        doPay(order);
         LOGGER.info("Save method passed in OrderServiceImpl class");
-        return order;
+        return orderList;
     }
-
-
     @Override
     public void update(long id, Order order) {
         LOGGER.info("In method update in OrderServiceImpl class");
@@ -193,7 +202,7 @@ public class OrderServiceImpl implements OrderService {
         List<OrderEntity> orders = orderRepository.findOrderEntitiesByUserId(userId);
         double sum = 0;
         for (OrderEntity order : orders) {
-            if (order.getDate().isAfter(LocalDate.now().minusDays(30))) {
+            if (order.getDate().isAfter(LocalDateTime.now().minusDays(30))) {
                 sum += order.getTotalPrice();
             }
         }

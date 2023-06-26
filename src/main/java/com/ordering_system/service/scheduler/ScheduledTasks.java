@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Component
@@ -19,7 +20,7 @@ public class ScheduledTasks {
 
     @Scheduled(fixedRate = 24*60*60*1000)
     public void deleteOldData(){
-        LocalDate date=LocalDate.now().minusDays(30);
+        LocalDateTime date=LocalDateTime.now().minusDays(30);
         List<OrderEntity> orderEntity=orderRepository.findAllByDateBefore(date);
         for (OrderEntity order : orderEntity) {
             orderRepository.deleteByCondition(order.getId());

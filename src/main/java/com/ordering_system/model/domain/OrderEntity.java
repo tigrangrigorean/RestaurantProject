@@ -7,6 +7,7 @@ import jakarta.transaction.Transactional;
 import org.hibernate.engine.internal.Cascade;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -27,10 +28,10 @@ public class OrderEntity {
     private OrderStatus orderStatus;
     private String restaurantName;
     private String addressToDelivery;
-    private LocalDate date;
+    private LocalDateTime date;
 
     public OrderEntity(long id, double totalPrice, List<FoodEntity> foodList,
-                       OrderStatus orderStatus, String restaurantName, long userId, LocalDate date) {
+                       OrderStatus orderStatus, String restaurantName, long userId, LocalDateTime date) {
         this.id = id;
         this.totalPrice = totalPrice;
         this.foodList = foodList;
@@ -91,11 +92,11 @@ public class OrderEntity {
         this.id = id;
     }
 
-    public LocalDate getDate() {
+    public LocalDateTime getDate() {
         return date;
     }
 
-    public void setDate(LocalDate date) {
+    public void setDate(LocalDateTime date) {
         this.date = date;
     }
 

@@ -12,7 +12,7 @@ public interface OrderService {
     Order getById(long id);
     public List<Order> getOrdersByUser(long id);
     List<Order> getAll();
-    Order save(List<FoodDto> foodDtoList, Address address);
+    List<Order> save(List<FoodDto> foodDtoList, Address address);
     void update(long id, Order order);
     void delete(long id);
      double getDiscount(long userId);

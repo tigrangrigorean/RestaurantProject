@@ -22,12 +22,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.ordering_system.service.mailsender.GetMail;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-
 @Service
 public class OrderServiceImpl implements OrderService {
     private final Converter converter;
@@ -69,7 +67,6 @@ public class OrderServiceImpl implements OrderService {
         LOGGER.info("GetById method passed in OrderServiceImpl class");
         return order;
     }
-
     @Override
     @Transactional
     public List<Order> getOrdersByUser(long id) {
@@ -80,7 +77,6 @@ public class OrderServiceImpl implements OrderService {
         LOGGER.info("GetOrdersByUser method passed in OrderServiceImpl class");
         return orderList;
     }
-
     @Override
     public List<Order> getAll() {
         LOGGER.info("In method getAll in OrderServiceImpl class");
@@ -88,8 +84,6 @@ public class OrderServiceImpl implements OrderService {
         LOGGER.info("GetAll method passed in OrderServiceImpl class");
         return orderList;
     }
-
-
     @Override
     public List<Order> save(List<FoodDto> foodDtoList, Address address) {
         LOGGER.info("In method save in OrderServiceImpl class");
@@ -117,7 +111,6 @@ public class OrderServiceImpl implements OrderService {
             }
         }
         UserEntity userEntity = userRepository.findUserEntityByEmail(getMail.getMail());
-
         for (Order order : orderList) {
             double discount = order.getPrice() / 100 * getDiscount(userEntity.getId());
             order.setUserId(userEntity.getId());

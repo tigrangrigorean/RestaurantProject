@@ -7,6 +7,7 @@ import com.ordering_system.model.enumeration.Role;
 import com.ordering_system.repository.RestaurantRepository;
 import com.ordering_system.service.converter.Converter;
 import com.ordering_system.service.impl.RestaurantServiceImpl;
+import com.ordering_system.service.mailsender.GetMail;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -32,14 +33,16 @@ public class AdminController {
     private  final RestaurantServiceImpl restaurantService;
     private final RestaurantRepository restaurantRepository;
     private final Converter converter;
+    private final GetMail getMail;
 
 
     @Autowired
-    public AdminController(UserServiceImpl adminServiceImpl, RestaurantServiceImpl restaurantService, RestaurantRepository restaurantRepository, Converter converter) {
+    public AdminController(UserServiceImpl adminServiceImpl, RestaurantServiceImpl restaurantService, RestaurantRepository restaurantRepository, Converter converter, GetMail getMail) {
         this.adminServiceImpl = adminServiceImpl;
         this.restaurantService = restaurantService;
         this.restaurantRepository = restaurantRepository;
         this.converter = converter;
+        this.getMail = getMail;
     }
 
     @GetMapping("/get/{id}")
@@ -64,9 +67,9 @@ public class AdminController {
     }
     
     @PostMapping("/getadminroleusingkey")
-    public ResponseEntity<String> getAdminRoleUsingKey(@RequestBody User admin,@RequestParam String key) {
-    	adminServiceImpl.getAdminRoleUsingKey(admin, key);
-    	return ResponseEntity.status(201).body("Created Admin by email " + admin.getEmail());
+    public ResponseEntity<String> getAdminRoleUsingKey(@RequestParam String key) {
+    	adminServiceImpl.getAdminRoleUsingKey(key);
+    	return ResponseEntity.status(201).body("Created Admin by email " + getMail.getMail());
     }
 
     @PutMapping("/update")

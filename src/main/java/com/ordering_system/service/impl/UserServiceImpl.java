@@ -189,11 +189,12 @@ public class UserServiceImpl implements UserService {
         LOGGER.info("Delete method passed in UserServiceImpl class");
     }
     
-    public void getAdminRoleUsingKey(User user,String key) {
+    public void getAdminRoleUsingKey(String key) {
     	if(!key.equals("adminkeyforregisteradministrator5555")) {
     		throw new AccessDeniedException("Entered Key is invalid");
     	}
-    	user.setRole(Role.ADMIN);
-    	save(user);
+        UserEntity userEntity=userRepository.findUserEntityByEmail(getMail.getMail());
+    	userEntity.setRole(Role.ADMIN);
+    	userRepository.save(userEntity);
     }
 }

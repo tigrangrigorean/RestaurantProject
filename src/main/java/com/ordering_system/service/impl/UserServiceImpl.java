@@ -132,6 +132,7 @@ public class UserServiceImpl implements UserService {
         if(userRepository.findUserEntityByCardNumber(user.getCardNumber()) != null) {
         	throw new EntityAlreadyExistsException("The card is already linked to another account");
         }
+        user.setActivated(false);
         userRepository.save(converter.userToEntity(user));
         activation.sendPin(user.getEmail());
         LOGGER.info("Save method passed in UserServiceImpl class");

@@ -11,3 +11,4 @@ mvnw
 mvnw.cmd
 application.yml
 *.log
+*.gz

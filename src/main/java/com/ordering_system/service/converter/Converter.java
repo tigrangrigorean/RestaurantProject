@@ -16,25 +16,18 @@ public class Converter {
     private final AddressRepository addressRepository;
     private final UserRepository userRepository;
     private final RestaurantRepository restaurantRepository;
-    private final OrderRepository orderRepository;
 
     @Autowired
     public Converter(FoodRepository foodRepository,
                      AddressRepository addressRepository,
                      UserRepository userRepository,
-                     RestaurantRepository restaurantRepository,
-                     OrderRepository orderRepository) {
+                     RestaurantRepository restaurantRepository) {
         this.foodRepository = foodRepository;
         this.addressRepository = addressRepository;
         this.userRepository = userRepository;
         this.restaurantRepository = restaurantRepository;
-        this.orderRepository = orderRepository;
     }
 
-    /**
-     * @param addressEntity
-     * @return
-     */
     public Address entityToAddress(AddressEntity addressEntity) {
         return new Address(addressEntity.getCity(),
                 addressEntity.getStreet(),

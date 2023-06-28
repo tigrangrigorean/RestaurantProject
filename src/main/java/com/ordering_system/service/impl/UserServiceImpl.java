@@ -6,16 +6,12 @@ import com.ordering_system.model.dto.User;
 import com.ordering_system.model.enumeration.Role;
 import com.ordering_system.model.exception.EntityAlreadyExistsException;
 import com.ordering_system.model.exception.EntityNotFoundException;
-import com.ordering_system.repository.AddressRepository;
 import com.ordering_system.repository.UserRepository;
-import com.ordering_system.service.RestaurantService;
 import com.ordering_system.service.UserService;
 import com.ordering_system.service.converter.Converter;
 import com.ordering_system.service.mailsender.GetMail;
 import com.ordering_system.service.mailsender.activation.MailActivation;
-import com.ordering_system.service.mailsender.service.EmailSenderService;
 import com.ordering_system.service.validator.Validator;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +21,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.Collections;
 import java.util.List;
 
@@ -36,8 +31,6 @@ public class UserServiceImpl implements UserService {
     private final Converter converter;
 
     private final UserRepository userRepository;
-    private final EmailSenderService emailSenderService;
-    private final AddressRepository addressRepository;
     private final MailActivation activation;
     private final GetMail getMail;
     private static final Logger LOGGER = LoggerFactory.getLogger(UserServiceImpl.class);
@@ -45,11 +38,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     public UserServiceImpl(Converter converter, UserRepository userRepository,
-                           EmailSenderService emailSenderService, AddressRepository addressRepository, MailActivation activation, GetMail getMail) {
+                           MailActivation activation, GetMail getMail) {
         this.converter = converter;
         this.userRepository = userRepository;
-        this.emailSenderService = emailSenderService;
-        this.addressRepository = addressRepository;
         this.activation = activation;
         this.getMail = getMail;
     }

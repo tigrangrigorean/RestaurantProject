@@ -6,7 +6,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import com.ordering_system.model.domain.DeliveryEntity;
 import com.ordering_system.model.dto.Delivery;
 import com.ordering_system.model.dto.User;
@@ -14,12 +13,9 @@ import com.ordering_system.model.enumeration.OrderStatus;
 import com.ordering_system.model.enumeration.Role;
 import com.ordering_system.repository.DeliverRepository;
 import com.ordering_system.repository.OrderRepository;
-import com.ordering_system.repository.UserRepository;
 import com.ordering_system.service.DeliveryService;
 import com.ordering_system.service.converter.Converter;
 import com.ordering_system.service.validator.Validator;
-
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Service
@@ -28,7 +24,6 @@ public class DeliveryServiceImpl implements DeliveryService {
     private final Converter converter;
     private final DeliverRepository deliverRepository;
     private final UserServiceImpl userService;
-    private final UserRepository userRepository;
     private final OrderRepository orderRepository;
     private final OrderServiceImpl orderService;
     private static final Logger LOGGER = LoggerFactory.getLogger(DeliveryService.class);
@@ -37,13 +32,11 @@ public class DeliveryServiceImpl implements DeliveryService {
     public DeliveryServiceImpl(
             Converter converter,
             DeliverRepository deliverRepository,
-            UserRepository userRepository,
             OrderRepository orderRepository,
             OrderServiceImpl orderService,
             UserServiceImpl userService) {
         this.converter = converter;
         this.deliverRepository = deliverRepository;
-        this.userRepository = userRepository;
         this.orderRepository = orderRepository;
         this.orderService = orderService;
         this.userService = userService;

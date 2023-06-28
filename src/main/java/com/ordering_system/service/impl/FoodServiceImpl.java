@@ -9,12 +9,8 @@ import com.ordering_system.model.exception.EntityAlreadyExistsException;
 import com.ordering_system.repository.FoodRepository;
 import com.ordering_system.repository.RestaurantRepository;
 import com.ordering_system.service.FoodService;
-import com.ordering_system.service.OrderService;
 import com.ordering_system.service.converter.Converter;
 import com.ordering_system.service.validator.Validator;
-
-
-import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

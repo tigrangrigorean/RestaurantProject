@@ -15,16 +15,14 @@ public class MailActivation {
     private final PinGenerator pinGenerator;
     private final EmailSenderService emailSenderService;
     private final UserRepository userRepository;
-    private final ChangePassword changePassword;
     private final ChangePasswordRepository changePasswordRepository;
 @Autowired
     public MailActivation(PinGenerator pinGenerator,
                           EmailSenderService emailSenderService,
-                          UserRepository userRepository, ChangePassword changePassword, ChangePasswordRepository changePasswordRepository) {
+                          UserRepository userRepository, ChangePasswordRepository changePasswordRepository) {
         this.pinGenerator = pinGenerator;
         this.emailSenderService = emailSenderService;
         this.userRepository = userRepository;
-        this.changePassword = changePassword;
         this.changePasswordRepository = changePasswordRepository;
     }
 

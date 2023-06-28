@@ -1,6 +1,5 @@
 package com.ordering_system.service.impl;
 
-
 import com.ordering_system.model.domain.AddressEntity;
 import com.ordering_system.model.dto.Address;
 import com.ordering_system.repository.AddressRepository;
@@ -11,7 +10,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 
 @Service

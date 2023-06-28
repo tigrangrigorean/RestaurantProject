@@ -1,9 +1,12 @@
 package com.ordering_system.service.impl;
 
 
+import com.ordering_system.model.domain.AddressEntity;
 import com.ordering_system.model.domain.RestaurantEntity;
 import com.ordering_system.model.domain.UserEntity;
+import com.ordering_system.model.dto.Address;
 import com.ordering_system.model.dto.Restaurant;
+import com.ordering_system.model.dto.RestaurantAndAddressDto;
 import com.ordering_system.model.enumeration.Role;
 import com.ordering_system.model.exception.EntityAlreadyExistsException;
 import com.ordering_system.model.exception.EntityNotFoundException;
@@ -62,37 +65,45 @@ public class RestaurantServiceImpl implements RestaurantService {
 
 
     @Override
-    public Restaurant save(Restaurant restaurant) {
+    public Restaurant save(RestaurantAndAddressDto restaurantAndAddressDto) {
+        if(addressRepository.findAddressEntityByCityAndStreetAndBuildingAndApartment(
+                restaurantAndAddressDto.getAddress().getCity(),
+                restaurantAndAddressDto.getAddress().getStreet(),
+                restaurantAndAddressDto.getAddress().getBuilding(),
+                restaurantAndAddressDto.getAddress().getApartment()
+        )!=null){
+            throw new EntityAlreadyExistsException("Address already exist!");
+        }
+        Address address=restaurantAndAddressDto.getAddress();
+        AddressEntity addressEntity=addressRepository.save(converter.addressToEntity(address));
+        Restaurant restaurant=restaurantAndAddressDto.getRestaurant();
+        restaurant.setAddressId(addressEntity.getId());
         LOGGER.info("In method save in RestaurantServiceImpl class");
         if(restaurantRepository.findRestaurantEntityByName(restaurant.getName()) != null ) {
-        	throw new EntityAlreadyExistsException("Restaurant by entered name already exists");
-        }
-        RestaurantEntity restaurantEntity=restaurantRepository.findRestaurantEntitiesByAddress_Id(restaurant.getAddressId());
-        if(restaurantEntity!=null){
-            throw new EntityAlreadyExistsException("Address already exist");
+            throw new EntityAlreadyExistsException("Restaurant by entered name already exists");
         }
         Validator.checkEntity(restaurant);
         Validator.checkName(restaurant.getName());
         Validator.checkTin(restaurant.getTin());
         if(restaurantRepository.findRestaurantEntityByTin(restaurant.getTin()) != null) {
-        	throw new EntityAlreadyExistsException("Restaurant by entered TIN already exist");
+            throw new EntityAlreadyExistsException("Restaurant by entered TIN already exist");
         }
-        Validator.checkEntity(addressRepository.findAddressEntityById(restaurant.getAddressId()));
+//        Validator.checkEntity(addressRepository.findAddressEntityById(restaurant.getAddressId()));
         UserEntity userEntity = userRepository.findUserEntityById(restaurant.getManagerId());
         Validator.checkEntity(userEntity);
-        
+
         if(!userEntity.getRole().equals(Role.MANAGER)){
             throw new EntityNotFoundException("Manager by id "+restaurant.getManagerId()+ " not found");
         }
-        
+
         Validator.checkEmail(restaurant.getEmail());
         if(restaurantRepository.findRestaurantEntityByEmail(restaurant.getEmail()) != null) {
-        	throw new EntityAlreadyExistsException("Restaurant by entered Email already exists");
+            throw new EntityAlreadyExistsException("Restaurant by entered Email already exists");
         }
         Validator.checkPhoneNumber(restaurant.getPhoneNumber());
-        
+
         if(restaurantRepository.findRestaurantEntityByPhoneNumber(restaurant.getPhoneNumber()) != null) {
-        	throw new EntityAlreadyExistsException("Entered Phone number already busy");
+            throw new EntityAlreadyExistsException("Entered Phone number already busy");
         }
         restaurantRepository.save(converter.restaurantToEntity(restaurant));
         LOGGER.info("Save method passed in RestaurantServiceImpl class");

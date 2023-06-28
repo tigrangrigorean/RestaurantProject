@@ -2,7 +2,9 @@ package com.ordering_system.api.controller;
 
 import java.util.List;
 
+import com.ordering_system.model.dto.Address;
 import com.ordering_system.model.dto.Restaurant;
+import com.ordering_system.model.dto.RestaurantAndAddressDto;
 import com.ordering_system.service.impl.RestaurantServiceImpl;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,8 +36,8 @@ public class RestaurantController {
 
 
     @PostMapping("/save")
-    public ResponseEntity<Restaurant> saveRestaurant(@RequestBody Restaurant restaurant) {
-        return ResponseEntity.status(201).body(restaurantServiceImpl.save(restaurant));
+    public ResponseEntity<Restaurant> saveRestaurant(@RequestBody RestaurantAndAddressDto restaurantAndAddressDto ) {
+        return ResponseEntity.status(201).body(restaurantServiceImpl.save(restaurantAndAddressDto));
     }
 
     @PutMapping("/update")

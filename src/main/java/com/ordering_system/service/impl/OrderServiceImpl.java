@@ -1,6 +1,6 @@
 package com.ordering_system.service.impl;
 
-import com.ordering_system.model.domain.FoodEntity;
+import com.ordering_system.model.domain.*;
 import com.ordering_system.model.domain.OrderEntity;
 import com.ordering_system.model.domain.RestaurantEntity;
 import com.ordering_system.model.domain.UserEntity;
@@ -22,7 +22,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.ordering_system.service.mailsender.GetMail;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,7 +33,6 @@ public class OrderServiceImpl implements OrderService {
     private final UserRepository userRepository;
     private final RestaurantRepository restaurantRepository;
     private final UserServiceImpl userService;
-    private final RestaurantServiceImpl restaurantService;
     private final GetMail getMail;
     private static final Logger LOGGER = LoggerFactory.getLogger(OrderService.class);
 
@@ -42,7 +40,7 @@ public class OrderServiceImpl implements OrderService {
     public OrderServiceImpl(Converter converter, OrderRepository orderRepository,
                             FoodRepository foodRepository, UserRepository userRepository,
                             RestaurantRepository restaurantRepository, GetMail getMail,
-                            UserServiceImpl userService, RestaurantServiceImpl restaurantService) {
+                            UserServiceImpl userService) {
         this.converter = converter;
         this.orderRepository = orderRepository;
         this.foodRepository = foodRepository;
@@ -50,7 +48,6 @@ public class OrderServiceImpl implements OrderService {
         this.restaurantRepository = restaurantRepository;
         this.getMail = getMail;
         this.userService = userService;
-        this.restaurantService = restaurantService;
     }
 
     @Override
@@ -92,8 +89,12 @@ public class OrderServiceImpl implements OrderService {
         LOGGER.info("In method save in OrderServiceImpl class");
         List<FoodEntity> foodEntities = new ArrayList<>();
         List<Long> foodListIds = new ArrayList<>();
-        for (FoodDto foodDto : foodDtoList) {
-            foodEntities.add(foodRepository.findFoodEntityById(foodDto.getId()));
+        try {
+            for (FoodDto foodDto : foodDtoList) {
+                foodEntities.add(foodRepository.findFoodEntityById(foodDto.getId()));
+            }
+        } catch (NullPointerException e) {
+            throw new EntityNotFoundException("Food not found");
         }
         List<String> restaurants=new ArrayList<>();
         for (FoodEntity food : foodEntities) {
@@ -118,7 +119,6 @@ public class OrderServiceImpl implements OrderService {
             double discount = order.getPrice() / 100 * getDiscount(userEntity.getId());
             order.setUserId(userEntity.getId());
             order.setOrderStatus(OrderStatus.ACCEPTED);
-            List<Long> foodIds=new ArrayList<>();
             order.setDiscountedPrice(order.getPrice() - discount);
             order.setDiscount(discount);
             order.setDeliveryCost(order.getPrice() > 10000 ? 0.0 : 1000);

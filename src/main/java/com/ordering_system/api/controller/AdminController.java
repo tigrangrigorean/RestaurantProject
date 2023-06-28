@@ -1,7 +1,6 @@
 package com.ordering_system.api.controller;
 
 import java.util.List;
-
 import com.ordering_system.model.dto.Restaurant;
 import com.ordering_system.model.enumeration.Role;
 import com.ordering_system.repository.RestaurantRepository;
@@ -20,7 +19,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.ordering_system.model.dto.User;
 import com.ordering_system.service.impl.UserServiceImpl;
 

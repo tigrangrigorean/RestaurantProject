@@ -6,8 +6,6 @@ import java.util.Objects;
 import com.ordering_system.model.exception.IncorrectAddressException;
 
 public class Address {
-
-
     private String city;
     private String street;
     private String building;

@@ -8,7 +8,6 @@ import com.ordering_system.model.enumeration.Role;
 import com.ordering_system.model.exception.EntityAlreadyExistsException;
 import com.ordering_system.model.exception.EntityNotFoundException;
 import com.ordering_system.repository.AddressRepository;
-import com.ordering_system.repository.FoodRepository;
 import com.ordering_system.repository.RestaurantRepository;
 import com.ordering_system.repository.UserRepository;
 import com.ordering_system.service.RestaurantService;
@@ -30,16 +29,14 @@ public class RestaurantServiceImpl implements RestaurantService {
     private final Converter converter;
     private final RestaurantRepository restaurantRepository;
     private final AddressRepository addressRepository;
-    private final FoodRepository foodRepository;
     private final UserRepository userRepository;
     private final GetMail getMail;
     private static final Logger LOGGER = LoggerFactory.getLogger(RestaurantService.class);
     @Autowired
-    public RestaurantServiceImpl(Converter converter, RestaurantRepository restaurantRepository, AddressRepository addressRepository, FoodRepository foodRepository, UserRepository userRepository, GetMail getMail) {
+    public RestaurantServiceImpl(Converter converter, RestaurantRepository restaurantRepository, AddressRepository addressRepository,  UserRepository userRepository, GetMail getMail) {
         this.converter = converter;
         this.restaurantRepository = restaurantRepository;
         this.addressRepository = addressRepository;
-        this.foodRepository = foodRepository;
         this.userRepository = userRepository;
         this.getMail = getMail;
     }
@@ -105,7 +102,7 @@ public class RestaurantServiceImpl implements RestaurantService {
     @Override
     public void update(long id, Restaurant restaurant) {
         LOGGER.info("In method update in RestaurantServiceImpl class");
-        Validator validator= new Validator(userRepository, restaurantRepository, getMail);
+        Validator validator= new Validator(userRepository, getMail);
         Validator.checkId(id);
         RestaurantEntity restaurantEntity = restaurantRepository.findRestaurantEntityById(id);
         validator.checkAccess(restaurantEntity);
@@ -165,7 +162,7 @@ public class RestaurantServiceImpl implements RestaurantService {
         Validator.checkId(id);
         if (Validator.checkEntity(restaurantRepository.findRestaurantEntityById(id))) {
             RestaurantEntity restaurantEntity=restaurantRepository.findRestaurantEntityById(id);
-            Validator validator= new Validator(userRepository, restaurantRepository, getMail);
+            Validator validator= new Validator(userRepository, getMail);
             validator.checkAccess(restaurantEntity);
             restaurantRepository.deleteById(id);
         }

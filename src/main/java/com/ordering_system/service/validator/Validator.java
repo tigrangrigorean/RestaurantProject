@@ -14,7 +14,7 @@ public class Validator {
 
     private  final GetMail getMail;
 
-    public Validator(UserRepository userRepository, RestaurantRepository restaurantRepository, GetMail getMail) {
+    public Validator(UserRepository userRepository, GetMail getMail) {
         this.userRepository = userRepository;
         this.getMail = getMail;
     }

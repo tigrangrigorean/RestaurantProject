@@ -2,12 +2,15 @@ package com.ordering_system.model.dto;
 
 
 import java.util.Date;
+
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 public class Restaurant {
     private String name;
     private String tin;
+    @Schema(hidden = true)
     private long addressId;
     private long managerId;
     @Schema(type = "string", format = "date", example = "2023-06-12")

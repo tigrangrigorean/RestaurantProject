@@ -7,6 +7,8 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface AddressRepository extends JpaRepository<AddressEntity,Long> {
     AddressEntity findAddressEntityById(long id);
+    AddressEntity findAddressEntityByCityAndStreetAndBuildingAndApartment(String city, String street,
+                                                                          String building, String apartment);
 
 
 }

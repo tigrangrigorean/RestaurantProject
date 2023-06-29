@@ -25,7 +25,6 @@ public class MailActivation {
         this.userRepository = userRepository;
         this.changePasswordRepository = changePasswordRepository;
     }
-
     public void sendPin(String mail) {
         String pin = pinGenerator.generatePin();
 

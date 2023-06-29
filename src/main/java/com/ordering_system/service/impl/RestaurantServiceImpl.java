@@ -88,11 +88,9 @@ public class RestaurantServiceImpl implements RestaurantService {
         Validator.checkEntity(restaurant);
         Validator.checkName(restaurant.getName());
         Validator.checkTin(restaurant.getTin());
-        UserEntity userEntity = userRepository.findUserEntityById(restaurant.getManagerId());
+        UserEntity userEntity = userRepository.findUserEntityByEmail(getMail.getMail());
+        restaurant.setManagerId(userEntity.getId());
         Validator.checkEntity(userEntity);
-        if (!userEntity.getRole().equals(Role.MANAGER)) {
-            throw new EntityNotFoundException("Manager by id " + restaurant.getManagerId() + " not found");
-        }
         Validator.checkEmail(restaurant.getEmail());
         Validator.checkPhoneNumber(restaurant.getPhoneNumber());
         restaurantRepository.save(converter.restaurantToEntity(restaurant));

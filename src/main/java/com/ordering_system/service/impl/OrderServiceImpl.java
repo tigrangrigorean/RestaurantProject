@@ -213,12 +213,9 @@ public class OrderServiceImpl implements OrderService {
 
     public void doPay(Order order) {
         LOGGER.info("In method doPay in OrderServiceImpl class");
-        UserEntity userEntity = userRepository.findUserEntityById(order.getUserId());
         RestaurantEntity restaurantEntity = restaurantRepository.findRestaurantEntityByName(order.getRestaurantName());
         double restaurantBalance = restaurantRepository.findRestaurantEntityByName(order.getRestaurantName()).getBalance();
-        User user = converter.entityToUser(userEntity);
         restaurantEntity.setBalance(restaurantBalance + order.getPrice());
-        userService.update(userEntity.getEmail(), user);
         restaurantRepository.save(restaurantEntity);
         LOGGER.info("doPay method passed in OrderServiceImpl class");
     }

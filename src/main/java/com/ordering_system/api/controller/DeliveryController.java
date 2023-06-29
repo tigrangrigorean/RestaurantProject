@@ -40,7 +40,7 @@ public class DeliveryController {
 		return ResponseEntity.status(201).body("Added deliverer with email " + deliveryMan.getEmail());
 	}
 	
-	@PostMapping("/save")
+	@PostMapping("/register")
 	public ResponseEntity<Delivery> save(@RequestBody Delivery delivery) {
 		return ResponseEntity.status(201).body(deliverService.save(delivery));
 	}

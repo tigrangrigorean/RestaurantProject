@@ -32,7 +32,7 @@ public class ManagerController {
     }
 
 
-    @PostMapping("/save")
+    @PostMapping("/register")
     public ResponseEntity<User> saveManager(@RequestBody User manager) {
         manager.setRole(Role.MANAGER);
         return ResponseEntity.status(201).body(managerServiceImpl.save(manager));

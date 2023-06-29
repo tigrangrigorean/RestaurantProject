@@ -35,7 +35,7 @@ public class RestaurantController {
     }
 
 
-    @PostMapping("/save")
+    @PostMapping("/register")
     public ResponseEntity<Restaurant> saveRestaurant(@RequestBody RestaurantAndAddressDto restaurantAndAddressDto ) {
         return ResponseEntity.status(201).body(restaurantServiceImpl.save(restaurantAndAddressDto));
     }

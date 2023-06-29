@@ -12,6 +12,7 @@ public class Restaurant {
     private String tin;
     @Schema(hidden = true)
     private long addressId;
+    @Schema(hidden = true)
     private long managerId;
     @Schema(type = "string", format = "date", example = "2023-06-12")
     @JsonFormat(pattern = "yyyy-MM-dd")

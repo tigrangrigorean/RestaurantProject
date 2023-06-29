@@ -29,20 +29,22 @@ import java.util.List;
 @Transactional
 public class RestaurantServiceImpl implements RestaurantService {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(RestaurantService.class);
     private final Converter converter;
     private final RestaurantRepository restaurantRepository;
     private final AddressRepository addressRepository;
     private final UserRepository userRepository;
     private final GetMail getMail;
-    private static final Logger LOGGER = LoggerFactory.getLogger(RestaurantService.class);
+
     @Autowired
-    public RestaurantServiceImpl(Converter converter, RestaurantRepository restaurantRepository, AddressRepository addressRepository,  UserRepository userRepository, GetMail getMail) {
+    public RestaurantServiceImpl(Converter converter, RestaurantRepository restaurantRepository, AddressRepository addressRepository, UserRepository userRepository, GetMail getMail) {
         this.converter = converter;
         this.restaurantRepository = restaurantRepository;
         this.addressRepository = addressRepository;
         this.userRepository = userRepository;
         this.getMail = getMail;
     }
+
     @Override
     public Restaurant getById(long id) {
         LOGGER.info("In method getById in RestaurantServiceImpl class");
@@ -66,45 +68,34 @@ public class RestaurantServiceImpl implements RestaurantService {
 
     @Override
     public Restaurant save(RestaurantAndAddressDto restaurantAndAddressDto) {
-        if(addressRepository.findAddressEntityByCityAndStreetAndBuildingAndApartment(
+        LOGGER.info("In method save in RestaurantServiceImpl class");
+        if (addressRepository.findAddressEntityByCityAndStreetAndBuildingAndApartment(
                 restaurantAndAddressDto.getAddress().getCity(),
                 restaurantAndAddressDto.getAddress().getStreet(),
                 restaurantAndAddressDto.getAddress().getBuilding(),
                 restaurantAndAddressDto.getAddress().getApartment()
-        )!=null){
+        ) != null) {
             throw new EntityAlreadyExistsException("Address already exist!");
         }
-        Address address=restaurantAndAddressDto.getAddress();
-        AddressEntity addressEntity=addressRepository.save(converter.addressToEntity(address));
-        Restaurant restaurant=restaurantAndAddressDto.getRestaurant();
+        Address address = restaurantAndAddressDto.getAddress();
+        AddressEntity addressEntity = addressRepository.save(converter.addressToEntity(address));
+        Restaurant restaurant = restaurantAndAddressDto.getRestaurant();
         restaurant.setAddressId(addressEntity.getId());
-        LOGGER.info("In method save in RestaurantServiceImpl class");
-        if(restaurantRepository.findRestaurantEntityByName(restaurant.getName()) != null ) {
-            throw new EntityAlreadyExistsException("Restaurant by entered name already exists");
+        if (restaurantRepository.findRestaurantEntityByNameOrTinOrEmailOrPhoneNumber(
+                restaurant.getName(), restaurant.getTin(),
+                restaurant.getEmail(), restaurant.getPhoneNumber()) != null) {
+            throw new EntityAlreadyExistsException("A restaurant with such parameters already exists");
         }
         Validator.checkEntity(restaurant);
         Validator.checkName(restaurant.getName());
         Validator.checkTin(restaurant.getTin());
-        if(restaurantRepository.findRestaurantEntityByTin(restaurant.getTin()) != null) {
-            throw new EntityAlreadyExistsException("Restaurant by entered TIN already exist");
-        }
-//        Validator.checkEntity(addressRepository.findAddressEntityById(restaurant.getAddressId()));
         UserEntity userEntity = userRepository.findUserEntityById(restaurant.getManagerId());
         Validator.checkEntity(userEntity);
-
-        if(!userEntity.getRole().equals(Role.MANAGER)){
-            throw new EntityNotFoundException("Manager by id "+restaurant.getManagerId()+ " not found");
+        if (!userEntity.getRole().equals(Role.MANAGER)) {
+            throw new EntityNotFoundException("Manager by id " + restaurant.getManagerId() + " not found");
         }
-
         Validator.checkEmail(restaurant.getEmail());
-        if(restaurantRepository.findRestaurantEntityByEmail(restaurant.getEmail()) != null) {
-            throw new EntityAlreadyExistsException("Restaurant by entered Email already exists");
-        }
         Validator.checkPhoneNumber(restaurant.getPhoneNumber());
-
-        if(restaurantRepository.findRestaurantEntityByPhoneNumber(restaurant.getPhoneNumber()) != null) {
-            throw new EntityAlreadyExistsException("Entered Phone number already busy");
-        }
         restaurantRepository.save(converter.restaurantToEntity(restaurant));
         LOGGER.info("Save method passed in RestaurantServiceImpl class");
         return restaurant;
@@ -113,7 +104,7 @@ public class RestaurantServiceImpl implements RestaurantService {
     @Override
     public void update(long id, Restaurant restaurant) {
         LOGGER.info("In method update in RestaurantServiceImpl class");
-        Validator validator= new Validator(userRepository, getMail);
+        Validator validator = new Validator(userRepository, getMail);
         Validator.checkId(id);
         RestaurantEntity restaurantEntity = restaurantRepository.findRestaurantEntityById(id);
         validator.checkAccess(restaurantEntity);
@@ -121,20 +112,26 @@ public class RestaurantServiceImpl implements RestaurantService {
         Validator.checkEntity(restaurantEntity);
         if (restaurant.getName() != null) {
             Validator.checkName(restaurant.getName());
+            if (restaurantRepository.findRestaurantEntityByName(restaurant.getName()) != null) {
+                throw new EntityAlreadyExistsException("Restaurant by entered name already exists");
+            }
             restaurantEntity.setName(restaurant.getName());
         }
         if (restaurant.getTin() != null) {
-        	Validator.checkTin(restaurant.getTin());
+            Validator.checkTin(restaurant.getTin());
+            if (restaurantRepository.findRestaurantEntityByTin(restaurant.getTin()) != null) {
+                throw new EntityAlreadyExistsException("Restaurant by entered TIN already exist");
+            }
             restaurantEntity.setTin(restaurant.getTin());
         }
-        if (restaurant.getAddressId()>0) {
+        if (restaurant.getAddressId() > 0) {
             Validator.checkEntity(addressRepository.findAddressEntityById(restaurant.getAddressId()));
             long addressId = restaurantEntity.getAddress().getId();
             restaurantEntity.setAddress(addressRepository.findAddressEntityById(restaurant.getAddressId()));
             addressRepository.delete(addressRepository.findAddressEntityById(addressId));
         }
-        if (restaurant.getManagerId()>0) {
-        	Validator.checkEntity(userRepository.findUserEntityById(restaurant.getManagerId()));
+        if (restaurant.getManagerId() > 0) {
+            Validator.checkEntity(userRepository.findUserEntityById(restaurant.getManagerId()));
             restaurantEntity.setUser(userRepository.findUserEntityById(restaurant.getManagerId()));
         }
         if (restaurant.getFoundDate() != null) {
@@ -144,15 +141,21 @@ public class RestaurantServiceImpl implements RestaurantService {
             restaurantEntity.setRegistrationDate(restaurant.getRegistrationDate());
         }
         if (restaurant.getPhoneNumber() != null) {
-        	Validator.checkPhoneNumber(restaurant.getPhoneNumber());
+            Validator.checkPhoneNumber(restaurant.getPhoneNumber());
+        if(restaurantRepository.findRestaurantEntityByPhoneNumber(restaurant.getPhoneNumber()) != null) {
+            throw new EntityAlreadyExistsException("Entered Phone number already busy");
+        }
             restaurantEntity.setPhoneNumber(restaurant.getPhoneNumber());
         }
         if (restaurant.getEmail() != null) {
             Validator.checkEmail(restaurant.getEmail());
+        if(restaurantRepository.findRestaurantEntityByEmail(restaurant.getEmail()) != null) {
+            throw new EntityAlreadyExistsException("Restaurant by entered Email already exists");
+        }
             restaurantEntity.setEmail(restaurant.getEmail());
         }
-        if(restaurant.getBalance() >= 0) {
-        	restaurantEntity.setBalance(restaurant.getBalance());
+        if (restaurant.getBalance() >= 0) {
+            restaurantEntity.setBalance(restaurant.getBalance());
         }
         restaurantRepository.save(restaurantEntity);
         LOGGER.info("Update method passed in RestaurantServiceImpl class");
@@ -161,7 +164,7 @@ public class RestaurantServiceImpl implements RestaurantService {
     @Override
     public void verifyRestaurant(long id) {
         LOGGER.info("In method verifyRestaurant in RestaurantServiceImpl class");
-        RestaurantEntity restaurant= restaurantRepository.findRestaurantEntityById(id) ;
+        RestaurantEntity restaurant = restaurantRepository.findRestaurantEntityById(id);
         restaurant.setActivated(true);
         restaurantRepository.save(restaurant);
         LOGGER.info("VerifyRestaurant method passed in RestaurantServiceImpl class");
@@ -172,8 +175,8 @@ public class RestaurantServiceImpl implements RestaurantService {
         LOGGER.info("In method delete in RestaurantServiceImpl class");
         Validator.checkId(id);
         if (Validator.checkEntity(restaurantRepository.findRestaurantEntityById(id))) {
-            RestaurantEntity restaurantEntity=restaurantRepository.findRestaurantEntityById(id);
-            Validator validator= new Validator(userRepository, getMail);
+            RestaurantEntity restaurantEntity = restaurantRepository.findRestaurantEntityById(id);
+            Validator validator = new Validator(userRepository, getMail);
             validator.checkAccess(restaurantEntity);
             restaurantRepository.deleteById(id);
         }

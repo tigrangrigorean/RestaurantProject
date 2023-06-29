@@ -3,7 +3,6 @@ package com.ordering_system.model.domain;
 import jakarta.persistence.*;
 
 
-
 import java.util.Date;
 import java.util.List;
 
@@ -28,24 +27,15 @@ public class RestaurantEntity {
     private String phoneNumber;
     private String email;
     private double balance;
-
-    public boolean isActivated() {
-        return activated;
-    }
-
-    public void setActivated(boolean activated) {
-        this.activated = activated;
-    }
-
     private boolean activated;
 
     public RestaurantEntity() {
     }
 
-    public RestaurantEntity( String name, String tin, List<FoodEntity> foodEntityList, AddressEntity address,
-    		UserEntity user, Date foundDate,
-    		Date registrationDate, String phoneNumber,
-    		String email, double balance) {
+    public RestaurantEntity(String name, String tin, List<FoodEntity> foodEntityList, AddressEntity address,
+                            UserEntity user, Date foundDate,
+                            Date registrationDate, String phoneNumber,
+                            String email, double balance) {
         this.name = name;
         this.tin = tin;
         this.foodEntityList = foodEntityList;
@@ -56,6 +46,14 @@ public class RestaurantEntity {
         this.phoneNumber = phoneNumber;
         this.email = email.toLowerCase();
         this.balance = balance;
+    }
+
+    public boolean isActivated() {
+        return activated;
+    }
+
+    public void setActivated(boolean activated) {
+        this.activated = activated;
     }
 
     public long getId() {
@@ -138,17 +136,17 @@ public class RestaurantEntity {
         this.email = email.toLowerCase();
     }
 
-	/**
-	 * @return the balance
-	 */
-	public double getBalance() {
-		return balance;
-	}
+    /**
+     * @return the balance
+     */
+    public double getBalance() {
+        return balance;
+    }
 
-	/**
-	 * @param balance the balance to set
-	 */
-	public void setBalance(double balance) {
-		this.balance = balance;
-	}
+    /**
+     * @param balance the balance to set
+     */
+    public void setBalance(double balance) {
+        this.balance = balance;
+    }
 }

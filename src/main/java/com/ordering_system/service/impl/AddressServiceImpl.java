@@ -72,11 +72,9 @@ public class AddressServiceImpl implements AddressService {
         if (address.getBuilding() != null) {
             addressEntity.setBuilding(address.getBuilding());
         }
-
         if (address.getApartment() != null) {
             addressEntity.setApartment(address.getApartment());
         }
-
         addressRepository.save(addressEntity);
         LOGGER.info("Update method passed in AddressServiceImpl class");
     }
@@ -90,5 +88,4 @@ public class AddressServiceImpl implements AddressService {
         }
         LOGGER.info("Delete method passed in AddressServiceImpl class");
     }
-
 }

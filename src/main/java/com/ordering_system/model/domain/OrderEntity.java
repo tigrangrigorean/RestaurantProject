@@ -3,10 +3,7 @@ package com.ordering_system.model.domain;
 
 import com.ordering_system.model.enumeration.OrderStatus;
 import jakarta.persistence.*;
-import jakarta.transaction.Transactional;
-import org.hibernate.engine.internal.Cascade;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 

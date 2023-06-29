@@ -1,6 +1,5 @@
 package com.ordering_system.service.impl;
 
-
 import com.ordering_system.model.domain.AddressEntity;
 import com.ordering_system.model.domain.RestaurantEntity;
 import com.ordering_system.model.domain.UserEntity;
@@ -22,7 +21,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 
 @Service
@@ -81,10 +79,11 @@ public class RestaurantServiceImpl implements RestaurantService {
         AddressEntity addressEntity = addressRepository.save(converter.addressToEntity(address));
         Restaurant restaurant = restaurantAndAddressDto.getRestaurant();
         restaurant.setAddressId(addressEntity.getId());
-        if (restaurantRepository.findRestaurantEntityByNameOrTinOrEmailOrPhoneNumber(
+        RestaurantEntity restaurantEntity=restaurantRepository.findRestaurantEntityByNameOrTinOrEmailOrPhoneNumber(
                 restaurant.getName(), restaurant.getTin(),
-                restaurant.getEmail(), restaurant.getPhoneNumber()) != null) {
-            throw new EntityAlreadyExistsException("A restaurant with such parameters already exists");
+                restaurant.getEmail(), restaurant.getPhoneNumber());
+        if(restaurantEntity!=null) {
+            Validator.checkRestaurant(restaurantEntity,restaurant);
         }
         Validator.checkEntity(restaurant);
         Validator.checkName(restaurant.getName());
@@ -182,5 +181,4 @@ public class RestaurantServiceImpl implements RestaurantService {
         }
         LOGGER.info("Delete method passed in RestaurantServiceImpl class");
     }
-
 }

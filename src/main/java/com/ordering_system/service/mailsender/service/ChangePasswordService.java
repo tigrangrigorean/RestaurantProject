@@ -42,9 +42,9 @@ public class ChangePasswordService {
         this.getMail = getMail;
     }
 
-    public void sendPin(String mail) {
+    public void sendPin(String mail,String subject) {
         String pin = pinGenerator.generatePin();
-        emailSenderService.sendEmail(mail, pin, "Pin for reset password");
+        emailSenderService.sendEmail(mail, pin, subject);
         if(changePasswordRepository.findByUserEmail(mail)!=null){
             changePasswordRepository
                     .deleteById(changePasswordRepository

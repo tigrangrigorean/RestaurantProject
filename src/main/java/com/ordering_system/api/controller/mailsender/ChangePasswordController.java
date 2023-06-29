@@ -9,23 +9,21 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/password")
 public class ChangePasswordController {
     private final ChangePasswordService changePasswordService;
-
     @Autowired
     public ChangePasswordController(ChangePasswordService changePasswordService) {
         this.changePasswordService = changePasswordService;
     }
     @GetMapping("/reset")
     public void resetPassword(@RequestParam String mail) throws InterruptedException {
-        changePasswordService.sendPin(mail);
+        changePasswordService.sendPin(mail,"Pin for change password");
     }
     @PostMapping("/change")
     @ResponseBody
     public void changePassword(@RequestParam(name = "email") String email,
                                @RequestParam (name = "newPassword") String newPassword,
-                               @RequestParam(name="pin") String pin) {
+                               @RequestParam(name= "pin") String pin) {
         changePasswordService.change(email,newPassword,pin);
     }
-    
     @PostMapping("/profile/changepassword")
     public void passwordSignInChange(@RequestBody PasswordDto passwordDto) {
     	changePasswordService.passwordSignInChange(passwordDto);

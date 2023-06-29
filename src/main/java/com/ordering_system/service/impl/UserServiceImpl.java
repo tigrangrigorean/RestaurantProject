@@ -139,6 +139,9 @@ public class UserServiceImpl implements UserService {
         Validator.checkEntity(user);
         Validator.checkEntity(userEntity);
         if (user.getEmail() != null  && Validator.checkEmail(user.getEmail())) {
+            if(userRepository.findUserEntityByEmail(user.getEmail())!=null){
+                throw  new EntityAlreadyExistsException("User by entered email already exists");
+            }
             userEntity.setEmail(user.getEmail());
         }
         if (user.getFirstName() != null && Validator.checkName(user.getFirstName())) {
@@ -151,13 +154,20 @@ public class UserServiceImpl implements UserService {
             userEntity.setBirthday(user.getBirthday());
         }
         if(user.getPassportNumber()!=null&&Validator.checkPassport(user.getPassportNumber())){
+            if(userRepository.findUserEntityByPassportNumber(user.getPassportNumber())!=null){
+                throw  new EntityAlreadyExistsException("User by entered passport number already exists");
+            }
             userEntity.setPassword(user.getPassword());
         }
         if (user.getCardNumber() != null && Validator.checkCard(user.getCardNumber())) {
             userEntity.setCardNumber(user.getCardNumber());
         }
         if (user.getPhoneNumber() != null && Validator.checkPhoneNumber(user.getPhoneNumber())) {
+            if(userRepository.findUserEntityByPhoneNumber(user.getPhoneNumber())!=null){
+                throw  new EntityAlreadyExistsException("User by entered phone number already exists");
+            }
             userEntity.setPhoneNumber(user.getPhoneNumber());
+
         }
         LOGGER.info("Update method passed in UserServiceImpl class");
     }

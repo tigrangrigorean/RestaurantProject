@@ -58,7 +58,7 @@ public class AdminController {
         return converter.entityListToRestaurantList(restaurantRepository.findRestaurantEntitiesByActivatedIsFalse());
     }
 
-    @PostMapping("/save")
+    @PostMapping("/register")
     public ResponseEntity<User> saveAdmin(@RequestBody User admin) {
         admin.setRole(Role.ADMIN);
         return ResponseEntity.status(201).body(adminServiceImpl.save(admin));

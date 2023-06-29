@@ -38,15 +38,9 @@ public class OrderController {
     }
 
 
-    @PostMapping("/save")
+    @PostMapping("/register")
     public ResponseEntity<List<Order>> saveOrder(@RequestBody List<FoodDto> foodDtoList, Address address) {
         return ResponseEntity.status(201).body(orderServiceImpl.save(foodDtoList, address));
-    }
-
-    @PutMapping("/update")
-    public ResponseEntity<String> updateOrderById(@RequestParam long id, @RequestBody Order order) {
-        orderServiceImpl.update(id, order);
-        return ResponseEntity.ok().body("Order by " + id + " updated successfully");
     }
 
 

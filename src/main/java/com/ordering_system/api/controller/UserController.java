@@ -32,7 +32,7 @@ public class UserController {
     }
 
 
-    @PostMapping("/save")
+    @PostMapping("/register")
     public ResponseEntity<User> saveUser(@RequestBody User user) {
         user.setRole(Role.USER);
         return ResponseEntity.status(201).body(userServiceImpl.save(user));

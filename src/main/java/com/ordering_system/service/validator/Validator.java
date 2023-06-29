@@ -2,7 +2,6 @@ package com.ordering_system.service.validator;
 
 import com.ordering_system.model.domain.*;
 import com.ordering_system.model.dto.*;
-import com.ordering_system.repository.RestaurantRepository;
 import com.ordering_system.service.mailsender.GetMail;
 import com.ordering_system.model.enumeration.Role;
 import com.ordering_system.model.exception.*;

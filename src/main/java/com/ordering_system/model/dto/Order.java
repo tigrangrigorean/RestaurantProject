@@ -2,7 +2,6 @@ package com.ordering_system.model.dto;
 
 import com.ordering_system.model.enumeration.OrderStatus;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 

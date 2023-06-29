@@ -2,7 +2,6 @@ package com.ordering_system.api.controller;
 
 import java.util.List;
 
-import com.ordering_system.model.dto.Address;
 import com.ordering_system.model.dto.Restaurant;
 import com.ordering_system.model.dto.RestaurantAndAddressDto;
 import com.ordering_system.service.impl.RestaurantServiceImpl;

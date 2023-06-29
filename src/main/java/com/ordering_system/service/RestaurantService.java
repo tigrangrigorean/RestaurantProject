@@ -1,6 +1,5 @@
 package com.ordering_system.service;
 
-import com.ordering_system.model.dto.Address;
 import com.ordering_system.model.dto.Restaurant;
 import com.ordering_system.model.dto.RestaurantAndAddressDto;
 

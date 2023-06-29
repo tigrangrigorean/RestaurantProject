@@ -3,7 +3,6 @@ package com.ordering_system.model.dto;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public class Delivery {

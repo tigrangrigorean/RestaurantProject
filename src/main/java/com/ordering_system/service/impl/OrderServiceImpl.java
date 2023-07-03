@@ -85,54 +85,30 @@ public class OrderServiceImpl implements OrderService {
         return orderList;
     }
     @Override
-    public List<Order> save(List<FoodDto> foodDtoList, Address address) {
+    public Order save(List<Food> foodList, Address address) {
+        OrderEntity orderEntity = new OrderEntity();
         LOGGER.info("In method save in OrderServiceImpl class");
-        List<FoodEntity> foodEntities = new ArrayList<>();
-        List<Long> foodListIds = new ArrayList<>();
-        try {
-            for (FoodDto foodDto : foodDtoList) {
-                foodEntities.add(foodRepository.findFoodEntityById(foodDto.getId()));
-            }
-        } catch (NullPointerException e) {
-            throw new EntityNotFoundException("Food not found");
+        List<FoodEntity> foodEntityList = new ArrayList<>(converter.foodListToEntityList(foodList));
+        orderEntity.setFoodList(foodEntityList);
+        orderEntity.setOrderStatus(OrderStatus.ACCEPTED);
+        orderEntity.setRestaurantName(restaurantRepository.findRestaurantEntityById(foodList.get(0).getRestaurantId()).getName());
+        orderEntity.setAddressToDelivery(address.toString());
+        orderEntity.setDate(LocalDateTime.now());
+        long userId=userRepository.findUserEntityByEmail(getMail.getMail()).getId();
+        orderEntity.setUserId(userId);
+        double totalPrice=0;
+        for (Food food : foodList) {
+            totalPrice+=food.getPrice();
         }
-        List<String> restaurants=new ArrayList<>();
-        for (FoodEntity food : foodEntities) {
-            String restaurantName=food.getRestaurantEntity().getName();
-            if(!restaurants.contains(restaurantName)){
-                restaurants.add(restaurantName);
-            }
-        }
-        List<Order> orderList= new ArrayList<>();
-        for (String restaurant : restaurants) {
-            orderList.add(new Order(restaurant));
-        }
-        for (FoodEntity foodEntity : foodEntities) {
-            for (Order order : orderList) {
-                if(order.getRestaurantName().equals(foodEntity.getRestaurantEntity().getName())){
-                    order.setPrice(order.getPrice()+foodEntity.getPrice());
-                }
-            }
-        }
-        UserEntity userEntity = userRepository.findUserEntityByEmail(getMail.getMail());
-        for (Order order : orderList) {
-            double discount = order.getPrice() / 100 * getDiscount(userEntity.getId());
-            order.setUserId(userEntity.getId());
-            order.setOrderStatus(OrderStatus.ACCEPTED);
-            order.setDiscountedPrice(order.getPrice() - discount);
-            order.setDiscount(discount);
-            order.setDeliveryCost(order.getPrice() > 10000 ? 0.0 : 1000);
-            order.setFoodIdList(foodListIds);
-            order.setDate(LocalDateTime.now());
-            order.setAddressToDelivery(Validator.checkAddress(address));
-            if (!Validator.checkCard(userEntity.getCardNumber())) {
-                throw new NotValidCardException("Incorrect card number");
-            }
-            orderRepository.save(converter.orderToEntity(order));
-            doPay(order);
-        }
+        double discount=totalPrice*getDiscount(userId)/100;
+        orderEntity.setDiscount(discount);
+        orderEntity.setDiscountedPrice(totalPrice-discount);
+        orderEntity.setDeliveryCost(totalPrice>10000?0:1000);
+        orderEntity.setTotalPrice(totalPrice);
+        orderRepository.save(orderEntity);
+        doPay(orderEntity.getRestaurantName(),totalPrice-discount);
         LOGGER.info("Save method passed in OrderServiceImpl class");
-        return orderList;
+        return converter.entityToOrder(orderEntity);
     }
 
     //TODO DELETE
@@ -161,13 +137,9 @@ public class OrderServiceImpl implements OrderService {
         if (order.getDiscountedPrice() > 0) {
             orderEntity.setDiscountedPrice(order.getDiscountedPrice());
         }
-        if (order.getFoodIdList() != null) {
-            List<Long> ids = order.getFoodIdList();
-            List<FoodEntity> foodEntityList = new ArrayList<>();
-            for (Long foodId : ids) {
-                foodEntityList.add(foodRepository.findFoodEntityById(foodId));
-            }
-            orderEntity.setFoodList(foodEntityList);
+        if (order.getFoodList().size()>0) {
+
+            orderEntity.setFoodList(converter.foodListToEntityList(order.getFoodList()));
         }
         if (order.getUserId() > 0) {
             orderEntity.setUserId(order.getUserId());
@@ -205,17 +177,17 @@ public class OrderServiceImpl implements OrderService {
             }
         }
         if (sum > 1000) {
+
             return 10;
         }
         LOGGER.info("GetDiscount method passed in OrderServiceImpl class");
         return 0;
     }
 
-    public void doPay(Order order) {
+    public void doPay(String restaurantName,double totalPrice) {
         LOGGER.info("In method doPay in OrderServiceImpl class");
-        RestaurantEntity restaurantEntity = restaurantRepository.findRestaurantEntityByName(order.getRestaurantName());
-        double restaurantBalance = restaurantRepository.findRestaurantEntityByName(order.getRestaurantName()).getBalance();
-        restaurantEntity.setBalance(restaurantBalance + order.getPrice());
+        RestaurantEntity restaurantEntity = restaurantRepository.findRestaurantEntityByName(restaurantName);
+        restaurantEntity.setBalance(restaurantEntity.getBalance() + totalPrice);
         restaurantRepository.save(restaurantEntity);
         LOGGER.info("doPay method passed in OrderServiceImpl class");
     }

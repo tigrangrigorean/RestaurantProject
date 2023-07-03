@@ -1,7 +1,7 @@
 package com.ordering_system.api.controller;
 
 import com.ordering_system.model.dto.Address;
-import com.ordering_system.model.dto.FoodDto;
+import com.ordering_system.model.dto.Food;
 import com.ordering_system.model.dto.Order;
 import com.ordering_system.service.impl.OrderServiceImpl;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -39,8 +39,8 @@ public class OrderController {
 
 
     @PostMapping("/register")
-    public ResponseEntity<List<Order>> saveOrder(@RequestBody List<FoodDto> foodDtoList, Address address) {
-        return ResponseEntity.status(201).body(orderServiceImpl.save(foodDtoList, address));
+    public ResponseEntity<Order> saveOrder(@RequestBody List<Food> foodList, Address address) {
+        return ResponseEntity.status(201).body(orderServiceImpl.save(foodList, address));
     }
 
 

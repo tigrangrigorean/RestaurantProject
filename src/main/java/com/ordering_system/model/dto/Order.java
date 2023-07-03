@@ -11,24 +11,23 @@ public class Order {
     private double discount;
     private double discountedPrice;
     private double deliveryCost;
-    private List<Long> foodId;
+    private List<Food> foodList;
     private OrderStatus orderStatus;
     private String restaurantName;
     private long userId;
     private LocalDateTime date;
+    private String addressToDelivery;
 
     public Order(String restaurantName) {
         this.restaurantName = restaurantName;
     }
 
-    private Address addressToDelivery;
-
-    public Order(double price, double discount, double discountedPrice, double deliveryCost, List<Long> foodId, OrderStatus orderStatus, String restaurantName, long userId, LocalDateTime date) {
+    public Order(double price, double discount, double discountedPrice, double deliveryCost, List<Food> foodList, OrderStatus orderStatus, String restaurantName, long userId, LocalDateTime date) {
         this.price = price;
         this.discount = discount;
         this.discountedPrice = discountedPrice;
         this.deliveryCost = deliveryCost;
-        this.foodId = foodId;
+        this.foodList = foodList;
         this.orderStatus = orderStatus;
         this.restaurantName = restaurantName;
         this.userId = userId;
@@ -38,12 +37,12 @@ public class Order {
     public Order() {
     }
 
-    public LocalDateTime getDate() {
-        return date;
+    public double getPrice() {
+        return price;
     }
 
-    public void setDate(LocalDateTime date) {
-        this.date = date;
+    public void setPrice(double price) {
+        this.price = price;
     }
 
     public double getDiscount() {
@@ -70,12 +69,20 @@ public class Order {
         this.deliveryCost = deliveryCost;
     }
 
-    public Address getAddressToDelivery() {
-        return addressToDelivery;
+    public List<Food> getFoodList() {
+        return foodList;
     }
 
-    public void setAddressToDelivery(Address addressToDelivery) {
-        this.addressToDelivery = addressToDelivery;
+    public void setFoodList(List<Food> foodList) {
+        this.foodList = foodList;
+    }
+
+    public OrderStatus getOrderStatus() {
+        return orderStatus;
+    }
+
+    public void setOrderStatus(OrderStatus orderStatus) {
+        this.orderStatus = orderStatus;
     }
 
     public String getRestaurantName() {
@@ -86,14 +93,6 @@ public class Order {
         this.restaurantName = restaurantName;
     }
 
-    public List<Long> getFoodId() {
-        return foodId;
-    }
-
-    public void setFoodId(List<Long> foodId) {
-        this.foodId = foodId;
-    }
-
     public long getUserId() {
         return userId;
     }
@@ -102,27 +101,19 @@ public class Order {
         this.userId = userId;
     }
 
-    public double getPrice() {
-        return price;
+    public LocalDateTime getDate() {
+        return date;
     }
 
-    public void setPrice(double price) {
-        this.price = price;
+    public void setDate(LocalDateTime date) {
+        this.date = date;
     }
 
-    public List<Long> getFoodIdList() {
-        return foodId;
+    public String getAddressToDelivery() {
+        return addressToDelivery;
     }
 
-    public void setFoodIdList(List<Long> foodId) {
-        this.foodId = foodId;
-    }
-
-    public OrderStatus getOrderStatus() {
-        return orderStatus;
-    }
-
-    public void setOrderStatus(OrderStatus orderStatus) {
-        this.orderStatus = orderStatus;
+    public void setAddressToDelivery(String addressToDelivery) {
+        this.addressToDelivery = addressToDelivery;
     }
 }

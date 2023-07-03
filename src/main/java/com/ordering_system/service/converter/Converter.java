@@ -200,35 +200,30 @@ public class Converter {
      */
     public Order entityToOrder(OrderEntity orderEntity) {
         Order order = new Order();
-        List<Long> foodIds = new ArrayList<>();
-        List<FoodEntity> foodEntityList = orderEntity.getFoodList();
-        for (FoodEntity foodEntity : foodEntityList) {
-            foodIds.add(foodEntity.getId());
-        }
-        order.setFoodIdList(foodIds);
+        List<Food> foodList= new ArrayList<>(entityListToFoodList(orderEntity.getFoodList()));
+        order.setFoodList(foodList);
+        order.setUserId(orderEntity.getUserId());
         order.setPrice(orderEntity.getTotalPrice());
-        order.setRestaurantName(orderEntity.getRestaurantName());
-        order.setOrderStatus(orderEntity.getOrderStatus());
-        order.setDate(orderEntity.getDate());
         order.setDiscount(orderEntity.getDiscount());
-        order.setDeliveryCost(orderEntity.getDeliveryCost());
         order.setDiscountedPrice(orderEntity.getDiscountedPrice());
+        order.setDeliveryCost(orderEntity.getDeliveryCost());
+        order.setOrderStatus(orderEntity.getOrderStatus());
+        order.setRestaurantName(orderEntity.getRestaurantName());
+        order.setAddressToDelivery(orderEntity.getAddressToDelivery());
+        order.setDate(orderEntity.getDate());
         return order;
     }
 
     public OrderEntity orderToEntity(Order order) {
         OrderEntity orderEntity = new OrderEntity();
-        List<FoodEntity> foodEntityList = new ArrayList<>();
-        for (int i = 0; i < order.getFoodIdList().size(); i++) {
-            foodEntityList.add(foodRepository.findFoodEntityById(order.getFoodIdList().get(i)));
-        }
+        List<FoodEntity> foodEntityList = new ArrayList<>(foodListToEntityList(order.getFoodList()));
         orderEntity.setUserId(order.getUserId());
         orderEntity.setFoodList(foodEntityList);
         orderEntity.setTotalPrice(order.getPrice());
         orderEntity.setRestaurantName(order.getRestaurantName());
         orderEntity.setOrderStatus(order.getOrderStatus());
         orderEntity.setDate(order.getDate());
-        orderEntity.setAddressToDelivery(order.getAddressToDelivery().toString());
+        orderEntity.setAddressToDelivery(order.getAddressToDelivery());
         orderEntity.setDiscount(order.getDiscount());
         orderEntity.setDeliveryCost(order.getDeliveryCost());
         orderEntity.setDiscountedPrice(order.getDiscountedPrice());
@@ -238,16 +233,7 @@ public class Converter {
     public List<Order> entityToOrderList(List<OrderEntity> orderEntityList) {
         List<Order> orderList = new ArrayList<>();
         for (OrderEntity orderEntity : orderEntityList) {
-            List<Long> foodIds = new ArrayList<>();
-            for (FoodEntity foodEntity : orderEntity.getFoodList()) {
-                foodIds.add(foodEntity.getId());
-            }
-            orderList.add(new Order(orderEntity.getTotalPrice(), orderEntity.getDiscount(), orderEntity.getDiscountedPrice(), orderEntity.getDeliveryCost(),
-                    foodIds,
-                    orderEntity.getOrderStatus(),
-                    orderEntity.getRestaurantName(),
-                    orderEntity.getUserId(),
-                    orderEntity.getDate()));
+            orderList.add(entityToOrder(orderEntity));
         }
         return orderList;
     }

@@ -8,6 +8,7 @@ import com.ordering_system.model.dto.*;
 import com.ordering_system.model.enumeration.OrderStatus;
 import com.ordering_system.model.exception.AccessDeniedException;
 import com.ordering_system.model.exception.EntityNotFoundException;
+import com.ordering_system.model.exception.InvalidOrderException;
 import com.ordering_system.model.exception.NotValidCardException;
 import com.ordering_system.repository.FoodRepository;
 import com.ordering_system.repository.OrderRepository;
@@ -88,17 +89,25 @@ public class OrderServiceImpl implements OrderService {
     public Order save(List<Food> foodList, Address address) {
         OrderEntity orderEntity = new OrderEntity();
         LOGGER.info("In method save in OrderServiceImpl class");
-        List<FoodEntity> foodEntityList = new ArrayList<>(converter.foodListToEntityList(foodList));
+        List<FoodEntity> foodEntityList = new ArrayList<>();
+        long id = foodList.get(0).getRestaurantId();
+        for (Food food : foodList) {
+            if(food.getRestaurantId() == id) {
+                foodEntityList.add(foodRepository.findFoodEntityById(food.getId()));
+            }
+            else
+                throw new InvalidOrderException("Meals must be from the same restaurant");
+        }
         orderEntity.setFoodList(foodEntityList);
         orderEntity.setOrderStatus(OrderStatus.ACCEPTED);
-        orderEntity.setRestaurantName(restaurantRepository.findRestaurantEntityById(foodList.get(0).getRestaurantId()).getName());
+        orderEntity.setRestaurantName(restaurantRepository.findRestaurantEntityById(foodEntityList.get(0).getRestaurantEntity().getId()).getName());
         orderEntity.setAddressToDelivery(address.toString());
         orderEntity.setDate(LocalDateTime.now());
         long userId=userRepository.findUserEntityByEmail(getMail.getMail()).getId();
         orderEntity.setUserId(userId);
         double totalPrice=0;
-        for (Food food : foodList) {
-            totalPrice+=food.getPrice();
+        for (FoodEntity foodEntity : foodEntityList) {
+            totalPrice+=foodEntity.getPrice();
         }
         double discount=totalPrice*getDiscount(userId)/100;
         orderEntity.setDiscount(discount);

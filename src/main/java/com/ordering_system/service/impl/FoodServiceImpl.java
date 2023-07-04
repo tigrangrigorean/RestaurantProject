@@ -3,9 +3,7 @@ package com.ordering_system.service.impl;
 
 import com.ordering_system.model.domain.FoodEntity;
 import com.ordering_system.model.domain.RestaurantEntity;
-import com.ordering_system.model.domain.UserEntity;
 import com.ordering_system.model.dto.Food;
-import com.ordering_system.model.enumeration.Role;
 import com.ordering_system.model.exception.ActivationException;
 import com.ordering_system.model.exception.EntityAlreadyExistsException;
 import com.ordering_system.repository.FoodRepository;
@@ -18,7 +16,6 @@ import com.ordering_system.service.validator.Validator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -29,18 +26,19 @@ public class FoodServiceImpl implements FoodService {
     private final FoodRepository foodRepository;
     private final Converter converter;
     private final RestaurantRepository restaurantRepository;
-    private final Validator validator;
+
+    private final UserRepository userRepository;
+    private final GetMail getMail;
     private static final Logger LOGGER = LoggerFactory.getLogger(FoodServiceImpl.class);
 
     @Autowired
     public FoodServiceImpl(FoodRepository foodRepository, Converter converter,
-                           RestaurantRepository restaurantRepository,
-                           UserRepository userRepository,
-                           Validator validator) {
+                           RestaurantRepository restaurantRepository, UserRepository userRepository, GetMail getMail) {
         this.foodRepository = foodRepository;
         this.converter = converter;
         this.restaurantRepository = restaurantRepository;
-        this.validator = validator;
+        this.userRepository = userRepository;
+        this.getMail = getMail;
     }
 
     @Override
@@ -57,6 +55,7 @@ public class FoodServiceImpl implements FoodService {
     @Override
     public Food save(Food food) {
         LOGGER.info("In method save in FoodServiceImpl class");
+        Validator validator = new Validator(userRepository, getMail);
         Validator.checkEntity(food);
         Validator.checkPrice(food.getPrice());
         Validator.checkName(food.getName());
@@ -80,6 +79,7 @@ public class FoodServiceImpl implements FoodService {
     @Override
     public void update(long id, Food food) {
         LOGGER.info("In method update in FoodServiceImpl class");
+        Validator validator = new Validator(userRepository, getMail);
         FoodEntity foodEntity = foodRepository.findFoodEntityById(id);
         RestaurantEntity restaurantEntity = restaurantRepository.findRestaurantEntityById(food.getRestaurantId());
 
@@ -106,6 +106,7 @@ public class FoodServiceImpl implements FoodService {
     @Override
     public void delete(long id) {
         LOGGER.info("In method delete in FoodServiceImpl class");
+        Validator validator = new Validator(userRepository, getMail);
         FoodEntity foodEntity = foodRepository.findFoodEntityById(id);
         Validator.checkId(id);
         Validator.checkEntity(foodEntity);

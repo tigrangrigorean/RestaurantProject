@@ -38,7 +38,7 @@ public class SecurityConfig {
 						.requestMatchers("/admin/**").hasAuthority("ADMIN")
 						.requestMatchers("/manager/register").permitAll()
 						.requestMatchers("/manager/**").hasAnyAuthority("MANAGER","ADMIN")
-						.requestMatchers("/order/register").authenticated()
+						.requestMatchers("/order/save").authenticated()
 						.requestMatchers("/order/get/**").authenticated()
 						.requestMatchers("/order/**").hasAnyAuthority("MANAGER","ADMIN")
 						.requestMatchers("/user").hasAuthority("ADMIN")

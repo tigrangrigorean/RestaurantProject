@@ -92,7 +92,7 @@ public class OrderServiceImpl implements OrderService {
         List<FoodEntity> foodEntityList = new ArrayList<>();
         long id = foodList.get(0).getRestaurantId();
         for (Food food : foodList) {
-            if(food.getRestaurantId() == id) {
+            if(foodRepository.findFoodEntityById(food.getId()).getRestaurantEntity().getId() == food.getRestaurantId()) {
                 foodEntityList.add(foodRepository.findFoodEntityById(food.getId()));
             }
             else

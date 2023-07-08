@@ -1,14 +1,14 @@
 ﻿# **OrderNow Project Documentation**
 The OrderNow project is a system designed to facilitate online food ordering from various restaurants. It provides a user-friendly interface for users to browse restaurants, select their preferred restaurant, and place food orders. The project focuses on efficient order management, ensuring smooth communication between users, restaurants, and delivery personnel. It aims to streamline the process of ordering food online and provide a reliable infrastructure for a seamless user experience.
 ## **Table of Contents**
-1. [Technologies Used](https://chat.openai.com/#technologies-used)
-1. [Project Structure](https://chat.openai.com/#project-structure)
-1. [API Package](https://chat.openai.com/#api-package)
-1. [Service Package](https://chat.openai.com/#service-package)
-1. [Repository Package](https://chat.openai.com/#repository-package)
-1. [Model Package](https://chat.openai.com/#model-package)
-1. [Enumerations](https://chat.openai.com/#enumerations)
-## **Technologies Used <a name="technologies-used"></a>**
+1. Technologies Used
+1. Project Structure
+1. API Package
+1. Service Package
+1. Repository Package
+1. Model Package
+1. Enumerations
+## **Technologies Used**
 - Java 17
 - Maven
 - Spring Boot 3.1.0
@@ -22,14 +22,14 @@ The OrderNow project is a system designed to facilitate online food ordering fro
 - Mockito
 - SLF4J (Logger)
 - Scheduler 4.2.0
-## **Project Structure <a name="project-structure"></a>**
+## **Project Structure**
 The project follows a modular structure and consists of the following packages:
 
 1. API: Contains the controller classes responsible for handling HTTP endpoints.
 1. SERVICE: Contains interfaces and their implementations for business logic.
 1. REPOSITORY: Contains repository interfaces that extend JpaRepository for database operations.
 1. MODEL: Contains DTOs (Data Transfer Objects) and domain entities representing the data structure.
-### **API Package <a name="api-package"></a>**
+### **API Package**
 The API package contains the following controller classes with their respective endpoints:
 
 - RestaurantController: Handles restaurant-related endpoints.
@@ -95,7 +95,7 @@ The API package contains the following controller classes with their respective 
 - MailActivationController: Handles email activation-related endpoints.
   - POST /mail/send\_pin: Requests an activation pin with email.
   - POST /mail/activate: Activates a registered but not activated user.
-### **SERVICE Package <a name="service-package"></a>**
+### **SERVICE Package**
 The SERVICE package contains the following interfaces and their implementations:
 
 - User: Provides methods for user-related business logic.
@@ -131,7 +131,7 @@ The SERVICE package contains the following interfaces and their implementations:
   - void deleteOrder(Long id): Deletes an order by ID.
 
 The service interfaces include methods for retrieving, creating, updating, and deleting entities. These methods provide the necessary business logic for the application.
-### **REPOSITORY Package <a name="repository-package"></a>**
+### **REPOSITORY Package**
 The REPOSITORY package contains repository interfaces that extend the JpaRepository interface for performing database operations. These interfaces provide methods for CRUD (Create, Read, Update, Delete) operations and additional queries.
 
 The repository interfaces include:
@@ -143,7 +143,7 @@ The repository interfaces include:
 - MenuRepository: Performs database operations for the Menu entity.
 
 These interfaces inherit common methods from JpaRepository, such as findById(), findAll(), save(), deleteById(), etc., which allow for easy database interaction.
-### **MODEL Package <a name="model-package"></a>**
+### **MODEL Package**
 The MODEL package contains DTOs (Data Transfer Objects) and domain entities representing the data structure of the application.
 
 1. Data Transfer Objects (DTOs): These objects are used for transferring data between the API layer and the service layer. They have similar attributes to the corresponding domain entities but are tailored for specific use cases. The DTOs include:
@@ -160,7 +160,7 @@ The MODEL package contains DTOs (Data Transfer Objects) and domain entities repr
    1. OrderEntity: Represents an order and includes attributes such as ID, price, a list of associated food entities, order status, and restaurant name.
 
 The DTOs are used for transferring data between the API and service layers, while the domain entities represent the database structure and are used for persistence and data retrieval.
-### **Enumerations <a name="enumerations"></a>**
+### **Enumerations**
 The project utilizes enumerations to represent certain types of data. The enumerations include:
 
 - Role: Represents different user roles such as ROLE\_USER, ROLE\_ADMIN, ROLE\_MANAGER, and ROLE\_DELIVERY\_MAN.

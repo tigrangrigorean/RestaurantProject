@@ -2,6 +2,8 @@ package com.ordering_system.service.impl;
 
 import com.ordering_system.model.domain.OrderEntity;
 import com.ordering_system.model.exception.EntityAlreadyExistsException;
+import com.ordering_system.model.exception.EntityNotFoundException;
+import com.ordering_system.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +28,7 @@ public class DeliveryServiceImpl implements DeliveryService {
     private final UserServiceImpl userService;
     private final OrderRepository orderRepository;
     private final OrderServiceImpl orderService;
+    private final UserRepository userRepository;
     private static final Logger LOGGER = LoggerFactory.getLogger(DeliveryService.class);
 
     @Autowired
@@ -34,12 +37,13 @@ public class DeliveryServiceImpl implements DeliveryService {
             DeliverRepository deliverRepository,
             OrderRepository orderRepository,
             OrderServiceImpl orderService,
-            UserServiceImpl userService) {
+            UserServiceImpl userService, UserRepository userRepository) {
         this.converter = converter;
         this.deliverRepository = deliverRepository;
         this.orderRepository = orderRepository;
         this.orderService = orderService;
         this.userService = userService;
+        this.userRepository = userRepository;
     }
 
     @Override
@@ -63,6 +67,9 @@ public class DeliveryServiceImpl implements DeliveryService {
         Validator.checkEntity(delivery);
         Validator.checkId(delivery.getUserId());
         Validator.checkId(delivery.getOrderId());
+        if(userRepository.findUserEntityById(delivery.getUserId()).getRole() != Role.DELIVERY_MAN) {
+            throw new EntityNotFoundException("Delivery man by entered ID not found");
+        }
         delivery.setStartDate(LocalDateTime.now());
         deliverRepository.save(converter.deliverToEntity(delivery));
         OrderEntity orderEntity = orderRepository.findOrderEntityById(delivery.getOrderId());
